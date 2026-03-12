@@ -652,12 +652,12 @@
         \linespread{1.2} \fEng \sXiaosan \par               % 1.2 倍行距
         \vspace{1\baselineskip}                             % 1 * 22pt * 1.2
         \begin{center}                                      %
-            \fEng \sErhao \textbf{Title:\nwpu@eng@title} \par     %
+            \fEng \sErhao \textbf{Title:}\nwpu@eng@title \par     %
             \fSong \sXiaoer \vspace{3\baselineskip}         %
             \fEng \sXiaosan \textbf{By} \par                %
-            \fEng \sXiaosan \textbf{\nwpu@eng@author} \par  %
+            \fEng \sXiaosan \nwpu@eng@author \par  %
             \fEng \sXiaosan \textbf{Under the Supervision of \nwpu@eng@advisorAcademicRank} \\
-            \fEng \sXiaosan \textbf{\nwpu@eng@advisor} \par %
+            \fEng \sXiaosan \nwpu@eng@advisor \par %
             \fSong \sSanhao \vspace{4\baselineskip}         %
             \fEng \sXiaosan A Dissertation Submitted to \\  %
             \fEng \sXiaosan {\nwpu@eng@schoolname} \\       %
