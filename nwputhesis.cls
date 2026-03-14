@@ -88,7 +88,7 @@
 \newcommand{\sErhao}{\fontsize{22pt}{28pt}\selectfont}      % 二号，1.25 倍
 \newcommand{\sXiaoer}{\fontsize{18pt}{18pt}\selectfont}     % 小二，单倍
 \newcommand{\sSanhao}{\fontsize{16pt}{24pt}\selectfont}     % 三号，1.5 倍
-\newcommand{\sXiaosan}{\fontsize{15pt}{22pt}\selectfont}    % 小三，1.5 倍
+\newcommand{\sXiaosan}{\fontsize{15pt}{18pt}\selectfont}    % 小三，1.5 倍
 \newcommand{\sSihao}{\fontsize{14pt}{21pt}\selectfont}      % 四号，1.5 倍
 \newcommand{\sHgXiaosi}{\fontsize{13pt}{19pt}\selectfont}   % 半小四，1.5 倍
 \newcommand{\sLgXiaosi}{\fontsize{12.5pt}{13pt}\selectfont} % 半小四，约 1 倍
@@ -484,10 +484,10 @@
 \setcounter{nwpu@month}{1}                                     % 默认1月
 \newcommand{\nwpu@year}{2026}                                  % 默认年份
 \newcommand{\nwpu@eng@monthname}{%                              % 英文月份名称
-  \ifcase\value{nwpu@month}\or
-    January\or February\or March\or April\or May\or June\or
-    July\or August\or September\or October\or November\or December
-  \fi
+    \ifcase\value{nwpu@month}\or
+        January\or February\or March\or April\or May\or June\or
+        July\or August\or September\or October\or November\or December
+    \fi
 }
 \newcommand{\nwpu@chs@date}{\nwpu@year{} 年 \thenwpu@month{} 月}  % 日期（中文）
 \newcommand{\nwpu@eng@date}{\nwpu@eng@monthname/\nwpu@year}       % 日期（英文）
@@ -657,8 +657,8 @@
             \copy123\kern-\wd123\box124 \fSong \sWuhao \par % 排版结束
             \vspace{7\baselineskip}                         % 7 * 10.5pt * 1.5
             \sSanhao \nwpu@chs@innerCoverFirstOption：\coverunderline[5.5cm]{\nwpu@chs@major} \\
-\sSanhao 作{\qquad}者：\coverunderline[5.5cm]{\makebox[\maxname@width][s]{\nwpu@chs@author}} \\
-\sSanhao 指导教师：\coverunderline[5.5cm]{\makebox[\maxname@width][s]{\nwpu@chs@advisor}} \\
+            \sSanhao 作{\qquad}者：\coverunderline[5.5cm]{\makebox[\maxname@width][s]{\nwpu@chs@author}} \\
+            \sSanhao 指导教师：\coverunderline[5.5cm]{\makebox[\maxname@width][s]{\nwpu@chs@advisor}} \\
             \fSong \sWuhao \par                             %
             \vspace{2\baselineskip}                         % 2 * 10.5pt * 1.5
             \fSong \sSanhao \nwpu@chs@date                  %
@@ -671,23 +671,22 @@
 \newcommand{\make@nwpu@eng@title}{                          % 设置英文标题页
     \thispagestyle{empty}                                   % 清空页面格式
     \begin{titlepage}                                       %
-        \linespread{1.2} \fEng \sXiaosan \par               % 1.2 倍行距
-        \vspace{1\baselineskip}                             % 1 * 22pt * 1.2
         \begin{center}                                      %
-            \fEng \sErhao \textbf{Title:}\nwpu@eng@title \par     %
+            \fSong \sErhao \par \vspace*{3\baselineskip}              %
+            \fEng \sErhao \textbf{Title:} \sSanhao \nwpu@eng@title \par     %
             \fSong \sXiaoer \vspace{3\baselineskip}         %
             \fEng \sXiaosan \textbf{By} \par                %
             \fEng \sXiaosan \nwpu@eng@author \par  %
             \fEng \sXiaosan \textbf{Under the Supervision of \nwpu@eng@advisorAcademicRank} \\
             \fEng \sXiaosan \nwpu@eng@advisor \par %
-            \fSong \sSanhao \vspace{4\baselineskip}         %
+            \fSong \sSanhao \vspace{5\baselineskip}         %
             \fEng \sXiaosan A Dissertation Submitted to \\  %
             \fEng \sXiaosan {\nwpu@eng@schoolname} \\       %
             \fSong \sSanhao \vspace{1\baselineskip}         %
-            \fEng In Partial Fulfillment of The Requirement \\
-            \fEng For The Degree of \\                      %
-            \fEng {\nwpu@eng@degree} of \if@npu@type@mst\nwpu@eng@major\else\textbf{\nwpu@eng@major}\fi
-            \fSong \sXiaosan \par \vspace{3\baselineskip}   %
+            \fEng \sXiaosan {In Partial Fulfillment of The Requirement} \\
+            \fEng \sXiaosan {For The Degree of} \\                      %
+            \fEng \sXiaosan {{\nwpu@eng@degree} of \if@npu@type@mst\nwpu@eng@major\else\textbf{\nwpu@eng@major}\fi}
+            \fSong \sXiaosan \par \vspace{4\baselineskip}   %
             \fEng \sXiaosan Xi'an, P.R. China \\            %
             \fEng \sXiaosan {\nwpu@eng@date}                %
         \end{center}                                        %
