@@ -557,14 +557,14 @@
             \hfill \fHei \sWuhao                            %
             \begin{minipage}{\coverpage@infowidth}          % 排版基本信息表
                 \vspace{.5cm}                               %
-                \renewcommand\arraystretch{1.2}             %
+                \renewcommand\arraystretch{1.3}             %
                 \begin{tabular}{|c|c|}\hline                %
                     {学 \hfill 校 \hfill 代 \hfill 码}   & \nwpu@schoolcode    \\ \hline
                     {分   \hfill    类    \hfill   号}  & \nwpu@classnumber   \\ \hline
                     {密           \hfill           级} & \nwpu@securitylevel \\ \hline
                     {学           \hfill           号} & \nwpu@uid           \\ \hline
                 \end{tabular}                               %
-            \end{minipage} \par                             % 排版结束
+            \end{minipage} \hspace*{1cm} \par                             % 排版结束
             \vspace{21\baselineskip}                        % 21 * 10.5pt * 1.25
             \fSong \sErhao \begin{minipage}[t]{2cm}         % 排版标题
                 \hfill {\fHei \sErhao 题目} \\              %
@@ -666,9 +666,9 @@
     \end{titlepage} \fSong \normalsize \newpage \clearpage  %
 }                                                           %
 %%-----------------------------------------------------------------------------%
-%% 英文标题页
+%% 英文内封
 %%-----------------------------------------------------------------------------%
-\newcommand{\make@nwpu@eng@title}{                          % 设置英文标题页
+\newcommand{\make@nwpu@eng@title}{                          % 设置英文内封
     \thispagestyle{empty}                                   % 清空页面格式
     \begin{titlepage}                                       %
         \begin{center}                                      %
@@ -699,7 +699,7 @@
 \renewcommand{\maketitle}{                                  % 重制 maketitle
     \make@nwpu@coverpage                                    % 封皮页
     \make@nwpu@chs@title                                    % 中文内封
-    \make@nwpu@eng@title                                    % 英文标题页
+    \make@nwpu@eng@title                                    % 英文内封
 }                                                           %
 %%=============================================================================%
 %%=============================================================================%
