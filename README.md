@@ -82,4 +82,4 @@
 
 Copyright (c) 2016-2022 NWPU Metaphysics Office https://github.com/NWPUMetaphysicsOffice
 
-Modified (c) 2026 by Jiayi Yan
+Modified (c) 2026 by Jiayi Yan https://github.com/1195343015
