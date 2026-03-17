@@ -111,35 +111,78 @@
 \newcommand{\sDefault}{\fontsize{12pt}{20pt}\selectfont}    % 小四，1.67 倍
 %%-----------------------------------------------------------------------------%
 \RequirePackage{silence}                                     % 抑制警告
-\WarningsOff[ifplatform]
 \RequirePackage{ifplatform}                                 % 跨平台字体控制依赖
+\RequirePackage{fontspec}                                   % 设置字体（提前加载以支持字体检测）
+%% 定义默认字体（Windows 字体）
 \newcommand\defaultSog{SimSun}                              % 宋体，用于正文
 \newcommand\defaultHei{SimHei}                              % 黑体，用于标题
 \newcommand\defaultKai{KaiTi}                               % 楷体，一般用于强调
 \newcommand\defaultFag{FangSong}                            % 仿宋，一般用于强调
-\if@npu@font@winfonts\relax                                 % 检测 de 选项
-\else                                                       %
-    \if@npu@font@adobe                                      % 检测 Adobe 选项
-        \renewcommand\defaultSog{Adobe Song Std}            % 宋体，用于正文
-        \renewcommand\defaultHei{Adobe Heiti Std}           % 黑体，用于标题
-        \renewcommand\defaultKai{Adobe Kaiti Std}           % 楷体，一般用于强调
-        \renewcommand\defaultFag{Adobe Fangsong Std}        % 仿宋，一般用于强调
-    \else                                                   % 使用系统自带字体
-        \ifwindows\relax\fi                                 % Windows 使用默认字体
-        \iflinux\relax\fi                                   % Linux 使用默认字体
-        \ifmacosx                                           % macOS 环境
-            \renewcommand\defaultSog{STSongti-SC-Regular}   % 宋体，用于正文
-            \renewcommand\defaultHei{STHeiti}               % 黑体，用于标题
-            \renewcommand\defaultKai{STKaiti}               % 楷体，一般用于强调
-            \renewcommand\defaultFag{STFangSong}            % 仿宋，一般用于强调
-        \fi                                                 %
-    \fi                                                     %
-\fi                                                         %
 \newcommand\defaultEngFont{Times New Roman}                 % 英文文本默认字体
 \newcommand\defaultEngSansFont{\defaultHei}                 % 英文 Sans 字体
 \newcommand\codeFont{Consolas}                              % 等宽英文默认字体
 %%-----------------------------------------------------------------------------%
-\RequirePackage{fontspec}                                   % 设置字体
+% 根据系统和字体可用性设置字体
+\newcommand{\npu@fallback@fonts}{%
+    \iflinux
+        \typeout{[nwputhesis] Windows fonts not found, using Linux fonts.}
+        \renewcommand\defaultSog{Noto Serif CJK SC}
+        \renewcommand\defaultHei{Noto Sans CJK SC}
+        \renewcommand\defaultKai{Noto Serif CJK SC}
+        \renewcommand\defaultFag{Noto Serif CJK SC}
+        \renewcommand\defaultEngFont{TeX Gyre Termes}
+        \renewcommand\codeFont{DejaVu Sans Mono}
+    \fi
+    \ifmacosx
+        \typeout{[nwputhesis] Windows fonts not found, using macOS fonts.}
+        \renewcommand\defaultSog{STSongti-SC-Regular}
+        \renewcommand\defaultHei{STHeiti}
+        \renewcommand\defaultKai{STKaiti}
+        \renewcommand\defaultFag{STFangSong}
+        \renewcommand\defaultEngFont{TeX Gyre Termes}
+        \renewcommand\codeFont{Menlo}
+    \fi
+}
+\if@npu@font@winfonts\relax                                 % 强制使用 Win 字体选项
+\else
+    \if@npu@font@adobe                                      % Adobe 字体选项
+        \renewcommand\defaultSog{Adobe Song Std}
+        \renewcommand\defaultHei{Adobe Heiti Std}
+        \renewcommand\defaultKai{Adobe Kaiti Std}
+        \renewcommand\defaultFag{Adobe Fangsong Std}
+    \else
+        \ifwindows\relax\fi                                 % Windows 使用默认字体
+        \unless\ifwindows                                   % 非 Windows 系统检测 Windows 字体
+            % 检测所有 Windows 字体是否可用（宋体、黑体、楷体、仿宋、Times New Roman、Consolas）
+            \IfFontExistsTF{Times New Roman}{%
+                \IfFontExistsTF{SimSun}{%
+                    \IfFontExistsTF{SimHei}{%
+                        \IfFontExistsTF{KaiTi}{%
+                            \IfFontExistsTF{FangSong}{%
+                                \IfFontExistsTF{Consolas}{%
+                                    % 所有 Windows 字体都可用，保持默认设置
+                                    \typeout{[nwputhesis] Detected Windows fonts, using them.}
+                                }{%
+                                    \npu@fallback@fonts
+                                }%
+                            }{%
+                                \npu@fallback@fonts
+                            }%
+                        }{%
+                            \npu@fallback@fonts
+                        }%
+                    }{%
+                        \npu@fallback@fonts
+                    }%
+                }{%
+                    \npu@fallback@fonts
+                }%
+            }{%
+                \npu@fallback@fonts
+            }%
+        \fi
+    \fi
+\fi
 \RequirePackage[SlantFont, BoldFont, CJKchecksingle]{xeCJK} % 设置中文字体
 \defaultfontfeatures{Mapping=tex-text}                      % 启用 TeX Ligatures
 \setCJKmainfont[ItalicFont=\defaultKai, AutoFakeBold]{\defaultSog}
