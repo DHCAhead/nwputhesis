@@ -10,6 +10,7 @@
 ## 使用说明
 - 本项目推荐在 TeX Live 环境下使用，支持各种操作系统。
 - 推荐搭配 VS Code 中的 LaTeX Workshop 插件使用
+- LaTeX 新手指南：[清华大学 thuthesis 提供的新手指南](https://github.com/tuna/thuthesis/wiki/%E6%96%B0%E6%89%8B%E6%8C%87%E5%8D%97)（对本项目同样适用）
 
 ### 编译方式
 提供了两种编译方式（如下图所示）：
