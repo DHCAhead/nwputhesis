@@ -368,7 +368,7 @@
     \titlespacing{\chapter}{0pt}{15.2pt}{14.4pt}
     \titlespacing{\section}{0pt}{-3pt}{2pt}
     \titlespacing{\subsection}{0pt}{-2.5pt}{-2.5pt}
-    \titlespacing{\subsubsection}{0pt}{0.25em}{0pt}
+    \titlespacing{\subsubsection}{0pt}{0.25em}{0.5em}
 \else                                                       % 硕博论文章节格式
     \titleformat{\chapter}[hang]{\normalfont\sSanhao\filcenter  %
         \sffamily\fHei}{\sffamily\fHei\sSanhao{\chaptertitlename}}{20pt}{\sSanhao}%
