@@ -34,6 +34,8 @@
 #### 在线运行
 推荐使用 [TeXPage 模板](https://www.texpage.com/zh/template/1b72a41e-0d62-430e-8678-d697d89bdb7e/) 在线编辑。（不推荐使用 Overleaf，其免费版基本没法用）
 
+TexPage 模板可能会比 Release 版本滞后 1~2 天，若发现 TexPage 模板不是最新的，可自行下载最新的 Release 版本上传到 TexPage 模板中。
+
 ### LaTeX 新手指南
 [清华大学 thuthesis 提供的新手指南](https://github.com/tuna/thuthesis/wiki/%E6%96%B0%E6%89%8B%E6%8C%87%E5%8D%97)（对本项目同样适用）
 
