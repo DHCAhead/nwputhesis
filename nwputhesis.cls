@@ -61,6 +61,9 @@
   \@twosidefalse\@mparswitchfalse                 % 本科强制单面印刷
 \fi
 \RequirePackage{etoolbox}                                   % LaTeX 补丁工具
+\patchcmd{\chapter}{\if@openright\cleardoublepage\else\clearpage\fi}{%
+  \cleardoublepage
+}{}{\errmessage{failed to patch chapter pagination}}
 %%-----------------------------------------------------------------------------%
 %% 用户级条件命令
 %%-----------------------------------------------------------------------------%
@@ -1202,6 +1205,7 @@
   \fontsize{12pt}{13pt}\selectfont                        %
   \setlength{\bibsep}{0.5ex}                              %
   \setlength{\bibhang}{2em}                               % 悬挂缩进
+  \nocite{*}                                              % 无正文引用时也生成合法的 BibTeX 输入
   \sDefault \old@bibliography{#1} \cleardoublepage        % 参考文献 bib 文件
 }                                                           %
 %%-----------------------------------------------------------------------------%
