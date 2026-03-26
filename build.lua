@@ -5,7 +5,7 @@
 module = "nwputhesis"
 
 supportdir = "./testfiles/support"
-checksuppfiles = {"*.tex", "*.bib", "figures/*", "*.ttf"}
+checksuppfiles = {"*.tex", "*.bib", "*.cls", "*.bst", "figures/*", "*.ttf"}
 
 installfiles = {"*.cls", "*.bst"}
 sourcefiles = {"*.cls", "*.bst"}
@@ -17,10 +17,12 @@ stdengine = "xetex"
 checkconfigs = {
   "build",
   "testfiles/config-title-page",
+  "testfiles/config-toc",
+  "testfiles/config-bibtex",
 }
 
 -- 排除标题页测试（它们在子目录中单独运行）
-excludetests = {"01-*"}
+excludetests = {"01-*", "04-*", "07-*"}
 
 typesetexe = "xelatex"
 unpackexe = "xetex"
