@@ -72,6 +72,7 @@ Completed box being shipped out [1]
 ....\write-{}
 ....\special{color push gray 0}
 ....\special{pdf:majorversion 1}
+....\special{pdf:minorversion 5}
 ....\special{pdf:minorversion 7}
 ....\special{pdf:docview<</OpenAction[@page1/FitH]/PageMode/UseOutlines/ViewerPref\ETC.}
 ....\special{pdf:dest (Doc-Start) [@thispage /XYZ @xpos @ypos null]}
@@ -801,7 +802,7 @@ Completed box being shipped out [1]
 ...\kern 0.0
 ...\kern -1.1381
 ...\kern -1.00374
-...\special{pdf:dest (page.1) [@thispage /XYZ @xpos @ypos null]}
+...\special{pdf:dest (page.3) [@thispage /XYZ @xpos @ypos null]}
 ...\penalty 10000
 ...\glue 0.0 plus 1.0fil minus 1.0fil
 ..\glue 0.0 plus 1.0fil minus 1.0fil
@@ -817,7 +818,7 @@ Completed box being shipped out [1]
 .....\special{color pop}
 ...\glue 3.1298
 ...\glue(\lineskip) 0.0
-...\vbox(700.50723+0.0)x455.24411, glue set 45.02904fil
+...\vbox(700.50723+0.0)x455.24411, glue set 47.74902fil
 ....\glue(\topskip) 11.0
 ....\rule(0.0+0.0)x*
 ....\penalty 10000
@@ -1183,6 +1184,7 @@ Completed box being shipped out [1]
 .....\glue(\rightskip) 0.0 plus 1.0fil
 ....\penalty -51
 ....\glue 3.0 plus 1.0 minus 1.0
+....\glue -2.71999
 ....\glue 0.0 plus 1.0fil
 ....\glue 0.0
 ...\glue(\baselineskip) 22.47748
@@ -1227,7 +1229,7 @@ Completed box being shipped out [2]
 ...\kern 0.0
 ...\kern -1.1381
 ...\kern -1.00374
-...\special{pdf:dest (page.2) [@thispage /XYZ @xpos @ypos null]}
+...\special{pdf:dest (page.4) [@thispage /XYZ @xpos @ypos null]}
 ...\penalty 10000
 ...\glue 0.0 plus 1.0fil minus 1.0fil
 ..\glue 0.0 plus 1.0fil minus 1.0fil
@@ -1292,7 +1294,7 @@ Completed box being shipped out [1]
 ...\kern 0.0
 ...\kern -1.1381
 ...\kern -1.00374
-...\special{pdf:dest (page.1) [@thispage /XYZ @xpos @ypos null]}
+...\special{pdf:dest (page.5) [@thispage /XYZ @xpos @ypos null]}
 ...\penalty 10000
 ...\glue 0.0 plus 1.0fil minus 1.0fil
 ..\glue 0.0 plus 1.0fil minus 1.0fil
@@ -1308,7 +1310,7 @@ Completed box being shipped out [1]
 .....\special{color pop}
 ...\glue 3.1298
 ...\glue(\lineskip) 0.0
-...\vbox(700.50723+0.0)x455.24411, glue set 74.29724fil
+...\vbox(700.50723+0.0)x455.24411, glue set 74.50723fil
 ....\glue(\topskip) 11.0
 ....\rule(0.0+0.0)x*
 ....\penalty 10000
@@ -1545,6 +1547,7 @@ Completed box being shipped out [1]
 .....\glue(\rightskip) 0.0 plus 1.0fil
 ....\penalty -51
 ....\glue 3.0 plus 1.0 minus 1.0
+....\glue -0.20999
 ....\glue 0.0 plus 1.0fil
 ....\glue 0.0
 ...\glue(\baselineskip) 22.47748
@@ -1589,7 +1592,7 @@ Completed box being shipped out [2]
 ...\kern 0.0
 ...\kern -1.1381
 ...\kern -1.00374
-...\special{pdf:dest (page.2) [@thispage /XYZ @xpos @ypos null]}
+...\special{pdf:dest (page.6) [@thispage /XYZ @xpos @ypos null]}
 ...\penalty 10000
 ...\glue 0.0 plus 1.0fil minus 1.0fil
 ..\glue 0.0 plus 1.0fil minus 1.0fil

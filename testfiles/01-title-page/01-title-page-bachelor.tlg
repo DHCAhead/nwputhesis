@@ -68,10 +68,11 @@ Completed box being shipped out [1]
 .....\special{color pop}
 ...\glue 3.1298
 ...\glue(\lineskip) 0.0
-...\vbox(700.50687+0.0)x416.83289, glue set 73.14384fill
+...\vbox(700.50687+0.0)x416.83289, glue set 78.32375fill
 ....\write-{}
 ....\special{color push gray 0}
 ....\special{pdf:majorversion 1}
+....\special{pdf:minorversion 5}
 ....\special{pdf:minorversion 7}
 ....\special{pdf:docview<</OpenAction[@page1/FitH]/PageMode/UseOutlines/ViewerPref\ETC.}
 ....\special{pdf:dest (Doc-Start) [@thispage /XYZ @xpos @ypos null]}
@@ -350,6 +351,7 @@ Completed box being shipped out [1]
 ....\glue 0.0 plus 1.0fill
 ....\penalty -51
 ....\glue 3.0 plus 1.0 minus 1.0
+....\glue -5.1799
 ....\glue 0.0 plus 1.0fil
 ....\glue 0.0
 ...\glue(\baselineskip) 22.47748

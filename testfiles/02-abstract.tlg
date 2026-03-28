@@ -40,7 +40,7 @@ Completed box being shipped out [1]
 ...\kern 0.0
 ...\kern -1.1381
 ...\kern -1.00374
-...\special{pdf:dest (page.I) [@thispage /XYZ @xpos @ypos null]}
+...\special{pdf:dest (page.1) [@thispage /XYZ @xpos @ypos null]}
 ...\penalty 10000
 ...\glue 0.0 plus 1.0fil minus 1.0fil
 ..\glue 0.0 plus 1.0fil minus 1.0fil
@@ -123,6 +123,7 @@ Completed box being shipped out [1]
 ....\write-{}
 ....\special{color push gray 0}
 ....\special{pdf:majorversion 1}
+....\special{pdf:minorversion 5}
 ....\special{pdf:minorversion 7}
 ....\special{pdf:docview<</OpenAction[@page1/FitH]/PageMode/UseOutlines/ViewerPref\ETC.}
 ....\special{pdf:dest (Doc-Start) [@thispage /XYZ @xpos @ypos null]}
@@ -132,8 +133,9 @@ Completed box being shipped out [1]
 ....\special{pdf:out [-] 1<</Title(\376\377\144\130\000\040\211\201)/A<</S/GoTo/D(\ETC.}
 ....\write1{\@writefile{toc}{\protect \contentsline {chapter}{摘{\hskip 1em\rela
 x \ETC.}
-....\marks1{\__mark_value:nn {1}{第 0 章~~ 摘{\hskip 1em\relax }要}}
-....\marks2{\__mark_value:nn {2}{}}
+....\marks1{\__mark_id:n {1}第 0 章~~ 摘{\hskip 1em\relax }要}
+....\marks2{\__mark_id:n {2}}
+....\mark{{第 0 章~~ 摘{\hskip 1em\relax }要}{}}
 ....\write1{\@writefile{lof}{\protect \addvspace {10\p@ }}}
 ....\write1{\@writefile{lot}{\protect \addvspace {10\p@ }}}
 ....\glue(\topskip) 11.0
@@ -162,11 +164,10 @@ x \ETC.}
 ....\penalty 10000
 ....\glue 14.0
 ....\glue 0.0
-....\marks1{\__mark_value:nn {3}{摘{\hskip 1em\relax }要}}
-....\penalty 10000
-....\marks2{\__mark_value:nn {4}{摘{\hskip 1em\relax }要}}
-....\penalty 10000
-....\marks3{\__mark_value:nn {5}{摘{\hskip 1em\relax }要}}
+....\marks1{\__mark_id:n {3}摘{\hskip 1em\relax }要}
+....\marks2{\__mark_id:n {4}摘{\hskip 1em\relax }要}
+....\marks3{\__mark_id:n {5}摘{\hskip 1em\relax }要}
+....\mark{{摘{\hskip 1em\relax }要}{摘{\hskip 1em\relax }要}}
 ....\penalty 10000
 ....\glue(\parskip) 0.0
 ....\glue(\parskip) 0.0
@@ -369,7 +370,7 @@ Completed box being shipped out [2]
 ...\kern 0.0
 ...\kern -1.1381
 ...\kern -1.00374
-...\special{pdf:dest (page.II) [@thispage /XYZ @xpos @ypos null]}
+...\special{pdf:dest (page.2) [@thispage /XYZ @xpos @ypos null]}
 ...\penalty 10000
 ...\glue 0.0 plus 1.0fil minus 1.0fil
 ..\glue 0.0 plus 1.0fil minus 1.0fil
@@ -550,7 +551,7 @@ Completed box being shipped out [3]
 ...\kern 0.0
 ...\kern -1.1381
 ...\kern -1.00374
-...\special{pdf:dest (page.III) [@thispage /XYZ @xpos @ypos null]}
+...\special{pdf:dest (page.3) [@thispage /XYZ @xpos @ypos null]}
 ...\penalty 10000
 ...\glue 0.0 plus 1.0fil minus 1.0fil
 ..\glue 0.0 plus 1.0fil minus 1.0fil
@@ -630,8 +631,9 @@ Completed box being shipped out [3]
 ....\special{pdf:dest (chapter*.2) [@thispage /XYZ @xpos @ypos null]}
 ....\special{pdf:out [-] 1<</Title(\376\377\000A\000B\000S\000T\000R\000A\000C\000\ETC.}
 ....\write1{\@writefile{toc}{\protect \contentsline {chapter}{ABSTRACT}{\thepage \ETC.}
-....\marks1{\__mark_value:nn {6}{第 0 章~~ ABSTRACT}}
-....\marks2{\__mark_value:nn {7}{}}
+....\marks1{\__mark_id:n {6}第 0 章~~ ABSTRACT}
+....\marks2{\__mark_id:n {7}}
+....\mark{{第 0 章~~ ABSTRACT}{}}
 ....\write1{\@writefile{lof}{\protect \addvspace {10\p@ }}}
 ....\write1{\@writefile{lot}{\protect \addvspace {10\p@ }}}
 ....\glue(\topskip) 11.0
@@ -657,11 +659,10 @@ Completed box being shipped out [3]
 ....\penalty 10000
 ....\glue 14.0
 ....\glue 0.0
-....\marks1{\__mark_value:nn {8}{Abstract}}
-....\penalty 10000
-....\marks2{\__mark_value:nn {9}{ABSTRACT}}
-....\penalty 10000
-....\marks3{\__mark_value:nn {10}{ABSTRACT}}
+....\marks1{\__mark_id:n {8}Abstract}
+....\marks2{\__mark_id:n {9}ABSTRACT}
+....\marks3{\__mark_id:n {10}ABSTRACT}
+....\mark{{Abstract}{ABSTRACT}}
 ....\penalty 10000
 ....\glue(\parskip) 0.0
 ....\glue(\parskip) 0.0
@@ -810,7 +811,7 @@ Completed box being shipped out [4]
 ...\kern 0.0
 ...\kern -1.1381
 ...\kern -1.00374
-...\special{pdf:dest (page.IV) [@thispage /XYZ @xpos @ypos null]}
+...\special{pdf:dest (page.4) [@thispage /XYZ @xpos @ypos null]}
 ...\penalty 10000
 ...\glue 0.0 plus 1.0fil minus 1.0fil
 ..\glue 0.0 plus 1.0fil minus 1.0fil

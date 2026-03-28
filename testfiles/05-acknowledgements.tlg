@@ -123,6 +123,7 @@ Completed box being shipped out [1]
 ....\write-{}
 ....\special{color push gray 0}
 ....\special{pdf:majorversion 1}
+....\special{pdf:minorversion 5}
 ....\special{pdf:minorversion 7}
 ....\special{pdf:docview<</OpenAction[@page1/FitH]/PageMode/UseOutlines/ViewerPref\ETC.}
 ....\special{pdf:dest (Doc-Start) [@thispage /XYZ @xpos @ypos null]}
@@ -156,11 +157,10 @@ Completed box being shipped out [1]
 ....\penalty 10000
 ....\glue 14.0
 ....\glue 0.0
-....\marks1{\__mark_value:nn {1}{致{\hskip 1em\relax }谢}}
-....\penalty 10000
-....\marks2{\__mark_value:nn {2}{致{\hskip 1em\relax }谢}}
-....\penalty 10000
-....\marks3{\__mark_value:nn {3}{致{\hskip 1em\relax }谢}}
+....\marks1{\__mark_id:n {1}致{\hskip 1em\relax }谢}
+....\marks2{\__mark_id:n {2}致{\hskip 1em\relax }谢}
+....\marks3{\__mark_id:n {3}致{\hskip 1em\relax }谢}
+....\mark{{致{\hskip 1em\relax }谢}{致{\hskip 1em\relax }谢}}
 ....\penalty 10000
 ....\special{pdf:out [-] 1<</Title(\376\377\201\364\000\040\214\042)/A<</S/GoTo/D(\ETC.}
 ....\write1{\@writefile{toc}{\protect \contentsline {chapter}{致{\hskip 1em\rela

@@ -153,6 +153,7 @@ Completed box being shipped out [1]
 ....\write-{}
 ....\special{color push gray 0}
 ....\special{pdf:majorversion 1}
+....\special{pdf:minorversion 5}
 ....\special{pdf:minorversion 7}
 ....\special{pdf:docview<</OpenAction[@page1/FitH]/PageMode/UseOutlines/ViewerPref\ETC.}
 ....\special{pdf:dest (Doc-Start) [@thispage /XYZ @xpos @ypos null]}
@@ -216,9 +217,9 @@ Completed box being shipped out [1]
 ....\penalty 10000
 ....\glue 14.0
 ....\glue 0.0
-....\marks1{\__mark_value:nn {1}{在学期间取得的学术成果和参加科研\ETC.}
-....\penalty 10000
-....\marks2{\__mark_value:nn {2}{}}
+....\marks1{\__mark_id:n {1}在学期间取得的学术成果和参加科研情况}
+....\marks2{\__mark_id:n {2}}
+....\mark{{在学期间取得的学术成果和参加科研情况}{}}
 ....\penalty 10000
 ....\special{pdf:out [-] 1<</Title(\376\377\127\050\133\146\147\037\225\364\123\32\ETC.}
 ....\write1{\@writefile{toc}{\protect \contentsline {chapter}{在学期间取得的\ETC.}
