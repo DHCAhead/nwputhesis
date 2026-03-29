@@ -23,6 +23,7 @@
 \newif\if@npu@font@adobe                                    % Adobe 字体标记
 \newif\if@npu@font@winfonts                                 % 强制使用 Win 字体
 \newif\if@npu@font@fandol                                   % 强制使用 Fandol 字体
+\newif\if@npu@font@local                                   % 使用本地 fonts 目录字体
 \newif\if@npu@using@fandol                                  % 实际使用 Fandol 字体标记
 \newif\if@npu@colorcover                              % 彩色封面封底标记
 \def\set@lang@chs{\@npu@lang@chstrue}                       % 设置中文版本
@@ -35,12 +36,14 @@
 \DeclareOptionX{blindreview}[true]{\csname @npu@output@blindreview#1\endcsname}
 \DeclareOptionX{adobe}[true]{\csname @npu@font@adobe#1\endcsname}
 \DeclareOptionX{winfonts}[true]{\csname @npu@font@winfonts#1\endcsname}
+\DeclareOptionX{localfonts}[true]{\csname @npu@font@local#1\endcsname}
 \DeclareOptionX{fontset}[auto]{%
     \def\npu@fontset{#1}%
     \ifx\npu@fontset\@nnil\else
         \def\@tempa{fandol}\ifx\npu@fontset\@tempa\@npu@font@fandoltrue\fi
         \def\@tempa{windows}\ifx\npu@fontset\@tempa\@npu@font@winfontstrue\fi
         \def\@tempa{adobe}\ifx\npu@fontset\@tempa\@npu@font@adobetrue\fi
+        \def\@tempa{local}\ifx\npu@fontset\@tempa\@npu@font@localtrue\fi
     \fi
 }
 \DeclareOptionX{academic}[true]{\csname @npu@academic#1\endcsname}
@@ -52,6 +55,7 @@
 \ExecuteOptionsX{blindreview=false}                         % 默认不开启盲评模式
 \ExecuteOptionsX{adobe=false}                               % 默认不用 Adobe 字体
 \ExecuteOptionsX{winfonts=false}                            % 默认不开启强制选项
+\ExecuteOptionsX{localfonts=false}                          % 默认不使用本地字体目录
 \ExecuteOptionsX{fontset=auto}                              % 默认自动检测字体
 \ExecuteOptionsX{colorcover=false}                          % 默认不启用彩色封面封底
 \ProcessOptionsX \relax                                     %
@@ -194,6 +198,16 @@
     \renewcommand\defaultEngFont{TeX Gyre Termes}%
     \renewcommand\codeFont{Menlo}%
 }
+\newcommand{\npu@set@local@fonts}{%
+    \typeout{[nwputhesis] Using local fonts from fonts/ directory.}%
+    \renewcommand\defaultSog{SimSun}%
+    \renewcommand\defaultHei{SimHei}%
+    \renewcommand\defaultKai{KaiTi}%
+    \renewcommand\defaultFag{FangSong}%
+    \renewcommand\defaultEngFont{Times New Roman}%
+    \renewcommand\codeFont{Consolas}%
+    \@npu@font@localtrue
+}
 \newcommand{\npu@fallback@fonts}{%
     \iflinux
         % Linux: 检测 Noto 字体，没有则 fallback 到 fandol
@@ -212,7 +226,9 @@
         }%
     \fi
 }
-\if@npu@font@fandol                                          % 强制使用 Fandol 字体选项
+\if@npu@font@local                                          % 使用本地 fonts 目录字体
+    \npu@set@local@fonts
+\else\if@npu@font@fandol                                          % 强制使用 Fandol 字体选项
     \npu@set@fandol@fonts
 \else\if@npu@font@winfonts\relax                             % 强制使用 Win 字体选项
     \else
@@ -253,7 +269,7 @@
                 }%
             \fi
         \fi
-    \fi\fi
+    \fi\fi\fi
 \RequirePackage[SlantFont, BoldFont, CJKchecksingle]{xeCJK} % 设置中文字体
 \defaultfontfeatures{Mapping=tex-text}                      % 启用 TeX Ligatures
 % 根据 Fandol 字体标记决定加载方式
@@ -320,6 +336,20 @@
         ItalicFont     = texgyretermes-italic.otf,
         BoldItalicFont = texgyretermes-bolditalic.otf,
     ]
+\else\if@npu@font@local
+    % 从本地 fonts 目录加载字体
+    \setCJKmainfont[Path=fonts/, ItalicFont=simkai.ttf, AutoFakeBold]{simsun.ttc}
+    \setCJKsansfont[Path=fonts/, ItalicFont=simkai.ttf, AutoFakeBold]{simhei.ttf}
+    \setCJKmonofont[Path=fonts/, AutoFakeBold]{simhei.ttf}
+    \setCJKfamilyfont{song}[Path=fonts/, AutoFakeBold]{simsun.ttc}
+    \setCJKfamilyfont{hei}[Path=fonts/, AutoFakeBold]{simhei.ttf}
+    \setCJKfamilyfont{kai}[Path=fonts/]{simkai.ttf}
+    \setCJKfamilyfont{fang}[Path=fonts/]{simfang.ttf}
+    \setCJKfamilyfont{eng}[Path=fonts/, BoldFont=timesbd.ttf, ItalicFont=timesi.ttf, BoldItalicFont=timesbi.ttf]{times.ttf}
+    \newcommand{\fEng}{\CJKfamily{eng}}
+    \setsansfont[Path=fonts/, BoldFont=timesbd.ttf, ItalicFont=timesi.ttf, BoldItalicFont=timesbi.ttf]{times.ttf}
+    \setmonofont[Path=fonts/, BoldFont=consolab.ttf, ItalicFont=consolai.ttf, BoldItalicFont=consolaz.ttf]{consola.ttf}
+    \setmainfont[Path=fonts/, BoldFont=timesbd.ttf, ItalicFont=timesi.ttf, BoldItalicFont=timesbi.ttf]{times.ttf}
 \else
     \setCJKmainfont[ItalicFont=\defaultKai, AutoFakeBold]{\defaultSog}
     \setCJKsansfont[ItalicFont=\defaultKai, AutoFakeBold]{\defaultSog}
@@ -333,7 +363,7 @@
     \setsansfont{\defaultEngSansFont}                           %
     \setmonofont{\codeFont}                                     %
     \setmainfont{\defaultEngFont}                               %
-\fi
+\fi\fi
 \newcommand{\fSong}{\CJKfamily{song}}                       % 宋体: fSong
 \newcommand{\fHei}{\CJKfamily{hei}}                         % 黑体: fHei
 \newcommand{\fKai}{\CJKfamily{kai}}                         % 楷体: fKai
