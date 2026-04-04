@@ -18,7 +18,7 @@ checkconfigs = {
   "build",
   "testfiles/config-title-page",
   "testfiles/config-toc",
-  "testfiles/config-bibtex",
+  "testfiles/config-biber",
 }
 
 -- 排除标题页测试（它们在子目录中单独运行）
@@ -26,7 +26,7 @@ excludetests = {"01-*", "04-*", "07-*"}
 
 typesetexe = "xelatex"
 unpackexe = "xetex"
-bibtexexe = "bibtex"
+bibtexexe = "biber"
 
 checkopts = "-file-line-error -halt-on-error -interaction=nonstopmode"
 typesetopts = "-shell-escape -file-line-error -halt-on-error -interaction=nonstopmode"

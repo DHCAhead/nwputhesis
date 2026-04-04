@@ -499,9 +499,12 @@
     \fi                                                     %
 \fi                                                         %
 %%-----------------------------------------------------------------------------%
-\RequirePackage[numbers, sort&compress]{natbib}             % 参考文献
-\let\oldcite\cite                                           % 参考文献
-\renewcommand{\cite}[1]{\textsuperscript{\oldcite{#1}}}     % 上标引用形式
+\RequirePackage[
+    backend=biber,
+    style=gb7714-2025,
+    sorting=none
+]{biblatex}                                                 % 参考文献
+\RenewDocumentCommand{\cite}{m}{\supercite{#1}}            % 上标引用形式
 %%-----------------------------------------------------------------------------% 
 \RequirePackage{enumerate}                                  % 编号列表
 \RequirePackage{enumitem}                                   % 列表格式控制
@@ -1224,35 +1227,53 @@
     \addcontentsline{toc}{chapter}{\listtablename}          %
     \old@log \cleardoublepage                               %
 }                                                           %
-\renewcommand\NAT@bibsetnum[1]{%
-    \setlength{\leftmargin}{0pt}%
-    \setlength{\labelwidth}{0pt}%
-    \setlength{\labelsep}{0pt}%
-    \setlength{\itemindent}{0pt}%
-    \setlength{\listparindent}{0pt}%
-    \setlength{\itemsep}{\bibsep}\setlength{\parsep}{\z@}%
-    \hangindent=-\bibhang\hangafter=1%
-}
-\renewcommand\bibnumfmt[1]{\hspace*{\bibhang}[#1]\hspace*{0.5em}}
+\DeclareFieldFormat{labelnumberwidth}{[#1]} %
 %%=============================================================================%
 %%=============================================================================%
 %% 参考文献及附录处理
 %%-----------------------------------------------------------------------------%
-\let\old@bibliography\bibliography                          % 保护原有附录环境
-\renewcommand{\bibliography}[1]{                            %
-    \IfFileExists{\jobname.bbl}{                             %
-        \bibliographystyle{nputhesis-noslash}               %
-        \phantomsection\addcontentsline{toc}{chapter}{参考文献} %
-        \graduatebodyfont                                   %
-        \setlength{\bibsep}{0.5ex}                          %
-        \setlength{\bibhang}{2em}                           %
-        \old@bibliography{#1} \cleardoublepage              %
-    }{%
-        \if@filesw                                           %
-            \immediate\write\@auxout{\string\bibstyle{nputhesis-noslash}}%
-            \immediate\write\@auxout{\string\bibdata{#1}}%
-        \fi                                                  %
-    }                                                        %
+\setlength{\biblabelsep}{0pt}                              %
+\newlength{\nwpu@bibfirstlineindent}                       %
+\AtBeginDocument{\settowidth{\nwpu@bibfirstlineindent}{汉汉}} %
+\newlength{\nwpu@biblabelwidth}                            %
+\newlength{\nwpu@bibfirstlinereserve}                      %
+\setlength{\nwpu@bibfirstlinereserve}{1.5em}               %
+\ExplSyntaxOn
+\tl_new:N \l__nwpu_patent_number_tl
+\cs_new_protected:Npn \nwpu_patent_number_allowbreaks:n #1
+  {
+    \tl_set:Nn \l__nwpu_patent_number_tl {#1}
+    \regex_replace_all:nnN {([A-Za-z])([0-9])} {\1\c{allowbreak}\2} \l__nwpu_patent_number_tl
+    \regex_replace_all:nnN {([0-9])([A-Za-z])} {\1\c{allowbreak}\2} \l__nwpu_patent_number_tl
+    \tl_use:N \l__nwpu_patent_number_tl
+  }
+\cs_new_protected:Npn \nwpuPatentNumberAllowBreaks #1
+  {
+    \nwpu_patent_number_allowbreaks:n {#1}
+  }
+\ExplSyntaxOff
+\DeclareFieldFormat[patent]{number}{\nwpuPatentNumberAllowBreaks{#1}}
+\newcommand{\nwpu@bibitemcmd}{%
+    \addvspace{\bibitemsep}%
+    \leavevmode\hspace*{\nwpu@bibfirstlineindent}\mkgbnumlabel{\printfield{labelnumber}}\hspace{0.3em}}
+\defbibenvironment{bibliography}
+    {\begingroup\setlength{\parindent}{0pt}\setlength{\emergencystretch}{2em}\sloppy}
+    {\endgroup}
+    {\nwpu@bibitemcmd}
+\AtBeginBibliography{                                        %
+    \graduatebodyfont                                       %
+    \setlength{\bibitemsep}{0.5ex}                          %
+    \setlength{\bibhang}{0pt}                               %
+}                                                           %
+\let\nwpu@oldprintbibliography\printbibliography            %
+\RenewDocumentCommand{\printbibliography}{O{}}{             %
+    \cleardoublepage                                        %
+    \nwpu@oldprintbibliography[                             %
+        heading=bibintoc,                                   %
+        title={参考文献},                                     %
+        #1                                                  %
+    ]                                                       %
+    \cleardoublepage                                        %
 }                                                           %
 %%-----------------------------------------------------------------------------%
 \patchcmd{\hyper@makecurrent}{%                             % 附录章节引用补丁
@@ -1285,6 +1306,9 @@
 \newcommand{\nwpu@setappendixtotal}[1]{%
     \setcounter{nwpu@thesisappendixtotal}{#1}%
 }
+\newcommand{\nwpuSetAppendixTotal}[1]{%
+    \nwpu@setappendixtotal{#1}%
+}
 \newcommand{\nwpu@chs@appendixname}[1]{附录 #1}             % 目录附录中文标题
 \newcommand{\nwpu@eng@appendixname}[1]{Appendix #1}         % 目录附录英文标题
 \newcommand{\nwpu@appendixname}[1]{%                        % 附录标题
@@ -1307,8 +1331,8 @@
     \fi
 }
 \AtEndDocument{%
-    \immediate\write\@auxout{%
-        \string\nwpu@setappendixtotal{\arabic{nwpu@thesisappendixcount}}%
+    \protected@write\@auxout{}{%
+        \string\nwpuSetAppendixTotal{\arabic{nwpu@thesisappendixcount}}%
     }%
 }
 \let\old@appendix\appendix                                  % 保护原有附录环境

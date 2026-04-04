@@ -2,10 +2,12 @@
 *.acn
 *.bbl
 *.blg
+*.bcf
 *.glo
 *.ist
 *.log
 *.out
+*.run.xml
 *.synctex.gz
 *.thm
 *.toc

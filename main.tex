@@ -19,6 +19,7 @@
 
 % 个人信息设置
 \ifbachelor{\input{data/ungraduate-info}}{\input{data/graduate-info}}
+\addbibresource{ref/reference.bib}
 
 \begin{document}
 
@@ -53,7 +54,7 @@
 \input{data/chapter6}
 
 % 参考文献
-\bibliography{ref/reference}
+\printbibliography
 
 % 附录（研究生在致谢之前）
 \ifgraduate{\input{data/appendix}}{}

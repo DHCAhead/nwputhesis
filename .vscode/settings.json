@@ -12,20 +12,20 @@
             ]
         },
         {
-            "name": "bibtex",
+            "name": "biber",
             "command": "texlua",
             "args": [
-                "./tools/run-bibtex-if-needed.lua",
+                "./tools/run-biber-if-needed.lua",
                 "%DOCFILE%"
             ]
         }
     ],
     "latex-workshop.latex.recipes": [
         {
-            "name": "xelatex + bibtex + xelatex x 2",
+            "name": "xelatex + biber + xelatex x 2",
             "tools": [
                 "xelatex",
-                "bibtex",
+                "biber",
                 "xelatex",
                 "xelatex"
             ]
@@ -37,5 +37,5 @@
             ]
         }
     ],
-    "latex-workshop.latex.recipe.default": "xelatex + bibtex + xelatex x 2"
+    "latex-workshop.latex.recipe.default": "xelatex + biber + xelatex x 2"
 }

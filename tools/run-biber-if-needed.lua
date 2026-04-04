@@ -48,18 +48,18 @@ end
 
 if not file_exists(aux) then
   remove_file(bbl)
-  print("Skip bibtex: no aux file.")
+  print("Skip biber: no aux file.")
   os.exit(0)
 end
 
 local aux_content = read_file(aux) or ""
-if not aux_content:find("\\citation{", 1, true) then
+if not aux_content:find("\\abx@aux@cite", 1, true) and not aux_content:find("\\citation{", 1, true) then
   remove_file(bbl)
-  print("Skip bibtex: no citations.")
+  print("Skip biber: no citations.")
   os.exit(0)
 end
 
-local command = "bibtex " .. shell_quote(jobname)
+local command = "biber " .. shell_quote(jobname)
 local ok, _, code = os.execute(command)
 if ok == true then
   os.exit(0)
