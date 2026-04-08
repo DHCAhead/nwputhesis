@@ -65,7 +65,7 @@ Completed box being shipped out [1]
 .....\special{color pop}
 ...\glue 3.1298
 ...\glue(\lineskip) 0.0
-...\vbox(700.50723+0.0)x455.24411, glue set 168.09433fil
+...\vbox(700.50723+0.0)x455.24411, glue set 168.09395fil
 ....\write-{}
 ....\special{color push gray 0}
 ....\special{pdf:majorversion 1}
@@ -152,7 +152,7 @@ Completed box being shipped out [1]
 .....\penalty 10000
 .....\glue(\parfillskip) 0.0
 .....\glue(\rightskip) 0.0 plus 1.0fil
-....\glue 5.0399
+....\glue 7.56004
 ....\glue 0.0
 ....\glue(\parskip) 0.0
 ....\glue(\parskip) 0.0
@@ -567,7 +567,7 @@ Completed box being shipped out [1]
 ....\glue 0.0
 ....\glue 7.56004
 ....\glue 0.0
-....\glue -20.16002
+....\glue -22.67978
 ....\glue 0.0
 ....\glue(\parskip) 0.0
 ....\glue(\parskip) 0.0

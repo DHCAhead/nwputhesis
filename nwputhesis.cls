@@ -1144,7 +1144,7 @@
     \fSong \sDefault \vspace{\baselineskip}                 %
     \fSong \sSihao \vspace{0.3\baselineskip}                %
     \fHei \sSihao {学位论文评阅人名单} \par                 %
-    \fSong \sSihao \vspace{0.2\baselineskip}                %
+    \fSong \sSihao \vspace{0.3\baselineskip}                %
     \let\oldarraystretch=\arraystretch                      %
     \renewcommand{\arraystretch}{2.10}                      %
     \setlength{\tabcolsep}{2pt}                             %
@@ -1158,7 +1158,7 @@
     \fSong \sDefault \vspace{\baselineskip}                 %
     \fSong \sSihao \vspace{0.3\baselineskip}                %
     \fHei \sSihao {答辩委员会名单} \par                     %
-    \fSong \sSihao \vspace{-0.8\baselineskip}                %
+    \fSong \sSihao \vspace{-0.9\baselineskip}                %
     \let\oldarraystretch=\arraystretch                      %
     \renewcommand{\arraystretch}{2.10}                      %
     \setlength{\tabcolsep}{2pt}                             %
