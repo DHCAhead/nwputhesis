@@ -1114,13 +1114,13 @@
 \newcommand{\makeCommitteePage}[1]{                         %
     \thispagestyle{empty}                                   % 清空页面格式
     \begin{titlepage}                                       %
-        \linespread{1.2} \fEng \sXiaosan \par               % 1.2 倍行距
+        \linespread{1.2} \sXiaosan \par                     % 1.2 倍行距
         \vspace{1\baselineskip}                             % 1 * 22pt * 1.2
         \begin{center}                                      %
             \fHei \sSanhao {学位论文评阅人和答辩委员会名单} \par
             #1\relax                                        %
         \end{center}                                        %
-    \end{titlepage} \fSong \normalsize \newpage             %
+    \end{titlepage} \normalsize \newpage             %
     \thispagestyle{empty} \cleardoublepage}                 %
 %%-----------------------------------------------------------------------------%
 \newcommand{\reviewers}[1]{                                 %
