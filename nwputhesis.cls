@@ -1264,6 +1264,7 @@
     \else                                                   % 硕博关键词格式
         \vspace{1\baselineskip} \par{\fHei 关键词：}         %
     \fi                                                     %
+    \ignorespaces
 }{}                                                         %
 %%-----------------------------------------------------------------------------%
 %% 英文摘要及关键词
@@ -1293,8 +1294,9 @@
     \if@npu@type@bcl                                        % 本科英文关键词格式
         \vspace{1\baselineskip} \par\noindent \textbf{KEY WORDS:}%
     \else                                                   % 硕博英文关键词格式
-        \vspace{1\baselineskip} \par\noindent \textbf{Key words:}%
+        \vspace{1\baselineskip} \par\noindent \textbf{Key words：}%
     \fi                                                     %
+    \ignorespaces
 }{}                                                         %
 %%=============================================================================%
 %%=============================================================================%
