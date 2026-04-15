@@ -742,7 +742,11 @@
         \renewcommand{\listtablename}{表目录}               %
     \fi
     \renewcommand{\appendixautorefname}{附录}               %
-    \def\equationautorefname#1#2\null{式#1(#2\null)}        %
+    \if@npu@type@bcl                                        %
+        \def\equationautorefname#1#2\null{式#1（#2\null）}  %
+    \else                                                   %
+        \def\equationautorefname#1#2\null{式#1(#2\null)}    %
+    \fi                                                     %
     \def\sectionautorefname#1#2\null{#2\null{ }节}          %
     \def\subsectionautorefname#1#2\null{#2\null{ }小节}     %
     \renewcommand{\theoremautorefname}{定理}                %
@@ -771,9 +775,12 @@
 \renewcommand{\thefigure}{\thechapter-\arabic{figure}}      % 图编号格式
 \renewcommand{\thesubfigure}{(\alph{subfigure})}            % 子图编号格式
 \renewcommand{\thetable}{\thechapter-\arabic{table}}        % 图编号格式
-\renewcommand{\thealgorithm}{\thechapter.\arabic{algorithm}}% 算法编号格式
+\renewcommand{\thealgorithm}{\thechapter-\arabic{algorithm}}% 算法编号格式
 \@addtoreset{algorithm}{chapter}                            % 按章节编号
 \renewcommand{\theequation}{\thechapter-\arabic{equation}}  % 公式编号格式
+\if@npu@type@bcl                                            % 本科公式编号样式
+    \def\tagform@#1{\maketag@@@{\fSong （#1）}}             %
+\fi                                                         %
 \renewcommand{\thetheorem}{\thechapter.\arabic{theorem}}    % 定理编号格式
 \renewcommand{\theaxiom}{\thechapter.\arabic{axiom}}        % 公理编号格式
 \renewcommand{\thecorollary}{\thechapter.\arabic{corollary}}% 推论编号格式
