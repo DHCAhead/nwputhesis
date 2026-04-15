@@ -1469,17 +1469,22 @@
         \nwpu@eng@appendixname{#1}%
     \fi
 }
-\newcommand{\nwpu@appendixtitle}[1]{%                       % 附录显示标题
-    \ifnum\value{nwpu@thesisappendixtotal}>1
-        \nwpu@appendixname{#1}%
+\newcommand{\nwpu@ifappendixletter}[2]{%                    % 附录是否显示字母
+    \if@npu@type@bcl
+        \ifnum\value{nwpu@thesisappendixtotal}>1
+            #1%
+        \else
+            #2%
+        \fi
     \else
-        \nwpu@page@app
+        #1%
     \fi
 }
+\newcommand{\nwpu@appendixtitle}[1]{%                       % 附录显示标题
+    \nwpu@ifappendixletter{\nwpu@appendixname{#1}}{\nwpu@page@app}%
+}
 \newcommand{\nwpu@appendixprefix}{%                        % 附录编号前缀
-    \ifnum\value{nwpu@thesisappendixtotal}>1
-        \Alph{chapter}%
-    \fi
+    \nwpu@ifappendixletter{\Alph{chapter}}{}%
 }
 \AtEndDocument{%
     \protected@write\@auxout{}{%
@@ -1492,35 +1497,27 @@
     \setcounter{chapter}{0}                                 % 重置章节编号
     \renewcommand{\thechapter}{\Alph{chapter}}              %
     \renewcommand{\thesection}{%
-        \ifnum\value{nwpu@thesisappendixtotal}>1
-            \nwpu@appendixprefix.\fi\arabic{section}}
+        \nwpu@ifappendixletter{\nwpu@appendixprefix.}{}\arabic{section}}
     \renewcommand{\theequation}{%
-        \ifnum\value{nwpu@thesisappendixtotal}>1
-            \nwpu@appendixprefix-\fi\arabic{equation}}
+        \nwpu@ifappendixletter{\nwpu@appendixprefix-}{}\arabic{equation}}
     \renewcommand{\thetable}{%
-        \ifnum\value{nwpu@thesisappendixtotal}>1
-            \nwpu@appendixprefix-\fi\arabic{table}}         %
+        \nwpu@ifappendixletter{\nwpu@appendixprefix-}{}\arabic{table}}%
     \renewcommand{\thefigure}{%
-        \ifnum\value{nwpu@thesisappendixtotal}>1
-            \nwpu@appendixprefix-\fi\arabic{figure}}
+        \nwpu@ifappendixletter{\nwpu@appendixprefix-}{}\arabic{figure}}
+    \renewcommand{\thealgorithm}{%
+        \nwpu@ifappendixletter{\nwpu@appendixprefix-}{}\arabic{algorithm}}
     \renewcommand{\thetheorem}{%
-        \ifnum\value{nwpu@thesisappendixtotal}>1
-            \nwpu@appendixprefix.\fi\arabic{theorem}}
+        \nwpu@ifappendixletter{\nwpu@appendixprefix.}{}\arabic{theorem}}
     \renewcommand{\theaxiom}{%
-        \ifnum\value{nwpu@thesisappendixtotal}>1
-            \nwpu@appendixprefix.\fi\arabic{axiom}}         %
+        \nwpu@ifappendixletter{\nwpu@appendixprefix.}{}\arabic{axiom}}%
     \renewcommand{\thecorollary}{%
-        \ifnum\value{nwpu@thesisappendixtotal}>1
-            \nwpu@appendixprefix.\fi\arabic{corollary}}
+        \nwpu@ifappendixletter{\nwpu@appendixprefix.}{}\arabic{corollary}}
     \renewcommand{\thelemma}{%
-        \ifnum\value{nwpu@thesisappendixtotal}>1
-            \nwpu@appendixprefix.\fi\arabic{lemma}}         %
+        \nwpu@ifappendixletter{\nwpu@appendixprefix.}{}\arabic{lemma}}%
     \renewcommand{\thedefinition}{%
-        \ifnum\value{nwpu@thesisappendixtotal}>1
-            \nwpu@appendixprefix.\fi\arabic{definition}}
+        \nwpu@ifappendixletter{\nwpu@appendixprefix.}{}\arabic{definition}}
     \renewcommand{\theexample}{%
-        \ifnum\value{nwpu@thesisappendixtotal}>1
-            \nwpu@appendixprefix.\fi\arabic{example}}
+        \nwpu@ifappendixletter{\nwpu@appendixprefix.}{}\arabic{example}}
 }                                                           %
 %%=============================================================================%
 %%=============================================================================%
