@@ -1486,6 +1486,34 @@
 \newcommand{\nwpu@appendixprefix}{%                        % 附录编号前缀
     \nwpu@ifappendixletter{\Alph{chapter}}{}%
 }
+\newcommand{\nwpu@appendixequationprefix}{%                % 附录公式编号前缀
+    \if@npu@type@bcl
+        附%
+    \else
+        \nwpu@ifappendixletter{\nwpu@appendixprefix-}{}%
+    \fi
+}
+\newcommand{\nwpu@appendixtableprefix}{%                   % 附录表编号前缀
+    \if@npu@type@bcl
+        附表%
+    \else
+        \nwpu@ifappendixletter{\nwpu@appendixprefix-}{}%
+    \fi
+}
+\newcommand{\nwpu@appendixfigureprefix}{%                  % 附录图编号前缀
+    \if@npu@type@bcl
+        附图%
+    \else
+        \nwpu@ifappendixletter{\nwpu@appendixprefix-}{}%
+    \fi
+}
+\newcommand{\nwpu@appendixalgorithmprefix}{%               % 附录算法编号前缀
+    \if@npu@type@bcl
+        附算法%
+    \else
+        \nwpu@ifappendixletter{\nwpu@appendixprefix-}{}%
+    \fi
+}
 \AtEndDocument{%
     \protected@write\@auxout{}{%
         \string\nwpuSetAppendixTotal{\arabic{nwpu@thesisappendixcount}}%
@@ -1499,13 +1527,13 @@
     \renewcommand{\thesection}{%
         \nwpu@ifappendixletter{\nwpu@appendixprefix.}{}\arabic{section}}
     \renewcommand{\theequation}{%
-        \nwpu@ifappendixletter{\nwpu@appendixprefix-}{}\arabic{equation}}
+        \nwpu@appendixequationprefix\arabic{equation}}
     \renewcommand{\thetable}{%
-        \nwpu@ifappendixletter{\nwpu@appendixprefix-}{}\arabic{table}}%
+        \nwpu@appendixtableprefix\arabic{table}}%
     \renewcommand{\thefigure}{%
-        \nwpu@ifappendixletter{\nwpu@appendixprefix-}{}\arabic{figure}}
+        \nwpu@appendixfigureprefix\arabic{figure}}
     \renewcommand{\thealgorithm}{%
-        \nwpu@ifappendixletter{\nwpu@appendixprefix-}{}\arabic{algorithm}}
+        \nwpu@appendixalgorithmprefix\arabic{algorithm}}
     \renewcommand{\thetheorem}{%
         \nwpu@ifappendixletter{\nwpu@appendixprefix.}{}\arabic{theorem}}
     \renewcommand{\theaxiom}{%
