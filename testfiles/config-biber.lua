@@ -11,8 +11,7 @@ bibtexopts = ""
 
 function runtest_tasks(name, run)
   if (name == "07-bibliography-bachelor"
-      or name == "07-bibliography-graduate"
-      or name == "07-bibliography-graduate-2025") and run == 1 then
+      or name == "07-bibliography-graduate") and run == 1 then
     return bibtexexe .. " " .. name
   end
   return ""
