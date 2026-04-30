@@ -248,8 +248,8 @@
     \begin{titlepage}                                       %
         % 彩色封面背景图
         \nwpu_if_colorcover:TF {
-            \begin{tikzpicture}[remember picture,overlay]
-                \node[at=(current page.center),inner sep=\nwpuCoverBackgroundInnerSep] {
+            \begin{tikzpicture}[remember~picture,overlay]
+                \node[at=(current~page.center),inner~sep=\nwpuCoverBackgroundInnerSep] {
                     \nwpu_if_phd:TF {
                         \includegraphics[width=\paperwidth,height=\paperheight]{cover-phd.jpg}
                     } {
@@ -440,8 +440,8 @@
     \nwpu_if_colorcover:TF {
         \clearpage
         \thispagestyle{empty}
-        \begin{tikzpicture}[remember picture,overlay]
-            \node[at=(current page.center),inner sep=\nwpuCoverBackgroundInnerSep] {
+        \begin{tikzpicture}[remember~picture,overlay]
+            \node[at=(current~page.center),inner~sep=\nwpuCoverBackgroundInnerSep] {
                 \nwpu_if_phd:TF {
                     \includegraphics[width=\paperwidth,height=\paperheight]{backcover-phd.jpg}
                 } {

@@ -127,11 +127,11 @@
       {
         \setCJKmainfont[AutoFakeBold]{\defaultSog}
         \setCJKsansfont[AutoFakeBold]{\defaultHei}
-        \setCJKfamilyfont{song}{\defaultSog}
-        \setCJKfamilyfont{hei}{\defaultHei}
+        \setCJKfamilyfont{song}[AutoFakeBold]{\defaultSog}
+        \setCJKfamilyfont{hei}[AutoFakeBold]{\defaultHei}
         \setCJKfamilyfont{eng}{\defaultEngFont}
         \cs_new_protected:Npn \fEng {\CJKfamily{eng}}
-        \setsansfont{\defaultEngSansFont}
+        \setsansfont[AutoFakeBold]{\defaultEngSansFont}
         \setmainfont{\defaultEngFont}
       }
   }

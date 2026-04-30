@@ -1,6 +1,6 @@
 \NeedsTeXFormat{LaTeX2e}[2022/06/01]
 \ProvidesClass{nwputhesis}
-[2026/03/25 v2.2.0 nwputhesis]
+[2026/03/25 v2.3.0 nwputhesis]
 \input{nwputhesis/nwputhesis-options.def}
 \RequirePackage{fix-cm}                                    % 允许 CM 数学字体连续缩放
 \LoadClass[a4paper]{book}                                   % openright 默认：硕博双面从奇数页起排
