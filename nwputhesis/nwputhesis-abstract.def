@@ -150,5 +150,7 @@
     \nwpu@old@lot \cleardoublepage                               %
   }
 
-\DeclareFieldFormat{labelnumberwidth}{[#1]}
+\str_if_eq:VnF \l__nwpu_bibindent_tl { hanging } {
+    \DeclareFieldFormat{labelnumberwidth}{[#1]}
+}
 \ExplSyntaxOff

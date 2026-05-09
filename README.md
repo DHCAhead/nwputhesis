@@ -56,6 +56,7 @@
     academic = false,
     blindreview = false,
     colorcover = false,
+    bibindent = auto,
 ]{nwputhesis}
 ```
 
@@ -64,6 +65,7 @@
 - `degree`：论文类型，可选 `bachelor`、`master`、`phd`。
 - `fontset`：字体方案，可选 `windows`、`local`。非 Windows 系统建议下载本仓库中的字体后使用 `local` 选项。
 - `blindreview`：是否生成盲评版本，`true` 会隐藏作者、导师和学号等信息。
+- `bibindent`：参考文献编号缩进模式，可选 `auto`（本科不缩进，研究生首行缩进）、`firstline`（首行缩进）、`none`（不缩进）、`hanging`（悬挂缩进，编号右对齐）。
 
 研究生特有选项：
 

@@ -4,7 +4,10 @@
 %% 参考文献处理
 %%-----------------------------------------------------------------------------%
 \ExplSyntaxOn
-\dim_set:Nn \biblabelsep { \nwpuBibLabelSep }                %
+\renewcommand*{\bibfont}{\nwpuBodyFont}
+\str_if_eq:VnF \l__nwpu_bibindent_tl { hanging } {
+    \dim_set:Nn \biblabelsep { \nwpuBibLabelSep }
+}
 \dim_new:N \l__nwpu_bib_firstline_indent_dim
 \dim_set:Nn \l__nwpu_bib_firstline_indent_dim { 24pt }
 \dim_new:N \l__nwpu_bib_label_dim
@@ -265,19 +268,30 @@
 \ExplSyntaxOn
 \cs_new_protected:Npn \nwpu@bibitemcmd {%
     \addvspace{\bibitemsep}%
-    \leavevmode%
-    \nwpu_if_bachelor:TF
-        { \hspace*{0pt} }
-        { \hspace*{\l__nwpu_bib_firstline_indent_dim} }
+    \leavevmode
+    \str_case:Vn \l__nwpu_bibindent_tl
+      {
+        { auto } {
+          \nwpu_if_bachelor:TF
+            { \hspace*{0pt} }
+            { \hspace*{\l__nwpu_bib_firstline_indent_dim} }
+        }
+        { firstline } { \hspace*{\l__nwpu_bib_firstline_indent_dim} }
+        { none }      { \hspace*{0pt} }
+      }
     \mkgbnumlabel{\printfield{labelnumber}}\hspace{\nwpuBibLabelNumberGap}}
-\defbibenvironment{bibliography}
-    {\begingroup\setlength{\parindent}{\nwpuBibParIndent}\setlength{\emergencystretch}{\nwpuBibEmergencyStretch}\sloppy}
-    {\endgroup}
-    {\nwpu@bibitemcmd}
+% hanging 模式不覆盖环境，使用 gb7714-2015 默认的 list 环境
+\str_if_eq:VnF \l__nwpu_bibindent_tl { hanging } {
+    \defbibenvironment{bibliography}
+        {\begingroup\setlength{\parindent}{\nwpuBibParIndent}\setlength{\emergencystretch}{\nwpuBibEmergencyStretch}\sloppy}
+        {\endgroup}
+        {\nwpu@bibitemcmd}
+}
 \AtBeginBibliography{                                        %
     \nwpuBodyFont                                           %
-    \setlength{\bibitemsep}{\nwpuBibItemSep}                %
-    \setlength{\bibhang}{\nwpuBibHang}                      %
+    \str_if_eq:VnF \l__nwpu_bibindent_tl { hanging } {
+        \setlength{\bibitemsep}{\nwpuBibItemSep}                %
+    }
 }                                                           %
 \cs_set_eq:NN \nwpu@oldprintbibliography \printbibliography            %
 \RenewDocumentCommand{\printbibliography}{O{}}{             %

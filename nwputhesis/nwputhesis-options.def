@@ -18,6 +18,8 @@
 \bool_new:N \l__nwpu_class_loaded_bool                       % 类文件已完成加载
 \tl_new:N \l__nwpu_bibstyle_tl
 \tl_set:Nn \l__nwpu_bibstyle_tl { gb7714-2015 }               % 默认参考文献标准
+\tl_new:N \l__nwpu_bibindent_tl
+\tl_set:Nn \l__nwpu_bibindent_tl { auto }                     % 默认参考文献缩进模式
 \bool_set_true:N \l__nwpu_lang_chs_bool
 \bool_set_true:N \l__nwpu_type_phd_bool
 \bool_set_true:N \l__nwpu_academic_bool
@@ -107,6 +109,20 @@
           }
       }
   }
+\cs_new_protected:Npn \nwpu_bibindent_set:n #1
+  {
+    \str_case:nnF {#1}
+      {
+        { auto }      { \tl_set:Nn \l__nwpu_bibindent_tl { auto } }
+        { firstline } { \tl_set:Nn \l__nwpu_bibindent_tl { firstline } }
+        { none }      { \tl_set:Nn \l__nwpu_bibindent_tl { none } }
+        { hanging }   { \tl_set:Nn \l__nwpu_bibindent_tl { hanging } }
+      }
+      {
+        \ClassError { nwputhesis } { Unsupported~bibindent~`#1' }
+          { Supported~bibindent~values~are~auto,~firstline,~none~and~hanging. }
+      }
+  }
 \cs_new_protected:Npn \nwpu_fontset_set:n #1
   {
     \nwpu_load_time_key_allowed:nT { fontset }
@@ -158,6 +174,8 @@
     degree      .code:n    = { \nwpu_degree_set:n {#1} },
     bibstyle    .code:n    = { \nwpu_bibstyle_set:n {#1} },
     bib-style   .code:n    = { \nwpu_bibstyle_set:n {#1} },
+    bibindent   .code:n    = { \nwpu_bibindent_set:n {#1} },
+    bib-indent  .code:n    = { \nwpu_bibindent_set:n {#1} },
     blindreview .code:n    = { \__nwpu_set_bool:Nn \l__nwpu_blindreview_bool {#1} },
     blindreview .default:n = true,
     blind-review .code:n   = { \__nwpu_set_bool:Nn \l__nwpu_blindreview_bool {#1} },

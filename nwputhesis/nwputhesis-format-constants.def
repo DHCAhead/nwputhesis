@@ -332,7 +332,7 @@
 \cs_new:Npn \nwpuBibParIndent { 0pt }                       % 参考文献段落缩进
 \cs_new:Npn \nwpuBibEmergencyStretch { 2em }                % 参考文献断行弹性宽度
 \cs_new:Npn \nwpuBibItemSep { 0.5ex }                       % 参考文献条目间距
-\cs_new:Npn \nwpuBibHang { 0pt }                            % 参考文献悬挂缩进
+\cs_new:Npn \nwpuBibHang { 0pt }                            % 参考文献悬挂缩进（已由 bibindent 选项控制）
 
 %%=== 算法格式 ===========================================================
 \nwpu_if_bachelor:TF
