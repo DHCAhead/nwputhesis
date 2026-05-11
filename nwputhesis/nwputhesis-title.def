@@ -28,6 +28,8 @@
 \tl_new:N \l__nwpu_cover_title_line_b_tl
 \tl_new:N \l__nwpu_chs_inner_title_line_a_tl
 \tl_new:N \l__nwpu_chs_inner_title_line_b_tl
+\tl_new:N \l__nwpu_bachelor_title_line_a_tl
+\tl_new:N \l__nwpu_bachelor_title_line_b_tl
 %%-----------------------------------------------------------------------------%
 %% 单元格排版辅助
 %%-----------------------------------------------------------------------------%
@@ -214,6 +216,43 @@
         { \tl_use:N \l__nwpu_chs_inner_title_line_b_tl }
     \end{tabular}
   }
+%%-----------------------------------------------------------------------------%
+%% 本科封面题目自动换行
+%%-----------------------------------------------------------------------------
+\cs_new_protected:Npn \__nwpu_prepare_bachelor_title:
+  {
+    \nwpuBachelorTitleFont
+    \exp_args:No \tl_if_empty:nTF { \nwpu@chs@title@lineA }
+      {
+        \__nwpu_title_split:NnNN \nwpu@chs@title
+          { \nwpuBachelorTitleUnderlineWidth }
+          \l__nwpu_bachelor_title_line_a_tl
+          \l__nwpu_bachelor_title_line_b_tl
+      }
+      {
+        \tl_set:No \l__nwpu_bachelor_title_line_a_tl { \nwpu@chs@title@lineA }
+        \tl_set:No \l__nwpu_bachelor_title_line_b_tl { \nwpu@chs@title@lineB }
+      }
+    \normalfont
+  }
+\cs_new_protected:Npn \__nwpu_bachelor_title:
+  {
+    {
+      \renewcommand{\arraystretch}{1}
+      \setlength{\extrarowheight}{10pt}
+      \begin{tabular}[b]{@{}c@{}>{\centering\arraybackslash}p{12cm}@{}}
+        \makebox[\nwpuBachelorTitleLabelWidth][c]{题\ 目}
+        & \mdseries \tl_use:N \l__nwpu_bachelor_title_line_a_tl
+        \tabularnewline \cline{2-2}
+        &
+        \tl_if_empty:NF \l__nwpu_bachelor_title_line_b_tl
+          {
+            \mdseries \tl_use:N \l__nwpu_bachelor_title_line_b_tl
+            \tabularnewline \cline{2-2}
+          }
+      \end{tabular}
+    }
+  }
 \cs_new_protected:Npn \__nwpu_chs_inner_info_row:nn #1#2
   {
     \__nwpu_cover_visual_bottom_cell:nnn
@@ -391,6 +430,7 @@
 %%-----------------------------------------------------------------------------%
 \cs_new_protected:Npn \make@nwpu@bachelor@cover {                       % 设置本科封面
     \thispagestyle{empty}                                   % 清空页面格式
+    \__nwpu_prepare_bachelor_title:
     \begin{titlepage}                                       %
         \begin{center}                                      %
             \vspace*{\nwpuBachelorTopSkip}                   %
@@ -399,7 +439,7 @@
             \nwpuBachelorDocTitleFont {\bfseries 本科毕业设计（论文）}%
             \vskip \nwpuBachelorAfterDocTitleSkip            %
                 {                                               %
-                    \nwpuBachelorTitleFont 题\ 目 \hspace{\nwpuBachelorTitleGap}\coverunderline[\nwpuBachelorTitleUnderlineWidth]{\nwpu@chs@title} %
+                    \nwpuBachelorTitleFont \__nwpu_bachelor_title: %
                 }                                               %
             \vskip \nwpuBachelorAfterTitleSkip               %
                 {                                               %

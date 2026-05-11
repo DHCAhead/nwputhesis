@@ -8,6 +8,8 @@
 \cs_new:Npn \chs@space { \char"3000 }                         % 全角空格
 %%-----------------------------------------------------------------------------%
 \cs_new:Npn \nwpu@chs@title { \chs@space }                    % 标题（中文）
+\cs_new:Npn \nwpu@chs@title@lineA {}                         % 本科题目第一行（手动）
+\cs_new:Npn \nwpu@chs@title@lineB {}                         % 本科题目第二行（手动）
 \cs_new:Npn \nwpu@chs@author { \chs@space }                   % 作者（中文）
 \cs_new:Npn \nwpu@chs@school { \chs@space }                   % 学院（中文）
 \cs_new:Npn \nwpu@chs@major { \chs@space }                    % 专业（中文）
@@ -53,6 +55,10 @@
 %%-----------------------------------------------------------------------------%
 \cs_new_protected:Npn \nwpu@set@chs@title #1
   { \cs_gset:Npn \nwpu@chs@title {#1} }
+\cs_new_protected:Npn \nwpu@set@chs@title@lineA #1
+  { \cs_gset:Npn \nwpu@chs@title@lineA {#1} }
+\cs_new_protected:Npn \nwpu@set@chs@title@lineB #1
+  { \cs_gset:Npn \nwpu@chs@title@lineB {#1} }
 \cs_new_protected:Npn \nwpu@set@eng@title #1
   { \cs_gset:Npn \nwpu@eng@title {#1} }
 \cs_new_protected:Npn \nwpu@set@chs@author #1
@@ -120,6 +126,8 @@
 \DeclareKeys [ nwputhesis ]
   {
     title                 .code:n = \nwpu@set@chs@title {#1},
+    title-line-a          .code:n = \nwpu@set@chs@title@lineA {#1},
+    title-line-b          .code:n = \nwpu@set@chs@title@lineB {#1},
     title*                .code:n = \nwpu@set@eng@title {#1},
     title-en              .code:n = \nwpu@set@eng@title {#1},
     author                .code:n = \nwpu@set@chs@author {#1},
