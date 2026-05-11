@@ -32,7 +32,7 @@ env:
   REQUIRED_PKGS: >-
     algorithmicx algorithms appendix bookmark booktabs caption catchfile
     enumitem etoolbox fancyhdr float geometry ifplatform koma-script
-    listings makecell multirow ntheorem pdfpages pgf
+    listings makecell multirow ntheorem pdfpages pdflscape pgf
     silence titlesec wrapfig xcolor xkeyval xstring
   FONT_PKGS: fandol tex-gyre dejavu
 
@@ -41,6 +41,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     if: ${{ !contains(github.event.head_commit.message, 'ci skip') }}
+    strategy:
+      fail-fast: false
+      matrix:
+        texlive_version: [2025, 2026]
     steps:
       - uses: actions/checkout@v6
         with:
@@ -53,19 +57,23 @@ jobs:
             ${{ env.CORE_PKGS }} ${{ env.XECJK_PKGS }} ${{ env.BIB_PKGS }}
             ${{ env.REQUIRED_PKGS }} ${{ env.FONT_PKGS }}
             ${{ env.BIN_PKGS }}
-          texlive_version: 2026
-          cache_version: ${{ env.TEXLIVE_CACHE_VERSION }}
+          texlive_version: ${{ matrix.texlive_version }}
+          cache_version: tl${{ matrix.texlive_version }}-2026-04-08-v1
 
       - name: Build document
         run: |
           sed -i.bak 's/fontset = windows/fontset = fandol/' master.tex
+          sed -i.bak 's/fontset = windows/fontset = fandol/' bachelor.tex
           make
+          latexmk -xelatex bachelor
 
       - name: Upload PDF artifact
         uses: actions/upload-artifact@v6
         with:
-          name: nwputhesis-pdf
-          path: master.pdf
+          name: nwputhesis-pdf-tl${{ matrix.texlive_version }}
+          path: |
+            master.pdf
+            bachelor.pdf
           retention-days: 30
 
   test-ubuntu:
@@ -102,6 +110,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, windows-latest]
+        texlive_version: [2025, 2026]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v6
@@ -113,10 +122,12 @@ jobs:
             ${{ env.CORE_PKGS }} ${{ env.XECJK_PKGS }} ${{ env.BIB_PKGS }}
             ${{ env.REQUIRED_PKGS }} ${{ env.FONT_PKGS }}
             ${{ env.BIN_PKGS }}
-          texlive_version: 2026
-          cache_version: ${{ env.TEXLIVE_CACHE_VERSION }}
+          texlive_version: ${{ matrix.texlive_version }}
+          cache_version: tl${{ matrix.texlive_version }}-2026-04-08-v1
 
       - name: Build document
         run: |
           sed -i.bak 's/fontset = windows/fontset = fandol/' master.tex
+          sed -i.bak 's/fontset = windows/fontset = fandol/' bachelor.tex
           make
+          latexmk -xelatex bachelor
