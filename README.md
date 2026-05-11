@@ -15,6 +15,8 @@
 
 本模板支持本硕博，已成功通过学校的论文最终版提交（26届硕士）。
 
+本模板在 TeX Live 2025 和 2026 下均通过 CI 构建测试，可从 [Actions 构建产物](https://github.com/1195343015/nwputhesis/actions/workflows/test.yml) 下载编译好的 PDF。
+
 本模板硕博格式符合 2025 年西北工业大学研究生院编写的 [西北工业大学研究生学位论文写作指南](https://gs.nwpu.edu.cn/info/2283/30467.htm) ，修复了先前 [Yet-Another-LaTeX-Template-for-NPU-Thesis](https://github.com/NWPUMetaphysicsOffice/Yet-Another-LaTeX-Template-for-NPU-Thesis) 中的多处格式问题。
 
 本科论文格式符合 26 届最新要求，参考 [西北工业大学本科毕业设计（论文）撰写规范](https://jiaowu.nwpu.edu.cn/info/1160/24598.htm)。
