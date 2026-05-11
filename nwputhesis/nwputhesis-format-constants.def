@@ -79,7 +79,7 @@
   { \cs_new_protected:Npn \nwpuCaptionSize { \fontsize{\nwpuFontPointWuhao}{\nwpuGraduateLineHeight}\selectfont } } % 研究生图表标题字号
 \nwpu_if_bachelor:TF
   {
-    \cs_new_protected:Npn \nwpuTableCaptionFont { \nwpuCaptionSize\bfseries }
+    \cs_new_protected:Npn \nwpuTableCaptionFont { \nwpuCaptionSize\sffamily\fHei }
     \cs_new_protected:Npn \nwpuFigureCaptionFont { \nwpuCaptionSize\fSong }
   }
   {

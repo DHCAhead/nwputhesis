@@ -193,16 +193,25 @@
     \setlength{\textfloatsep}{\nwpuTextFloatSep}              %
     \setlength{\floatsep}{\nwpuFloatSep}                      %
     \setlength{\intextsep}{\nwpuInTextSep}                    %
+    \DeclareCaptionLabelFormat{nwpubcllabel}{#1\kern0.1em#2}
+    \DeclareCaptionLabelSeparator{nwpubclsep}{\hspace{0.5em}}
+    \DeclareCaptionLabelSeparator{nwpubclfigsep}{\hspace{1em}}
     \captionsetup[table]{%
         font=nwpuTableCaption,
+        labelformat=nwpubcllabel,
+        labelsep=nwpubclsep,
         aboveskip=\nwpuBachelorCaptionAboveSkip,
         belowskip=\nwpuBachelorCaptionBelowSkip}
     \captionsetup[figure]{%
         font=nwpuFigureCaption,
+        labelformat=nwpubcllabel,
+        labelsep=nwpubclfigsep,
         aboveskip=\nwpuBachelorCaptionAboveSkip,
         belowskip=\nwpuBachelorCaptionBelowSkip}
     \captionsetup[algorithm]{%
         font=nwpuTableCaption,
+        labelformat=nwpubcllabel,
+        labelsep=nwpubclsep,
         aboveskip=\nwpuBachelorCaptionAboveSkip,
         belowskip=\nwpuBachelorCaptionBelowSkip}
     \captionsetup[subfigure]{labelformat=simple, font=nwpuSubcaption, aboveskip=\nwpuBachelorSubcaptionAboveSkip, belowskip=\nwpuBachelorSubcaptionBelowSkip}

@@ -39,7 +39,7 @@
 %%-----------------------------------------------------------------------------%
 \renewcommand{\chaptername}{第\thechapter{}章}              % 章节名
 \renewcommand{\thefigure}{\thechapter-\arabic{figure}}      % 图编号格式
-\renewcommand{\thesubfigure}{(\alph{subfigure})}            % 子图编号格式
+\renewcommand{\thesubfigure}{（\alph{subfigure}）}           % 子图编号格式
 \renewcommand{\thetable}{\thechapter-\arabic{table}}        % 表编号格式
 \renewcommand{\thealgorithm}{\thechapter-\arabic{algorithm}}% 算法编号格式
 \counterwithin*{algorithm}{chapter}                          % 按章节编号
