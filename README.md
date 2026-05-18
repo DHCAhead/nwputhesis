@@ -22,13 +22,6 @@
 
 编译得到的参考文献格式有问题的，可以在命令行执行 `tlmgr update biblatex-gb7714-2015`。
 
-## 版本更新说明
- 
-- 本模板版本号采用 `X.Y.Z` 形式：
-- `X` 表示重大更新，例如跟进学校发布的新模板格式。
-- `Y` 表示影响模板使用方式的更新。
-- `Z` 表示格式修复或其它不影响模板使用方式的修复。
-
 ## 使用说明
 推荐通过 Fork / Clone 仓库获取模板，可以获取最新版本，方便后续通过 Git 跟踪更新。
 
@@ -85,9 +78,6 @@
 论文插图全部放在 `content/figures` 目录下，项目已将默认图片路径设为该目录，在 tex 文件中可直接引用文件名，无需添加路径前缀。例如：`\includegraphics{example.png}`。
 
 硕博提交最终版论文时，可直接将签字版声明扫描成电子版 PDF，替换 [研究生学位论文使用授权声明.pdf](content/figures/研究生学位论文使用授权声明.pdf)。
-
-### LaTeX 新手指南
-[清华大学 thuthesis 提供的新手指南](https://github.com/tuna/thuthesis/wiki/%E6%96%B0%E6%89%8B%E6%8C%87%E5%8D%97)（对本项目同样适用）
 
 ## 推荐项目
 [awesome-ai-research-writing](https://github.com/Leey21/awesome-ai-research-writing)
