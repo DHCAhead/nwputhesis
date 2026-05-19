@@ -59,12 +59,16 @@
     \cs_new_protected:Npn \nwpuSectionFont { \sffamily\fHei\fontsize{\nwpuFontPointSihao}{\nwpuBachelorLineHeight}\selectfont }
     \cs_new_protected:Npn \nwpuSubsectionFont { \sffamily\fHei\fontsize{\nwpuFontPointXiaosi}{\nwpuBachelorLineHeight}\selectfont }
     \cs_new_protected:Npn \nwpuSubsubsectionFont { \fSong\fontsize{\nwpuFontPointXiaosi}{\nwpuBachelorLineHeight}\selectfont }
+    \cs_new_protected:Npn \nwpuParagraphFont { \fSong\fontsize{\nwpuFontPointXiaosi}{\nwpuBachelorLineHeight}\selectfont }
+    \cs_new_protected:Npn \nwpuSubparagraphFont { \fSong\fontsize{\nwpuFontPointXiaosi}{\nwpuBachelorLineHeight}\selectfont }
   }
   {
     \cs_new_protected:Npn \nwpuChapterFont { \sffamily\fHei\fontsize{\nwpuFontPointSanhao}{\nwpuGraduateLineHeight}\selectfont }
     \cs_new_protected:Npn \nwpuSectionFont { \sffamily\fHei\fontsize{\nwpuFontPointSihao}{\nwpuGraduateLineHeight}\selectfont }
     \cs_new_protected:Npn \nwpuSubsectionFont { \sffamily\fHei\fontsize{\nwpuFontPointXiaosi}{\nwpuGraduateLineHeight}\selectfont }
-    \cs_new_protected:Npn \nwpuSubsubsectionFont { \sffamily\fHei\fontsize{\nwpuFontPointXiaosi}{\nwpuGraduateLineHeight}\selectfont }
+    \cs_new_protected:Npn \nwpuSubsubsectionFont { \fSong\fontsize{\nwpuFontPointXiaosi}{\nwpuGraduateLineHeight}\selectfont }
+    \cs_new_protected:Npn \nwpuParagraphFont { \fSong\fontsize{\nwpuFontPointXiaosi}{\nwpuGraduateLineHeight}\selectfont }
+    \cs_new_protected:Npn \nwpuSubparagraphFont { \fSong\fontsize{\nwpuFontPointXiaosi}{\nwpuGraduateLineHeight}\selectfont }
   }
 
 %% 目录
