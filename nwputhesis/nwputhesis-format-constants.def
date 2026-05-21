@@ -289,6 +289,7 @@
   }
 \cs_new:Npn \nwpuTocSectionLabelWidth { 1.8em }             % 目录节编号盒宽
 \cs_new:Npn \nwpuTocSubsectionLabelWidth { 2.7em }          % 目录小节编号盒宽
+\cs_new:Npn \nwpuTocFigureTableLabelWidth { 2.5em }         % 目录图/表编号盒宽
 \cs_new:Npn \nwpuBachelorTocDotSep { 5pt }                  % 本科目录点线间距
 \cs_new:Npn \nwpuGraduateTocDotSep { 3pt }                  % 研究生目录点线间距
 \cs_new:Npn \nwpuTocChapterBeforeSkip { 0.2\baselineskip }  % 目录章条目前距

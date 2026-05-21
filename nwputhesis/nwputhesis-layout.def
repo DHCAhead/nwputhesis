@@ -113,6 +113,8 @@
             \titlerule*[\nwpuTocLeaderSep]{.}\contentspage}[\vspace{0em}]    %
     }
 }
+\titlecontents{figure}[\nwpuTocFigureTableLabelWidth]{\nwpuTOCEntryFont}{\contentslabel{\nwpuTocFigureTableLabelWidth}}{}{\titlerule*[\nwpuTocLeaderSep]{\raisebox{0.35ex}{.}}\contentspage}[\vspace{0em}]
+\titlecontents{table}[\nwpuTocFigureTableLabelWidth]{\nwpuTOCEntryFont}{\contentslabel{\nwpuTocFigureTableLabelWidth}}{}{\titlerule*[\nwpuTocLeaderSep]{\raisebox{0.35ex}{.}}\contentspage}[\vspace{0em}]
 %%-----------------------------------------------------------------------------%
 \RequirePackage{fancyhdr}                                   % 页眉设置
 \cs_new_protected:Npn \npu@headrule
