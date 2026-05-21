@@ -37,6 +37,12 @@
     \cs_set:Npn \defaultEngSansFont {\defaultHei}             % Windows 无 TeX Gyre，用黑体代替
   }
 \bool_new:N \l__nwpu_windows_fonts_available_bool
+\bool_new:N \l__nwpu_local_fonts_available_bool
+\cs_new_protected:Npn \npu@check@local@fonts
+  {
+    \file_if_exist:nT { infra/fonts/simsun.ttc }
+      { \bool_set_true:N \l__nwpu_local_fonts_available_bool }
+  }
 \cs_new_protected:Npn \__nwpu_check_windows_font:n #1
   {
     \IfFontExistsTF {#1}
@@ -58,14 +64,28 @@
         \npu@set@fandol@fonts
       }
   }
-% 字体选择主逻辑：local > windows > fandol > 默认 fandol
-\nwpu_if_local_fonts:TF
-  { \npu@set@local@fonts }
+% 字体自动检测：infra/fonts/ > Windows 系统字体 > Fandol
+\cs_new_protected:Npn \npu@auto@detect@fonts
   {
-    \nwpu_if_winfonts:TF
-      { \npu@set@windows@fonts@with@fallback }
-      { \npu@set@fandol@fonts }
+    \npu@check@local@fonts
+    \bool_if:NTF \l__nwpu_local_fonts_available_bool
+      { \npu@set@local@fonts }
+      {
+        \npu@set@windows@fonts@with@fallback
+      }
   }
+% 字体选择主逻辑：显式指定走原有逻辑，否则自动检测
+\nwpu_if_fontset_explicit:TF
+  {
+    \nwpu_if_local_fonts:TF
+      { \npu@set@local@fonts }
+      {
+        \nwpu_if_winfonts:TF
+          { \npu@set@windows@fonts@with@fallback }
+          { \npu@set@fandol@fonts }
+      }
+  }
+  { \npu@auto@detect@fonts }
 \RequirePackage[SlantFont, BoldFont, CJKchecksingle]{xeCJK} % 设置中文字体
 \defaultfontfeatures{Ligatures=TeX}                        % 启用 TeX Ligatures
 % 根据 Fandol 字体标记决定加载方式

@@ -61,8 +61,6 @@ jobs:
 
       - name: Build document
         run: |
-          sed -i.bak 's/fontset = windows/fontset = fandol/' graduate.tex
-          sed -i.bak 's/fontset = windows/fontset = fandol/' bachelor.tex
           make
           latexmk -xelatex bachelor
 
@@ -125,7 +123,5 @@ jobs:
 
       - name: Build document
         run: |
-          sed -i.bak 's/fontset = windows/fontset = fandol/' graduate.tex
-          sed -i.bak 's/fontset = windows/fontset = fandol/' bachelor.tex
           make
           latexmk -xelatex bachelor

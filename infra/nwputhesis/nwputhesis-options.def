@@ -14,6 +14,7 @@
 \bool_new:N \l__nwpu_font_fandol_bool                        % 强制使用 Fandol 字体
 \bool_new:N \l__nwpu_font_local_bool                         % 使用本地 fonts 目录字体
 \bool_new:N \l__nwpu_font_using_fandol_bool                  % 实际使用 Fandol 字体标记
+\bool_new:N \l__nwpu_fontset_explicit_bool                   % 用户显式指定了 fontset
 \bool_new:N \l__nwpu_colorcover_bool                         % 彩色封面封底标记
 \bool_new:N \l__nwpu_listfigures_bool                        % 图/表目录标记
 \bool_set_true:N \l__nwpu_listfigures_bool
@@ -129,6 +130,7 @@
   {
     \nwpu_load_time_key_allowed:nT { fontset }
       {
+        \bool_set_true:N \l__nwpu_fontset_explicit_bool
         \bool_set_false:N \l__nwpu_font_winfonts_bool
         \bool_set_false:N \l__nwpu_font_fandol_bool
         \bool_set_false:N \l__nwpu_font_local_bool
@@ -222,4 +224,6 @@
   { \bool_if:NTF \l__nwpu_font_local_bool { \prg_return_true: } { \prg_return_false: } }
 \prg_new_conditional:Npnn \nwpu_if_winfonts: { T, F, TF }
   { \bool_if:NTF \l__nwpu_font_winfonts_bool { \prg_return_true: } { \prg_return_false: } }
+\prg_new_conditional:Npnn \nwpu_if_fontset_explicit: { T, F, TF }
+  { \bool_if:NTF \l__nwpu_fontset_explicit_bool { \prg_return_true: } { \prg_return_false: } }
 \ExplSyntaxOff
