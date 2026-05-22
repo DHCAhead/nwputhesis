@@ -62,7 +62,7 @@ jobs:
 
       - name: Build document
         run: |
-          make
+          latexmk graduate
           latexmk bachelor
 
       - name: Upload PDF artifact
@@ -99,5 +99,5 @@ jobs:
 
       - name: Build document
         run: |
-          make
+          latexmk graduate
           latexmk bachelor
