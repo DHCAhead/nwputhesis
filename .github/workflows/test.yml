@@ -5,8 +5,6 @@ on:
     paths-ignore:
       - "README.md"
       - "infra/docs/**"
-      - "infra/tools/**"
-      - "infra/testfiles/**"
       - "LICENSE"
       - ".gitattributes"
       - ".gitignore"
@@ -17,8 +15,6 @@ on:
     paths-ignore:
       - "README.md"
       - "infra/docs/**"
-      - "infra/tools/**"
-      - "infra/testfiles/**"
       - "LICENSE"
       - ".gitattributes"
       - ".gitignore"
@@ -31,7 +27,7 @@ env:
   CORE_PKGS: scheme-basic tools amsmath amsfonts
   XECJK_PKGS: fontspec xecjk ulem iftex
   BIB_PKGS: biblatex biblatex-gb7714-2015 biber
-  BIN_PKGS: latexmk l3build
+  BIN_PKGS: latexmk
   REQUIRED_PKGS: >-
     algorithmicx algorithms appendix bookmark booktabs caption catchfile
     enumitem etoolbox fancyhdr float geometry ifplatform koma-script
@@ -77,33 +73,6 @@ jobs:
             build/graduate.pdf
             build/bachelor.pdf
           retention-days: 30
-
-  test-ubuntu:
-    if: false
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Install TeX Live
-        uses: zauguin/install-texlive@v4
-        with:
-          packages: >-
-            ${{ env.CORE_PKGS }} ${{ env.XECJK_PKGS }} ${{ env.BIB_PKGS }}
-            ${{ env.REQUIRED_PKGS }} ${{ env.FONT_PKGS }}
-            ${{ env.BIN_PKGS }}
-          texlive_version: 2026
-
-      - name: Run regression tests
-        run: make test
-
-      - name: Upload test results if failed
-        uses: actions/upload-artifact@v6
-        if: failure()
-        with:
-          name: test-result-ubuntu-latest
-          path: |
-            build/test
-            build/test-testfiles
 
   build-cross-platform:
     if: ${{ !contains(github.event.head_commit.message, 'ci skip') }}
