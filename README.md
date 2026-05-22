@@ -5,7 +5,7 @@
 ***NwpuThesis***
 
 [![Test](https://github.com/1195343015/nwputhesis/actions/workflows/test.yml/badge.svg)](https://github.com/1195343015/nwputhesis/actions/workflows/test.yml)
-[![TeX Live](https://img.shields.io/badge/TeX%20Live-2026-yellow)](https://www.tug.org/texlive/)
+[![TeX Live](https://img.shields.io/badge/TeX%20Live-2025%20%7C%202026-yellow)](https://www.tug.org/texlive/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 </div>
