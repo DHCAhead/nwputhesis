@@ -22,7 +22,7 @@
   }
 \cs_new_protected:Npn \npu@set@local@fonts
   {
-    \typeout{[nwputhesis]~Using~local~fonts~from~infra/fonts/~directory.}
+    \typeout{[nwputhesis]~Using~local~fonts~from~fonts/~directory.}
     \cs_set:Npn \defaultSog {SimSun}
     \cs_set:Npn \defaultHei {SimHei}
     \cs_set:Npn \defaultEngFont {Times~New~Roman}
@@ -40,7 +40,7 @@
 \bool_new:N \l__nwpu_local_fonts_available_bool
 \cs_new_protected:Npn \npu@check@local@fonts
   {
-    \file_if_exist:nT { infra/fonts/simsun.ttc }
+    \file_if_exist:nT { fonts/simsun.ttc }
       { \bool_set_true:N \l__nwpu_local_fonts_available_bool }
   }
 \cs_new_protected:Npn \__nwpu_check_windows_font:n #1
@@ -64,7 +64,7 @@
         \npu@set@fandol@fonts
       }
   }
-% 字体自动检测：infra/fonts/ > Windows 系统字体 > Fandol
+% 字体自动检测：fonts/ > Windows 系统字体 > Fandol
 \cs_new_protected:Npn \npu@auto@detect@fonts
   {
     \npu@check@local@fonts
@@ -135,14 +135,14 @@
   {
     \nwpu_if_local_fonts:TF
       {
-        \setCJKmainfont[Path=infra/fonts/, AutoFakeBold]{simsun.ttc}
-        \setCJKsansfont[Path=infra/fonts/, AutoFakeBold]{simhei.ttf}
-        \setCJKfamilyfont{song}[Path=infra/fonts/, AutoFakeBold]{simsun.ttc}
-        \setCJKfamilyfont{hei}[Path=infra/fonts/, AutoFakeBold]{simhei.ttf}
-        \setCJKfamilyfont{eng}[Path=infra/fonts/, BoldFont=timesbd.ttf, ItalicFont=timesi.ttf, BoldItalicFont=timesbi.ttf]{times.ttf}
+        \setCJKmainfont[Path=fonts/, AutoFakeBold]{simsun.ttc}
+        \setCJKsansfont[Path=fonts/, AutoFakeBold]{simhei.ttf}
+        \setCJKfamilyfont{song}[Path=fonts/, AutoFakeBold]{simsun.ttc}
+        \setCJKfamilyfont{hei}[Path=fonts/, AutoFakeBold]{simhei.ttf}
+        \setCJKfamilyfont{eng}[Path=fonts/, BoldFont=timesbd.ttf, ItalicFont=timesi.ttf, BoldItalicFont=timesbi.ttf]{times.ttf}
         \cs_new_protected:Npn \fEng {\CJKfamily{eng}}
-        \setsansfont[Path=infra/fonts/, AutoFakeBold]{simhei.ttf}
-        \setmainfont[Path=infra/fonts/, BoldFont=timesbd.ttf, ItalicFont=timesi.ttf, BoldItalicFont=timesbi.ttf]{times.ttf}
+        \setsansfont[Path=fonts/, AutoFakeBold]{simhei.ttf}
+        \setmainfont[Path=fonts/, BoldFont=timesbd.ttf, ItalicFont=timesi.ttf, BoldItalicFont=timesbi.ttf]{times.ttf}
       }
       {
         \setCJKmainfont[AutoFakeBold]{\defaultSog}

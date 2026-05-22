@@ -30,7 +30,7 @@ Fork 仓库后 Clone 到本地获取模板。字体自动检测，Windows 用户
 
 编译产物统一输出到 `build/` 目录，根目录保持干净。PDF 位于 `build/bachelor.pdf` 或 `build/graduate.pdf`。
 
-![[编译方式]](infra/template/assets/example.png)
+![[编译方式]](infra/assets/example.png)
 
 ### 入口文件
 
