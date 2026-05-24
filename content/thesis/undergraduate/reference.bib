@@ -1,104 +1,203 @@
-%% 示例参考文献
+%% 参考文献：本科毕业设计「基于深度学习的 B-rep 端到端生成算法研究」
+%% =====================================================================
+%% P0 核心引用：thesis-v1 audit Round 2 已经写入 (2026-05-24)
+%% 用户硬约束：不得编造 DOI / 作者 / 年份；对作者列表不能 100% 确认的字段
+%% 在 entry 注释中标 TODO_verify，请在 LaTeX 编译前人工核对。
+%% =====================================================================
 
-% 期刊
-@article{周融2003,
-  author  = {周融 and 任志国 and 杨尚雷 and 厉星星},
-  title   = {对新形势下毕业设计管理工作的思考与实践},
-  journal = {电气电子教学学报},
-  year    = {2003},
-  volume  = {283},
-  number  = {6},
-  pages   = {107--109}
-}
-
-@article{DUBAR2013--,
-  author  = {Dunbar, Kyle L and Mitchell, Douglas A},
-  title   = {Revealing nature's synthetic potential through the study of ribosomal natural product biosynthesis},
-  journal = {ACS chemical biology},
-  date    = {2013},
-  volume  = {8},
-  number  = {1},
-  pages   = {473-487}
-}
-
-% 论文集
-@inproceedings{伍蠡甫,
-  author     = {伍蠡甫},
-  title      = {论艺术的真实性},
-  bookauthor = {中国高等学校自然科学学报研究会},
-  booktitle  = {科技编辑学论文集：1998年卷},
-  location   = {北京},
-  publisher  = {北京师范大学出版社},
-  year       = {1998},
-  pages      = {12--17}
-}
-
-@inproceedings{FOURNEY,
-  title      = {Advances in holographic photoelasticity},
-  author     = {Mitchell, Douglas A},
-  bookauthor = {{American Society of Mechanical Engineers}},
-  booktitle  = {Symposium on Applications of Holography in Mechanics},
-  volume     = {1},
-  date       = {1971},
-  pages      = {17-38},
-  publisher  = {ASME},
-  location   = {New York}
-}
-
-% 专著
-@book{图书馆,
-  author    = {刘国钧 and 王连成},
-  title     = {图书馆史研究},
+%% [P0-1] B-rep / NURBS 几何标准教科书。
+%% 引用位置：§1.1.1 / §1.2.1 / §2.1.1。
+%% 字段核对：标题 + 作者 + 出版社 + 版次 + 年份均为 100% 确信（经典教科书）。
+@book{piegl_tiller_1997_nurbs,
+  author    = {Piegl, Les and Tiller, Wayne},
+  title     = {The {NURBS} Book},
   edition   = {2},
-  address   = {北京},
-  publisher = {高等教育出版社},
-  year      = {1979},
-  pages     = {15--18}
+  publisher = {Springer-Verlag},
+  address   = {Berlin, Heidelberg},
+  year      = {1997},
+  isbn      = {978-3-540-61545-3},
 }
 
-% 学位论文
-@thesis{张筑生,
-  author      = {张筑生},
-  title       = {微分半动力系统的不变集},
-  address     = {北京},
-  institution = {北京大学数学系数学研究所},
-  date        = {1983}
+%% [P0-2] PolyGen，DeepMind 团队，ICML 2020。
+%% 引用位置：§1.1.2 / §1.3.2 / §2.2.3。
+%% 字段核对：arXiv 2002.10880 已确认；作者顺序按 arXiv 与 ICML 公开版本。
+@inproceedings{nash_2020_polygen,
+  author        = {Nash, Charlie and Ganin, Yaroslav and Eslami, S. M. Ali and Battaglia, Peter W.},
+  title         = {{PolyGen}: An Autoregressive Generative Model of {3D} Meshes},
+  booktitle     = {Proceedings of the 37th International Conference on Machine Learning},
+  series        = {Proceedings of Machine Learning Research},
+  volume        = {119},
+  year          = {2020},
+  publisher     = {PMLR},
+  eprint        = {2002.10880},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.GR},
 }
 
-% 标准
-@standard{gbt7714_2006,
-  author    = {中国国家标准化管理委员会},
-  number    = {GB/T 16159—1996},
-  title     = {汉语拼音正词法基本规则},
-  address   = {北京},
-  publisher = {中国标准出版社},
-  year      = {2006}
+%% [P0-3] DeepCAD，Columbia University，ICCV 2021。
+%% 引用位置：§1.3.3 / §2.2.1 / §5.1.3。
+%% 字段核对：arXiv 2105.09492 已确认；ICCV 2021 venue + 作者已确认。
+@inproceedings{wu_2021_deepcad,
+  author        = {Wu, Rundi and Xiao, Chang and Zheng, Changxi},
+  title         = {{DeepCAD}: A Deep Generative Network for Computer-Aided Design Models},
+  booktitle     = {Proceedings of the IEEE/CVF International Conference on Computer Vision},
+  series        = {ICCV},
+  year          = {2021},
+  pages         = {6772--6782},
+  eprint        = {2105.09492},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.GR},
 }
 
-% 科技报告
-@report{冯西桥1998,
-  author      = {冯西桥},
-  title       = {核反应堆管道和压力容器的LBB分析},
-  subtitle    = {XX00100101},
-  location    = {北京},
-  institution = {清华大学核能技术设计研究院},
-  year        = {1997}
+%% [P0-4] BrepGen，SIGGRAPH 2024。
+%% 引用位置：§1.3.4 / §2.5.4。
+%% 字段核对：arXiv 2401.15563 已确认；TODO_verify: 完整作者列表与 ACM TOG 卷号请用户在
+%% LaTeX 编译前核对（本 entry 给出 6 位作者，按 arXiv 首页公开版本顺序）。
+@article{xu_2024_brepgen,
+  author        = {Xu, Xiang and Lambourne, Joseph G. and Jayaraman, Pradeep Kumar and Wang, Zhengqing and Willis, Karl D. D. and Furukawa, Yasutaka},
+  title         = {{BrepGen}: A {B-rep} Generative Diffusion Model with Structured Latent Geometry},
+  journal       = {ACM Transactions on Graphics ({SIGGRAPH} 2024)},
+  year          = {2024},
+  volume        = {43},
+  number        = {4},
+  eprint        = {2401.15563},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.GR},
 }
 
-% 专利
-@patent{姜锡洲,
-  author   = {姜锡洲},
-  title    = {一种温热外敷药制备方案},
-  location = {中国},
-  number   = {881056073},
-  date     = {1989-07-26}
+%% [P0-5] Transformer，Vaswani et al.，NeurIPS 2017。
+%% 引用位置：§2.3.1。
+%% 字段核对：arXiv 1706.03762 已确认；NeurIPS 2017 venue + 8 位作者 + 页码均 100% 确信
+%% （AI 领域标杆引用）。
+@inproceedings{vaswani_2017_attention,
+  author        = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N. and Kaiser, {\L}ukasz and Polosukhin, Illia},
+  title         = {Attention is All You Need},
+  booktitle     = {Advances in Neural Information Processing Systems 30 ({NeurIPS} 2017)},
+  year          = {2017},
+  pages         = {5998--6008},
+  publisher     = {Curran Associates, Inc.},
+  eprint        = {1706.03762},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL},
 }
 
-% 电子文献
-@other{中国大学学报论文文摘,
-  author  = {万锦},
-  title   = {中国大学学报论文文摘},
-  date    = {1996-01-01},
-  urldate = {2026-05-18},
-  url     = {http://www.example.com}
+%% [P0-6] LLaMA3，Meta AI，arXiv 2024。
+%% 引用位置：第 2 章 LLaMA3 组件 / 第 4 章主干描述。
+%% 字段核对：arXiv 2407.21783 已确认；论文署名众多，采用机构作者形式。
+@misc{meta_2024_llama3,
+  author        = {{Meta AI}},
+  title         = {The {Llama 3} Herd of Models},
+  year          = {2024},
+  howpublished  = {arXiv preprint arXiv:2407.21783},
+  eprint        = {2407.21783},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.AI},
 }
+
+%% [P0-7] RoFormer (RoPE)，Su et al.，Neurocomputing 2024（arXiv 首发 2021）。
+%% 引用位置：§2.4.2。
+%% 字段核对：arXiv 2104.09864 已确认；Neurocomputing vol 568, p. 127063 已确认。
+@article{su_2024_roformer,
+  author        = {Su, Jianlin and Lu, Yu and Pan, Shengfeng and Murtadha, Ahmed and Wen, Bo and Liu, Yunfeng},
+  title         = {{RoFormer}: Enhanced Transformer with Rotary Position Embedding},
+  journal       = {Neurocomputing},
+  year          = {2024},
+  volume        = {568},
+  pages         = {127063},
+  eprint        = {2104.09864},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.CL},
+}
+
+%% =====================================================================
+%% P1 / P2 待补：以下文献已在正文中以 % REF-PENDING 注释形式标记，
+%% 调研到完整字段后取消注释并填写真实 BibLaTeX entry，再在正文中将
+%% 对应的 % REF-PENDING 行替换为 \cite{<bibkey>}。
+%% 严禁编造 DOI、作者、年份或页码。
+%% =====================================================================
+%
+% % [P1] DeepSDF, Park et al., CVPR 2019
+% @inproceedings{park_2019_deepsdf,
+%   author    = {Park, Jeong Joon and ...},
+%   title     = {{DeepSDF}: Learning Continuous Signed Distance Functions for Shape Representation},
+%   booktitle = {CVPR},
+%   year      = {2019},
+% }
+%
+% % [P1] SkexGen, ICML 2022
+% @inproceedings{xu_2022_skexgen,
+%   author    = {Xu, ... and ...},
+%   title     = {{SkexGen}: Autoregressive Generation of CAD Construction Sequences with Disentangled Codebooks},
+%   booktitle = {ICML},
+%   year      = {2022},
+% }
+%
+% % [P1] BrepDiff
+% @article{ref_brepdiff,
+%   author    = {... and ...},
+%   title     = {{BrepDiff}: Single-stage B-rep Diffusion Model},
+%   year      = {2024},
+% }
+%
+% % [P1] SolidGen, NeurIPS 2022/2023
+% @inproceedings{jayaraman_solidgen,
+%   author    = {Jayaraman, Pradeep Kumar and ...},
+%   title     = {{SolidGen}: An Autoregressive Model for Direct B-rep Synthesis},
+%   booktitle = {NeurIPS},
+%   year      = {2023},
+% }
+%
+% % [P1] DTGBrepGen
+% @article{ref_dtgbrepgen,
+%   author    = {... and ...},
+%   title     = {{DTGBrepGen}: Disentangled Topology-Geometry B-rep Generation},
+%   year      = {2024},
+% }
+%
+% % [P1] BrepARG
+% @article{ref_breparg,
+%   author    = {... and ...},
+%   title     = {{BrepARG}: B-rep Autoregressive Generation},
+%   year      = {2024},
+% }
+%
+% % [P1] Koch et al., ABC, CVPR 2019
+% @inproceedings{koch_2019_abc,
+%   author    = {Koch, Sebastian and Matveev, Albert and Jiang, Zhongshi and Williams, Francis and Artemov, Alexey and Burnaev, Evgeny and Alexa, Marc and Zorin, Denis and Panozzo, Daniele},
+%   title     = {{ABC}: A Big {CAD} Model Dataset for Geometric Deep Learning},
+%   booktitle = {CVPR},
+%   year      = {2019},
+% }
+%
+% % [P2] Willis et al., Fusion360 Gallery
+% @inproceedings{willis_fusion360,
+%   author    = {Willis, Karl D. D. and ...},
+%   title     = {{Fusion 360 Gallery}: A Dataset and Environment for Programmatic CAD Construction from Human Design Sequences},
+%   booktitle = {SIGGRAPH},
+%   year      = {2021},
+% }
+%
+% % [P1] Zhang & Sennrich, RMSNorm, NeurIPS 2019
+% @inproceedings{zhang_2019_rmsnorm,
+%   author    = {Zhang, Biao and Sennrich, Rico},
+%   title     = {Root Mean Square Layer Normalization},
+%   booktitle = {NeurIPS},
+%   year      = {2019},
+% }
+%
+% % [P1] Shazeer 2020, GLU Variants Improve Transformer
+% @article{shazeer_2020_glu,
+%   author    = {Shazeer, Noam},
+%   title     = {{GLU} Variants Improve Transformer},
+%   journal   = {arXiv preprint},
+%   eprint    = {2002.05202},
+%   year      = {2020},
+% }
+%
+% % [P1] Ainslie et al. 2023, GQA, EMNLP 2023
+% @inproceedings{ainslie_2023_gqa,
+%   author    = {Ainslie, Joshua and Lee-Thorp, James and de Jong, Michiel and Zemlyanskiy, Yury and Lebr\'{o}n, Federico and Sanghai, Sumit},
+%   title     = {{GQA}: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints},
+%   booktitle = {EMNLP},
+%   year      = {2023},
+% }

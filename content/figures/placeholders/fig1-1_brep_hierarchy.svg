@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="sans-serif">
+  <rect width="800" height="600" fill="#F8F8F8"/>
+  <text x="400" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#222">Fig 1-1 · B-rep Topological Hierarchy (Placeholder, Draft Schematic)</text>
+  <text x="400" y="58" text-anchor="middle" font-size="13" fill="#666">B-rep 拓扑层级示意图 — 占位图（正式示意草案，可保留至终稿）</text>
+
+  <!-- 6-level vertical chain -->
+  <g font-size="14" text-anchor="middle">
+    <rect x="320" y="90"  width="160" height="46" fill="#FFFFFF" stroke="#333" stroke-width="2"/>
+    <text x="400" y="118">Solid 实体</text>
+    <line x1="400" y1="136" x2="400" y2="160" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="320" y="160" width="160" height="46" fill="#FFFFFF" stroke="#333" stroke-width="2"/>
+    <text x="400" y="188">Shell 壳</text>
+    <line x1="400" y1="206" x2="400" y2="230" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="320" y="230" width="160" height="46" fill="#FFFFFF" stroke="#333" stroke-width="2"/>
+    <text x="400" y="258">Face 面 (NURBS S(u,v))</text>
+    <line x1="400" y1="276" x2="400" y2="300" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="320" y="300" width="160" height="46" fill="#FFFFFF" stroke="#333" stroke-width="2"/>
+    <text x="400" y="328">Loop 环</text>
+    <line x1="400" y1="346" x2="400" y2="370" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="320" y="370" width="160" height="46" fill="#FFFFFF" stroke="#333" stroke-width="2"/>
+    <text x="400" y="398">Edge 边 (NURBS C(u))</text>
+    <line x1="400" y1="416" x2="400" y2="440" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <rect x="320" y="440" width="160" height="46" fill="#FFFFFF" stroke="#333" stroke-width="2"/>
+    <text x="400" y="468">Vertex 顶点</text>
+  </g>
+
+  <!-- side annotations -->
+  <g font-size="12" fill="#444">
+    <text x="510" y="118">↑ 含方向 (oriented)</text>
+    <text x="510" y="258">↑ 几何 + 拓扑分离</text>
+    <text x="510" y="328">↑ 外环 + 若干内环</text>
+    <text x="510" y="398">↑ 起止 vertex / 共享</text>
+
+    <text x="120" y="118">geometry +</text>
+    <text x="120" y="138">topology layered</text>
+    <text x="120" y="258">本文采样对象</text>
+    <text x="120" y="398">本文采样对象</text>
+  </g>
+
+  <!-- placeholder ribbon -->
+  <text x="400" y="550" text-anchor="middle" font-size="13" fill="#999">LaTeX label: fig:brep-hierarchy · 章节建议: §1.1.1 / §1.2.1 / §2.1.1</text>
+  <text x="400" y="572" text-anchor="middle" font-size="11" fill="#aaa">[PLACEHOLDER · 正式示意图草案，LaTeX 集成时可直接使用 / 可在终稿前美化]</text>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

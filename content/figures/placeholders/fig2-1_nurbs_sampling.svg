@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="sans-serif">
+  <rect width="800" height="600" fill="#F8F8F8"/>
+  <text x="400" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#222">Fig 2-1 · NURBS Surface UV Grid &amp; Curve Arc-length Sampling</text>
+  <text x="400" y="58" text-anchor="middle" font-size="13" fill="#666">NURBS 面 UV 均匀采样（7×7 = 49 点）+ NURBS 边弧长均匀采样（14 点）— 占位图（正式示意草案）</text>
+
+  <!-- Left: surface UV grid -->
+  <g>
+    <text x="180" y="100" text-anchor="middle" font-size="15" font-weight="bold">(a) NURBS Surface S(u,v) — 7×7 UV grid</text>
+    <!-- grid -->
+    <rect x="80" y="120" width="200" height="200" fill="#FFFFFF" stroke="#333" stroke-width="2"/>
+    <g stroke="#bbb" stroke-width="1">
+      <line x1="80" y1="153" x2="280" y2="153"/>
+      <line x1="80" y1="186" x2="280" y2="186"/>
+      <line x1="80" y1="220" x2="280" y2="220"/>
+      <line x1="80" y1="253" x2="280" y2="253"/>
+      <line x1="80" y1="286" x2="280" y2="286"/>
+      <line x1="113" y1="120" x2="113" y2="320"/>
+      <line x1="146" y1="120" x2="146" y2="320"/>
+      <line x1="180" y1="120" x2="180" y2="320"/>
+      <line x1="213" y1="120" x2="213" y2="320"/>
+      <line x1="246" y1="120" x2="246" y2="320"/>
+    </g>
+    <!-- 49 sample points -->
+    <g fill="#1a73e8">
+      <!-- 7x7 dots -->
+      <circle cx="80"  cy="120" r="4"/><circle cx="113" cy="120" r="4"/><circle cx="146" cy="120" r="4"/><circle cx="180" cy="120" r="4"/><circle cx="213" cy="120" r="4"/><circle cx="246" cy="120" r="4"/><circle cx="280" cy="120" r="4"/>
+      <circle cx="80"  cy="153" r="4"/><circle cx="113" cy="153" r="4"/><circle cx="146" cy="153" r="4"/><circle cx="180" cy="153" r="4"/><circle cx="213" cy="153" r="4"/><circle cx="246" cy="153" r="4"/><circle cx="280" cy="153" r="4"/>
+      <circle cx="80"  cy="186" r="4"/><circle cx="113" cy="186" r="4"/><circle cx="146" cy="186" r="4"/><circle cx="180" cy="186" r="4"/><circle cx="213" cy="186" r="4"/><circle cx="246" cy="186" r="4"/><circle cx="280" cy="186" r="4"/>
+      <circle cx="80"  cy="220" r="4"/><circle cx="113" cy="220" r="4"/><circle cx="146" cy="220" r="4"/><circle cx="180" cy="220" r="4"/><circle cx="213" cy="220" r="4"/><circle cx="246" cy="220" r="4"/><circle cx="280" cy="220" r="4"/>
+      <circle cx="80"  cy="253" r="4"/><circle cx="113" cy="253" r="4"/><circle cx="146" cy="253" r="4"/><circle cx="180" cy="253" r="4"/><circle cx="213" cy="253" r="4"/><circle cx="246" cy="253" r="4"/><circle cx="280" cy="253" r="4"/>
+      <circle cx="80"  cy="286" r="4"/><circle cx="113" cy="286" r="4"/><circle cx="146" cy="286" r="4"/><circle cx="180" cy="286" r="4"/><circle cx="213" cy="286" r="4"/><circle cx="246" cy="286" r="4"/><circle cx="280" cy="286" r="4"/>
+      <circle cx="80"  cy="320" r="4"/><circle cx="113" cy="320" r="4"/><circle cx="146" cy="320" r="4"/><circle cx="180" cy="320" r="4"/><circle cx="213" cy="320" r="4"/><circle cx="246" cy="320" r="4"/><circle cx="280" cy="320" r="4"/>
+    </g>
+    <text x="180" y="345" text-anchor="middle" font-size="12">face_block: 49 points / face</text>
+    <text x="180" y="362" text-anchor="middle" font-size="11" fill="#555">+ canonical sorting (along bbox principal axis)</text>
+    <text x="60" y="220" font-size="11">v →</text>
+    <text x="170" y="115" font-size="11">u →</text>
+  </g>
+
+  <!-- Right: curve arc-length sampling -->
+  <g>
+    <text x="580" y="100" text-anchor="middle" font-size="15" font-weight="bold">(b) NURBS Curve C(u) — 14-point arc length</text>
+    <!-- curve path -->
+    <path d="M 440 280 Q 520 150 580 220 T 720 270" stroke="#333" stroke-width="2" fill="none"/>
+    <!-- 14 dots evenly along path (approx) -->
+    <g fill="#e8541a">
+      <circle cx="440" cy="280" r="5"/>
+      <circle cx="460" cy="240" r="5"/>
+      <circle cx="480" cy="210" r="5"/>
+      <circle cx="500" cy="185" r="5"/>
+      <circle cx="525" cy="170" r="5"/>
+      <circle cx="550" cy="175" r="5"/>
+      <circle cx="575" cy="195" r="5"/>
+      <circle cx="600" cy="218" r="5"/>
+      <circle cx="625" cy="232" r="5"/>
+      <circle cx="650" cy="240" r="5"/>
+      <circle cx="675" cy="250" r="5"/>
+      <circle cx="695" cy="260" r="5"/>
+      <circle cx="710" cy="265" r="5"/>
+      <circle cx="720" cy="270" r="5"/>
+    </g>
+    <text x="580" y="345" text-anchor="middle" font-size="12">edge_block: 14 points / edge (along arc length)</text>
+    <text x="580" y="362" text-anchor="middle" font-size="11" fill="#555">+ direction canonicalization (by endpoint coords)</text>
+  </g>
+
+  <!-- Bottom annotation -->
+  <text x="400" y="420" text-anchor="middle" font-size="13" fill="#333">Each 3D sample point is scalar-quantized to 4 000 levels and packed into the unified vocabulary (size 4 053).</text>
+
+  <text x="400" y="550" text-anchor="middle" font-size="13" fill="#999">LaTeX label: fig:nurbs-sampling · 章节建议: §2.1.2 或 §3.2.2 / §3.2.3</text>
+  <text x="400" y="572" text-anchor="middle" font-size="11" fill="#aaa">[PLACEHOLDER · 正式示意图草案，可保留至终稿]</text>
+</svg>

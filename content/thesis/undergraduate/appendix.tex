@@ -1,5 +1,79 @@
 %% 附录
 
 \begin{thesisappendix}
-附录内容……
+
+\section{术语与缩写表}
+
+\begin{table}[!h]
+    \caption{论文中常用术语与缩写}
+    \label{tab:abbreviations}
+    \begin{tabular}{p{2.5cm}p{12cm}}
+        \toprule
+        缩写 / 术语 & 含义 \\
+        \midrule
+        B-rep        & Boundary Representation，边界表示 \\
+        NURBS        & Non-Uniform Rational B-Spline，非均匀有理 B 样条 \\
+        CAD          & Computer-Aided Design，计算机辅助设计 \\
+        STEP         & ISO 10303 标准 CAD 数据交换格式 \\
+        STL          & Stereolithography，三角网格交换格式 \\
+        OCC          & OpenCASCADE Community，开源几何建模内核 \\
+        VQ-VAE       & Vector-Quantized Variational AutoEncoder，向量量化变分自编码器 \\
+        AR           & Autoregressive，自回归 \\
+        RoPE         & Rotary Position Embedding，旋转位置编码 \\
+        RMSNorm      & Root Mean Square Normalization，均方根归一化 \\
+        SwiGLU       & Swish-Gated Linear Unit，门控线性单元 \\
+        GQA          & Grouped Query Attention，分组查询注意力 \\
+        MHA          & Multi-Head Attention，多头注意力 \\
+        MQA          & Multi-Query Attention，多查询注意力 \\
+        DDP          & Distributed Data Parallel，分布式数据并行 \\
+        AMP          & Automatic Mixed Precision，自动混合精度 \\
+        DFS          & Depth-First Search，深度优先搜索 \\
+        BRepCheck    & OpenCASCADE 中的 B-rep 有效性校验器 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{代码与数据资源索引}
+
+\begin{itemize}
+    \item 代码主目录：\texttt{04-code/nurbs-code/}（核心文件包括 \texttt{model.py}、\texttt{trainer.py}、\texttt{train\_ar.py}、\texttt{generate.py}、\texttt{sequence2nurbs.py}、\texttt{utils.py}、\texttt{eval\_generated\_brep.py}、\texttt{dataset.py} 等）。
+    \item 数据预处理脚本：\texttt{04-code/nurbs-code/2brep\_nurbs\_wcs.py}、\texttt{2brep\_nurbs\_quan\_wcs.py}；服务器侧镜像位于 \texttt{experiment-local/2sequence\_nurbs.py} 与 \texttt{experiment-local/2brep.py}。
+    \item 训练数据：\texttt{data/nurbs\_sequences\_v1\_patch.pkl}，DeepCAD 子集，训练 64\,325 / 验证 6\,095，数据词表 4\,053。
+    \item 实验配置与日志：\texttt{03-experiments/configs/}、\texttt{03-experiments/runs/}、\texttt{03-experiments/metrics/}、\texttt{03-experiments/toloacl/}（含 \texttt{hr2\_patch1\_\_Val\_CE\_Loss.csv} 等关键曲线数据）。
+    \item 训练日志：\texttt{experiment-local/logs/hr2\_patch1.log}（含模型初始化打印、每 5 epoch 验证最优 checkpoint 记录）。
+\end{itemize}
+
+\section{关键超参数复现表}
+
+下表汇总了主实验 hr2\_patch1 的关键超参数，与正文第~5 章\autoref{tab:model-config} 一致，便于复现。
+
+\begin{table}[!h]
+    \caption{hr2\_patch1 关键超参数（复现用）}
+    \label{tab:repro-config}
+    \begin{tabular}{p{4.5cm}p{9cm}}
+        \toprule
+        字段 & 取值 \\
+        \midrule
+        数据集 & DeepCAD 子集 \\
+        训练样本数 & 64\,325 \\
+        验证样本数 & 6\,095 \\
+        数据词表 & 4\,053（50 面索引 + 4\,000 量化坐标 + 3 个结构 token） \\
+        模型 \texttt{vocab\_size} & 4\,054（数据词表 + PAD） \\
+        \texttt{local\_window\_size} & 1（标准 next-token） \\
+        face\_block / edge\_block & 49 / 14 \\
+        \texttt{max\_seq\_len} & 4\,096 \\
+        $n_{\text{layers}}$ / $n_{\text{heads}}$ / $n_{\text{kv\_heads}}$ & 8 / 8 / 4 \\
+        $d_{\text{model}}$ / dim\_ffn & 256 / 1\,024 \\
+        RoPE $\theta$ & 500\,000 \\
+        RMSNorm $\epsilon$ & $10^{-5}$ \\
+        优化器 & AdamW \\
+        学习率 / weight decay / dropout & $5 \times 10^{-4}$ / 0.01 / 0.1 \\
+        per-GPU batch / 全局 batch & 32 / 128 \\
+        训练 epoch 数 & 200 \\
+        GPU & 4 $\times$ NVIDIA H20 \\
+        采样配置 & top-k = 1, top-p = 0.9 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
 \end{thesisappendix}

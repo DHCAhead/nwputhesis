@@ -1,61 +1,121 @@
 %% 第二章
 
-\chapter{图表示例}
-\chaptermark{图表示例}
+\chapter{相关技术与理论基础}
+\chaptermark{相关技术与理论基础}
 
-\section{表格}
-如\autoref{tab:undergraduate-example} 所示，该表展示了两个变量的加法与乘法结果，可作为表格排版与引用的示例。
-\begin{table}[!h]
-    \caption{表格标题}
-    \label{tab:undergraduate-example}
-    \begin{tabular}{|c|c|c|c|}
-        \hline
-        $A$ & $B$ & $A+B$ & $A\times B$ \\ \hline
-        1   & 6   & 7     & 6           \\ \hline
-        2   & 7   & 9     & 14          \\ \hline
-        3   & 8   & 11    & 24          \\ \hline
-    \end{tabular}
-\end{table}
+本章为后续方法描述提供术语、公式与评价指标基线。本章不引入新的实验结论，仅围绕已有文献组织技术铺垫。
 
-\section{插图}
-测试下文章内的图片引用。如\autoref{fig:undergraduate-example} 和\autoref{fig:undergraduate-example2} 所示，
-这是两幅插图。在这其中\autoref{subfig:undergraduate-example2-subfig1} 是第一幅子图，
-\autoref{subfig:undergraduate-example2-subfig2} 是第二幅子图。
+\section{B-rep 与 NURBS 几何表示}
 
-\begin{figure}[htb]
-    \includegraphics[scale=0.2]{QQ交流群.png}
-    \caption{这里是个普通的标题}
-    \label{fig:undergraduate-example}
-\end{figure}
+\subsection{B-rep 拓扑层次}
 
-\begin{figure}[htb]
-    \begin{subfigure}[t]{0.49\textwidth}\centering
-        \includegraphics[scale=0.2]{QQ交流群.png}
-        \caption{这是第一个子图标题}
-        \label{subfig:undergraduate-example2-subfig1}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[t]{0.49\textwidth}\centering
-        \includegraphics[scale=0.2]{QQ交流群.png}
-        \caption{这是第二个子图标题}
-        \label{subfig:undergraduate-example2-subfig2}
-    \end{subfigure}
-    \caption{这里是另一个普通的标题}
-    \label{fig:undergraduate-example2}
-\end{figure}
+B-rep 实体由 Solid、Shell、Face、Loop、Edge、Vertex 六层拓扑组成。Shell 提供方向（朝外或朝内），Face 通过其外环和若干内环对参数曲面进行裁剪，Wire 是 Edge 的有序集合，Edge 由几何曲线 + 起止 Vertex 描述。这种层级表示既保留了局部几何（曲面与曲线方程），又保留了全局拓扑（面—边邻接、边—顶点共享）\cite{piegl_tiller_1997_nurbs}。这种「几何与拓扑分离」是 B-rep 区别于体素或网格的根本特征，本文方法也正是利用这一特征——分别为面与边设计采样规则，再用面索引把几何与拓扑串成统一序列。
 
-\section{公式示例}
-这里给出正文中的公式引用示例。行内公式可写为 $E=mc^2$，独立编号公式如\autoref{eq:undergraduate-quadratic-formula} 所示，多行推导公式如\autoref{eq:undergraduate-gaussian-sum} 所示。
+\subsection{NURBS 曲线与曲面定义}
+
+NURBS 曲线和曲面由控制点、节点向量、权重三组参数刻画。B 样条基函数通过 Cox--de Boor 递推定义：当 $p=0$ 时
 
 \begin{equation}
-    x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
-    \label{eq:undergraduate-quadratic-formula}
+    N_{i,0}(u) = \begin{cases} 1, & u_i \le u < u_{i+1} \\ 0, & \text{otherwise} \end{cases}
+    \label{eq:bspline-base-0}
 \end{equation}
 
+当 $p \ge 1$ 时
+
 \begin{equation}
-    \begin{aligned}
-        \sum_{i=1}^{n} i &= 1 + 2 + \cdots + n \\
-                         &= \frac{n(n+1)}{2}
-    \end{aligned}
-    \label{eq:undergraduate-gaussian-sum}
+    N_{i,p}(u) = \frac{u - u_i}{u_{i+p} - u_i} N_{i,p-1}(u) + \frac{u_{i+p+1} - u}{u_{i+p+1} - u_{i+1}} N_{i+1,p-1}(u).
+    \label{eq:bspline-base-p}
 \end{equation}
+
+NURBS 曲面 $S(u, v)$ 由两组方向上的基函数与控制网格 $\mathbf{P}_{ij}$、权重 $w_{ij}$ 共同决定（见\autoref{eq:nurbs-surface}）。在本文实验中，预处理阶段对每个面在 UV 参数域上采样若干三维点构成 face\_block，对每条边在弧长方向上采样若干三维点构成 edge\_block，具体的采样数量与 block 组织方式见第~3 章。
+
+\subsection{STEP / STL 文件格式}
+
+STEP（ISO 10303）是工业 CAD 标准交换格式，可直接存储 B-rep 拓扑、NURBS 曲面与曲线参数。STL 仅存三角网格，常用于 3D 打印或可视化。本文最终输出 STEP 文件以保留几何精度，STL 仅作为可视化辅助。STEP 的读写、有效性检查与导出均通过 OpenCASCADE 完成，相关函数集中在 \texttt{04-code/nurbs-code/utils.py}。
+
+\section{CAD 数据集与生成方法概览}
+
+\subsection{常用 CAD 数据集}
+
+ABC 数据集由百万级机械零件 CAD 构成，覆盖几何复杂度与拓扑形态较广；DeepCAD\cite{wu_2021_deepcad} 在 ABC 基础上经过过滤和参数化操作还原，提供约十八万个可执行的草图—拉伸命令序列；Fusion 360 Gallery 子集规模较小但拓扑形态更接近工业产品。本文采用 DeepCAD 作为主数据集（详 §5.1），以保证数据口径与现有 baseline 一致。
+
+\subsection{生成方法的三条主线}
+
+如第~1 章所述，现有 B-rep 相关生成方法大体可以归纳为以下三条主线，它们各自的中间表征与建模方式不同。
+
+\textbf{(1) CAD 操作序列建模}。以 DeepCAD\cite{wu_2021_deepcad} 为代表，将设计过程还原为草图、拉伸、布尔等参数化 CAD 操作序列，并用 Transformer 自回归生成操作命令。其生成对象是「操作脚本」而非 B-rep 几何本身，需经过 CAD 内核执行才能得到 Solid。
+
+\textbf{(2) 草图—拉伸解耦 + 离散码本}。以 SkexGen 为代表，将草图与拉伸表征拆解为多个相互解耦的离散码本，并训练自回归模型在各组码本上分别建模。其建模目标仍是 sketch-extrude 操作序列，但码本数量与组合方式更灵活，提升了采样多样性；代价是几何精度仍由码本规模决定。
+
+\textbf{(3) 结构化潜空间扩散}。以 BrepGen\cite{xu_2024_brepgen} 为代表，直接对 B-rep 的面、边、顶点编码为结构化潜变量，并用扩散模型在潜空间中联合采样几何与拓扑。该路线不需要 CAD 操作字典，几何与拓扑可一并生成，但需要预训练几何编码器，且潜变量分布的精确拟合对生成质量有较大影响。
+
+本文不复现上述任何 baseline，而是仅引用文献报告值作为口径对照。本文方法与上述三条主线在表征上的差异是：将量化下移到坐标级，不引入显式 VQ-VAE 码本，也不通过扩散在潜空间采样，而是直接在「点级 token + 自回归 Transformer」上完成生成。
+
+\subsection{多边形网格自回归路线：PolyGen}
+
+PolyGen\cite{nash_2020_polygen} 是与 B-rep 路线相邻的另一类直接序列方法，把三角网格视为序列化对象，证明了多 token 自回归生成对结构化几何的可行性。本文将这一思路推广到 B-rep：面与边的几何点直接进入序列，而 token 类别由统一词表区分。
+
+\section{自回归序列建模}
+
+\subsection{Transformer decoder-only 架构}
+
+Transformer\cite{vaswani_2017_attention} 提出多头注意力机制，通过查询、键、值的点积匹配实现全局上下文聚合。decoder-only 变体（如 GPT、LLaMA 系列）使用因果掩码确保第 $t$ 个位置只能看到 $t$ 之前的 token，从而支持自回归生成。这一架构已经成为大规模语言建模的事实标准，也被引入到图像、语音、生物序列等领域。
+
+\subsection{自回归损失与 Teacher Forcing}
+
+自回归模型最大化训练序列的对数似然，等价于最小化每个位置的交叉熵：
+
+\begin{equation}
+    \mathcal{L} = -\sum_{t=1}^{T} \log p(y_t \mid y_{<t}; \theta).
+    \label{eq:ar-loss}
+\end{equation}
+
+训练时采用 Teacher Forcing：将真实 token 序列 $y_{<t}$ 直接作为输入，单步并行预测所有位置；推理时则按一个时间步采样、回填、再推进的方式串行展开。本文损失实现位于 \texttt{04-code/nurbs-code/trainer.py}，对 PAD 位置使用 \texttt{ignore\_index = -100} 跳过梯度。
+
+\subsection{KV cache 与生成时的因果性}
+
+由于因果掩码确保历史隐藏状态在生成新 token 时不变，自回归推理可以缓存每层每个时间步的 K、V 矩阵，新增 token 只需与缓存做注意力点积，避免重复计算。KV cache 把单步推理复杂度从 $O(T^2)$ 降至 $O(T)$，在本文较长的序列设定下显著降低推理时间。LLaMA3 风格主干\cite{meta_2024_llama3} 在工程实现上也广泛采用 KV cache。
+
+\section{LLaMA3 关键组件}
+
+LLaMA3\cite{meta_2024_llama3} 是 Meta 发布的开源大模型家族，其核心组件已经被多数当代大模型采纳。本文主干网络借鉴这些组件，与生成质量直接相关的有以下四项。
+
+\subsection{RMSNorm}
+
+RMSNorm 用每层激活的均方根代替 LayerNorm 中的均值—方差归一化：
+
+\begin{equation}
+    \text{RMSNorm}(x) = \frac{x}{\sqrt{\frac{1}{d}\sum_{i=1}^{d} x_i^2 + \epsilon}} \cdot \gamma,
+    \label{eq:rmsnorm}
+\end{equation}
+
+其中 $\gamma$ 是可学习缩放向量。相较 LayerNorm，RMSNorm 去掉中心化操作，减少了一次按 batch 的均值统计，GPU 上数值更稳定，参数量也略小。本文主干每个 Transformer block 在注意力与 FFN 之前各使用一层 RMSNorm。
+
+\subsection{Rotary Position Embedding (RoPE)}
+
+RoPE\cite{su_2024_roformer} 把位置信息编码为查询、键向量上的复数旋转：对相对位置 $m$，将向量的两个相邻通道 $(x_{2i}, x_{2i+1})$ 视为复数 $x_{2i} + j x_{2i+1}$，乘以单位复数 $e^{j m \theta_i}$，其中 $\theta_i = 10000^{-2i/d}$。RoPE 不显式插入位置嵌入向量，对长序列外推友好，并保持注意力点积的旋转不变性。本文主干仅对 Q、K 应用 RoPE，对 V 不作用。
+
+\subsection{SwiGLU 前馈层}
+
+SwiGLU 用门控线性单元替换传统 FFN：
+
+\begin{equation}
+    \text{SwiGLU}(x) = \big(\text{Swish}(x W_1)\big) \odot (x W_2) \cdot W_3,
+    \label{eq:swiglu}
+\end{equation}
+
+其中 $\text{Swish}(z) = z \cdot \sigma(z)$。在等参数预算下，SwiGLU 通常优于 GeLU 或 ReLU。本文主干每个 block 的 FFN 部分使用 SwiGLU。
+
+\subsection{Grouped Query Attention (GQA)}
+
+GQA 让多个查询头共享同一组 K/V 头，介于多头注意力（MHA）与多查询注意力（MQA）之间。配置参数 \texttt{n\_kv\_heads} 控制 K/V 头组数：当 \texttt{n\_kv\_heads = n\_heads} 时退化为 MHA，当 \texttt{n\_kv\_heads = 1} 时退化为 MQA。本文主干默认 \texttt{n\_heads = 8}、\texttt{n\_kv\_heads = 4}，每个 KV 头由 2 个 Q 头共享，能在保持 KV cache 较小的同时维持注意力容量。
+
+\section{CAD 生成质量评价指标}
+
+\subsection{基于 OpenCASCADE BRepCheck 的几何有效性}
+
+\texttt{BRepCheck\_Analyzer} 是 OpenCASCADE 提供的内置校验器，对输入 Shape 逐层检测面、边、顶点、Loop、Shell、Solid 的几何一致性与拓扑合法性。常见的失败原因包括 \texttt{BRepCheck\_NotClosed}（Shell 含游离边）、\texttt{BRepCheck\_InvalidCurveOnSurface}（边的几何曲线不在面参数域上）、\texttt{BRepCheck\_BadOrientation}（取向不一致）等。当 \texttt{BRepCheck\_Analyzer.IsValid()} 返回 \texttt{True} 时，本文认定该生成样本「有效」。
+
+\subsection{三态统计与有效率口径}
+
+本文主表口径与\autoref{tab:three-state-def} 一致，按「未产出 STEP / 产出但无效 / 产出且有效」三种状态对生成样本计数，并以「有效率（of saved）$= \mathrm{S3} / (\mathrm{S2} + \mathrm{S3})$」作为主要指标，即在所有成功写出 STEP 文件的样本中 BRepCheck 通过的比例；同时给出「有效率（of attempts）$= \mathrm{S3} / (\mathrm{S1} + \mathrm{S2} + \mathrm{S3})$」作为脚注口径。该口径与多数同类工作所报告的 OCC BRepCheck 通过率一致，便于与文献数据直接对照。

@@ -1,39 +1,175 @@
 %% 第三章
 
-\chapter{算法示例}
-\chaptermark{算法示例}
+\chapter{B-rep 序列化与数据预处理}
+\chaptermark{B-rep 序列化与数据预处理}
 
-\section{基于二分查找的有序数组检索}
+本章介绍把 B-rep 模型转换为可训练的 token 序列的整套预处理流程，主要内容包括：数据流程总览、B-rep 几何 / 拓扑分解、面 / 边 NURBS 采样、坐标量化、统一词表、序列骨架（face\_block / edge\_block）的组织方式，以及面 / 边的拓扑感知排序策略。
 
-本章给出一个算法环境的使用示例。假设输入为一个按升序排列的数组
-$A = \{a_1, a_2, \ldots, a_n\}$，目标是在数组中查找给定元素 $x$ 的位置。
-如\autoref{alg:undergraduate-binary-search}所示，二分查找每一步都将搜索区间缩小为原来的一半，
-因此具有较高的检索效率。
+\section{数据预处理流程总览}
+
+整套预处理从 STEP 文件出发，经五个阶段抵达可训练的序列文件：STEP 解析 $\to$ 拓扑分解 $\to$ 面 / 边几何采样 $\to$ 坐标量化 $\to$ 拓扑感知排序与序列拼装。其中 STEP 解析与拓扑分解通过 OpenCASCADE 完成。
+
+代码主目录在 \texttt{04-code/nurbs-code/} 下，对应入口为 \texttt{2brep\_nurbs\_wcs.py}（WCS 坐标系下的 NURBS / B-rep 重建与验证）与 \texttt{2brep\_nurbs\_quan\_wcs.py}（带量化参数的版本），见 \texttt{04-code/nurbs-code/README.md}。同一套规则在 \texttt{experiment-local/2sequence\_nurbs.py} 与 \texttt{experiment-local/2brep.py} 中有早期镜像，与服务器训练数据匹配。最终训练数据产物为 \texttt{data/nurbs\_sequences\_v1\_patch.pkl}，包含 64\,325 个训练样本与 6\,095 个验证样本，统一词表规模 4\,053。
+
+\section{B-rep 的几何与拓扑分解}
+
+\subsection{面 / 边 / 顶点的提取}
+
+读入一个 STEP 文件后，使用 OpenCASCADE 的 \texttt{TopExp\_Explorer} 按 Face、Edge、Vertex 顺序遍历拓扑层级，得到面集合 $\{f_k\}_{k=1}^{F}$ 与边集合 $\{e_j\}_{j=1}^{E}$，并维护面—边邻接表：对每个面记录其所有 Wire 上的边索引，对每个边记录其相邻的两个面索引。这一阶段不修改任何几何，只构建索引表与邻接图。
+
+\subsection{NURBS 曲面的 UV 采样}
+
+对每个面 $f_k$，在其参数域 $[u_{\min}, u_{\max}] \times [v_{\min}, v_{\max}]$ 上做均匀网格采样，得到 \textbf{16 个三维点}，作为该面在序列中的几何样本：
+
+\begin{equation}
+    \mathcal{P}_k = \{ S_k(u_a, v_b) \mid a, b = 0, 1, 2, 3 \}.
+    \label{eq:face-uv-sampling}
+\end{equation}
+
+为减小参数化任意性带来的分布偏差，预处理阶段对每个面 UV 方向做 canonical sorting：按面包围盒主轴对 $u$、$v$ 方向重新排序。该 16 个三维点共贡献 48 个标量坐标 token，与 1 个面索引 token 一起构成 \textbf{face\_block = 49} 的面段（详见 §3.4）。
+
+\subsection{NURBS 曲线的弧长采样}
+
+对每条边 $e_j$，按弧长在 $[0, L_j]$ 上均匀取参数点并求值，得到 \textbf{4 个三维点} 作为该边在序列中的几何样本。弧长采样比参数域均匀采样更稳健——对参数化变形不敏感，对短边和长边都能给出可比较的采样密度。Edge 同样做 canonical sorting：按起止顶点的坐标顺序统一方向。该 4 个三维点共贡献 12 个标量坐标 token，与 2 个面索引 token（两端邻面）一起构成 \textbf{edge\_block = 14} 的边段（详见 §3.4）。
+
+\section{坐标量化与统一词表}
+
+\subsection{标量均匀量化}
+
+所有采样点已经过单位化（缩放到 $[-1, 1]^3$）。对每个标量分量 $x \in [-1, 1]$ 应用均匀量化：
+
+\begin{equation}
+    q(x) = \left\lfloor \frac{x + 1}{2} \cdot N_q \right\rfloor + \text{offset}, \quad N_q = 4000,\ \text{offset} = 50.
+    \label{eq:quantization}
+\end{equation}
+
+量化粒度约 $5 \times 10^{-4}$，对 1\,m 尺度的零件相当于 0.5\,mm 精度，对小特征也能保留毫米级细节。量化函数实现于 \texttt{04-code/nurbs-code/utils.py}。
+
+\subsection{词表组成}
+
+数据侧的统一词表共 4\,053 个 token，按三段式布局：
+
+\begin{itemize}
+    \item \textbf{面索引段}：$[0, 49]$，共 50 个 token，用于编码每个面在当前样本中的序号；
+    \item \textbf{量化坐标段}：$[50, 4049]$，共 4\,000 个 token，对应\autoref{eq:quantization} 中 $q(x)$ 的取值范围；
+    \item \textbf{结构 token 段}：$\text{START}=4050$，$\text{SEP}=4051$，$\text{END}=4052$。
+\end{itemize}
+
+数据词表大小为 $50 + 4000 + 3 = 4053$。模型侧额外引入一个 PAD token（id $= 4053$）用于批内序列长度对齐，因此模型 \texttt{vocab\_size} = 4054（即数据词表大小加上 PAD，记录见 \texttt{experiment-local/logs/hr2\_patch1.log}：「Dataset Vocab: 4053, Model Vocab: 4054, PAD: 4053」）。词表常量定义于 \texttt{04-code/nurbs-code/utils.py} 与 \texttt{04-code/nurbs-code/dataset.py}。
+
+这种三段布局让自回归模型可以从 logit 分布上直接识别当前位置应该输出哪一段，避免「几何 token 与控制 token 混淆」。
+
+\section{序列骨架：face\_block 与 edge\_block 的组织}
+
+\subsection{完整序列结构}
+
+一个完整样本的 token 序列以 START 起、END 止，中间由 SEP 切分为「面段」与「边段」两部分：
+
+\begin{verbatim}
+START  [face_1 block] [face_2 block] ... [face_F block]
+SEP    [edge_1 block] [edge_2 block] ... [edge_E block]  END
+\end{verbatim}
+
+\subsection{face\_block：48 个坐标 token + 1 个面索引 token}
+
+每个面段长度为 \textbf{face\_block = 49} 个 token：前 48 个 token 是当前面 16 个三维采样点按 $(x, y, z)$ 展平后的标量坐标 token，最后 1 个 token 是面索引 token。该约定与 \texttt{04-code/nurbs-code/dataset.py:\_group\_tokens} 的实现完全一致：函数将 48 个坐标 token 按 3 个一组分为 16 个 $[x, y, z]$ 三元组，再追加一个 $[\text{idx}, \text{PAD}, \text{PAD}]$ 的面索引三元组。
+
+\subsection{edge\_block：2 个面索引 token + 12 个坐标 token}
+
+每个边段长度为 \textbf{edge\_block = 14} 个 token：前 2 个 token 是该边两端邻面的面索引 token，后 12 个 token 是当前边 4 个三维采样点按 $(x, y, z)$ 展平后的标量坐标 token。\texttt{\_group\_tokens} 把 2 个面索引各组装为 $[\text{idx}, \text{PAD}, \text{PAD}]$ 三元组，再把 12 个坐标 token 分为 4 个 $[x, y, z]$ 三元组追加在后。
+
+\subsection{三元组化分组的语义}
+
+经过 \texttt{\_group\_tokens} 处理后，原始 1D token 序列被分组为形状 $(L, 3)$ 的张量：每一「行」是一个三元组，几何点位置上的行为 $[x, y, z]$（三个坐标 token），面索引或特殊符号位置上的行为 $[\text{token}, \text{PAD}, \text{PAD}]$。这种统一形状便于按窗口对齐输入。本文主实验的窗口大小为 1（即 \texttt{local\_window\_size = 1}），每一行作为标准 next-token 的单步预测目标；代码中也保留了 $W > 1$ 的窗口化分支以支持点级三分量联合建模（详 §4.4）。
+
+\section{序列边界控制与特殊 token 的使用}
+
+\subsection{START / SEP / END 的使用规则}
+
+START 出现在序列首部，标记自回归起点；SEP 分隔面段与边段；END 标志生成终止。这三个 token 在数据词表中已经显式编码。
+
+\subsection{PAD token 与训练侧约束}
+
+PAD（id $= 4053$）是模型侧引入的填充 token，用于两类用途：(a) 批内不同序列长度的对齐填充，对应位置在 \texttt{attention\_mask} 中标记为 0；(b) 在面索引或特殊符号位置上的 $t_1$、$t_2$ 分量填充（仅在窗口化分支启用时使用）。训练阶段对 PAD 位置的 label 设为 $-100$，由 \texttt{nn.CrossEntropyLoss} 的 \texttt{ignore\_index} 参数跳过梯度更新；推理阶段当生成位置类别决定应该输出 PAD 时直接写入 PAD，不进入 softmax 采样。这一约束让模型只在「需要预测有效 token」的位置参与梯度。
+
+\section{拓扑感知排序策略}
+
+\subsection{设计目标}
+
+在固定词表与序列骨架之外，面 / 边的排列顺序也是序列化设计的一部分。如果按任意顺序排列，序列中「面 $f$ 与其邻接边 $e$」之间的相对位置完全由随机置换决定，期望距离可达数百 token；在长序列上，自回归注意力对远距离信号的聚合相对困难，模型对局部一致性的建模也会更难。本文为面与边各设计了一种确定性排序方案，目的是\textbf{提高序列中拓扑相邻元素的位置邻近性、降低相同 B-rep 在不同次预处理下的样本差异}。
+
+\subsection{DFS 面排序}
+
+面排序以面—边邻接图作为基础。算法从面索引最小的面出发，按深度优先方式遍历整张图：访问当前面，对其每条邻接边，找到共享这条边的另一个面，若未访问则压栈递归。最终得到一个完整的面访问序列 $\pi$。具体伪代码如\autoref{alg:dfs-face-sort} 所示。
 
 \begin{algorithm}[htbp]
-    \caption{二分查找算法示例}
-    \label{alg:undergraduate-binary-search}
+    \caption{DFS 面排序算法}
+    \label{alg:dfs-face-sort}
     \begin{algorithmic}[1]
-        \Require 升序数组 $A$，数组长度 $n$，待查找元素 $x$
-        \Ensure 若查找成功则返回元素下标，否则返回 $-1$
-        \State $left \gets 1$
-        \State $right \gets n$
-        \While{$left \leq right$}
-            \State $mid \gets \lfloor (left + right) / 2 \rfloor$
-            \If{$A[mid] = x$}
-                \State \Return $mid$
-            \ElsIf{$A[mid] < x$}
-                \State $left \gets mid + 1$
-            \Else
-                \State $right \gets mid - 1$
-            \EndIf
+        \Require 面集合 $F$，边集合 $E$，面—边邻接表 $\text{adj}$
+        \Ensure 有序面序列 $\pi$
+        \State $\text{visited}[f] \gets \text{false}$，对所有 $f \in F$
+        \State $\pi \gets [\,]$
+        \State $\text{stack} \gets [\arg\min_f f.\text{id}]$
+        \While{$\text{stack}$ 非空}
+            \State $f \gets \text{pop}(\text{stack})$
+            \If{$\text{visited}[f]$} \State \textbf{continue} \EndIf
+            \State $\text{visited}[f] \gets \text{true}$
+            \State 将 $f$ 追加到 $\pi$
+            \For{每条 $e \in \text{adj}[f]$}
+                \State 设 $f'$ 为与 $f$ 共享 $e$ 的另一面（若存在）
+                \If{$f'$ 存在且未访问}
+                    \State 将 $f'$ 压入 $\text{stack}$
+                \EndIf
+            \EndFor
         \EndWhile
-        \State \Return $-1$
+        \State \Return $\pi$
     \end{algorithmic}
 \end{algorithm}
 
-\section{复杂度分析}
+DFS 保证拓扑邻接的面在序列中尽量靠近，并具有连通分量内的局部聚类性质。当 B-rep 有多个连通 Shell 时，DFS 在第一个 Shell 完成后自然继续从下一个未访问面开始，不需要额外切换逻辑。
 
-对于长度为 $n$ 的有序数组，\autoref{alg:undergraduate-binary-search} 在最坏情况下需要进行
-$O(\log n)$ 次比较，空间复杂度为 $O(1)$。该示例可用于展示模板中算法标题、
-编号、交叉引用以及伪代码排版效果。
+\subsection{最大索引关联边排序}
+
+在每个面内部，边按「邻接面索引最大者」优先排序。给定面 $f_k$ 的邻接边集合 $\{e_j\}$，对每条 $e_j$ 计算
+
+\begin{equation}
+    \text{key}(e_j) = \max_{f' \ne f_k,\ f' \in \text{adj}(e_j)} \pi^{-1}(f'),
+    \label{eq:edge-key}
+\end{equation}
+
+其中 $\pi^{-1}(\cdot)$ 是面在 $\pi$ 中的位置；当 $e_j$ 为自由边时取 $-\infty$。然后按 key 降序排列。具体伪代码如\autoref{alg:max-idx-edge-sort} 所示。
+
+\begin{algorithm}[htbp]
+    \caption{最大索引关联边排序算法}
+    \label{alg:max-idx-edge-sort}
+    \begin{algorithmic}[1]
+        \Require 面 $f_k$，其邻接边集合 $\text{adj}_e[f_k]$，面排序 $\pi$
+        \Ensure $f_k$ 的有序边序列
+        \State $\text{keys} \gets [\,]$
+        \For{每条 $e \in \text{adj}_e[f_k]$}
+            \State 设 $f'$ 为与 $f_k$ 共享 $e$ 的另一面（或为空）
+            \State $k \gets \pi^{-1}(f')$ 若 $f'$ 存在；否则 $-\infty$
+            \State 将 $(e, k)$ 追加到 $\text{keys}$
+        \EndFor
+        \State 按 $k$ 降序对 $\text{keys}$ 排序
+        \State \Return $[e \text{ for } (e, k) \in \text{keys}]$
+    \end{algorithmic}
+\end{algorithm}
+
+该策略让「跨越较远面索引」的边出现在面内部边段的前段，使自回归生成时模型可以先看到跨度较大的边，再补齐局部边，便于在序列早期把握全局拓扑骨架。
+
+\subsection{排序策略的论证地位}
+
+本文将上述 DFS 面排序与最大索引边排序作为序列化设计的一部分提供，目的是提高局部一致性与建模便利性。本论文未单独设计「随机排序 vs 拓扑感知排序」的受控对照实验，因此不对排序策略对最终有效率的独立贡献做定量声明；相关消融实验作为后续工作列入 §5.6。
+
+\section{序列长度估计}
+
+排序完成后，单个样本的 token 序列长度由面数 $F$ 与边数 $E$ 决定：每个面贡献 face\_block = 49 个 token、每条边贡献 edge\_block = 14 个 token，加上 3 个结构 token：
+
+\begin{equation}
+    L \approx 49 F + 14 E + 3.
+    \label{eq:seq-length}
+\end{equation}
+
+在 DeepCAD 子集上常见样本的 $F$ 与 $E$ 数量级使得 $L$ 远小于 4\,096 上限。\texttt{04-code/nurbs-code/dataset.py} 在加载阶段会过滤 \texttt{max\_seq\_len = 4\,096} 以外的样本：经过过滤后，训练集得到 64\,325 个样本，验证集得到 6\,095 个样本，整体过滤量级很小（训练侧 26 个，验证侧 1 个）。

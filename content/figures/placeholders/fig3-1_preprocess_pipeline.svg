@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" font-family="sans-serif">
+  <rect width="900" height="600" fill="#F8F8F8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#222">Fig 3-1 · Point-level NURBS Serialization Pipeline (5 Stages)</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#666">数据预处理 5 阶段流程：STEP → 拓扑分解 → 几何采样 → 坐标量化 → 排序与拼装 — 占位图（正式示意草案）</text>
+
+  <!-- 5 stages, horizontal flow -->
+  <g font-size="13" text-anchor="middle">
+    <!-- Stage 1 -->
+    <rect x="40"  y="180" width="140" height="80" fill="#FFFFFF" stroke="#333" stroke-width="2" rx="6"/>
+    <text x="110" y="210" font-weight="bold">Stage 1</text>
+    <text x="110" y="232">STEP 解析</text>
+    <text x="110" y="251" font-size="11" fill="#555">OCC TopExp</text>
+
+    <line x1="180" y1="220" x2="220" y2="220" stroke="#555" stroke-width="2" marker-end="url(#a3)"/>
+
+    <!-- Stage 2 -->
+    <rect x="220" y="180" width="140" height="80" fill="#FFFFFF" stroke="#333" stroke-width="2" rx="6"/>
+    <text x="290" y="210" font-weight="bold">Stage 2</text>
+    <text x="290" y="232">拓扑分解</text>
+    <text x="290" y="251" font-size="11" fill="#555">face/edge + adj</text>
+
+    <line x1="360" y1="220" x2="400" y2="220" stroke="#555" stroke-width="2" marker-end="url(#a3)"/>
+
+    <!-- Stage 3 -->
+    <rect x="400" y="180" width="140" height="80" fill="#FFFFFF" stroke="#333" stroke-width="2" rx="6"/>
+    <text x="470" y="210" font-weight="bold">Stage 3</text>
+    <text x="470" y="232">几何采样</text>
+    <text x="470" y="251" font-size="11" fill="#555">49 + 14 pts</text>
+
+    <line x1="540" y1="220" x2="580" y2="220" stroke="#555" stroke-width="2" marker-end="url(#a3)"/>
+
+    <!-- Stage 4 -->
+    <rect x="580" y="180" width="140" height="80" fill="#FFFFFF" stroke="#333" stroke-width="2" rx="6"/>
+    <text x="650" y="210" font-weight="bold">Stage 4</text>
+    <text x="650" y="232">坐标量化</text>
+    <text x="650" y="251" font-size="11" fill="#555">4 000 levels</text>
+
+    <line x1="720" y1="220" x2="760" y2="220" stroke="#555" stroke-width="2" marker-end="url(#a3)"/>
+
+    <!-- Stage 5 -->
+    <rect x="760" y="180" width="140" height="80" fill="#FFFFFF" stroke="#333" stroke-width="2" rx="6"/>
+    <text x="830" y="210" font-weight="bold">Stage 5</text>
+    <text x="830" y="232">排序 + 拼装</text>
+    <text x="830" y="251" font-size="11" fill="#555">DFS + max-idx</text>
+  </g>
+
+  <!-- inputs -->
+  <g font-size="12" text-anchor="middle">
+    <rect x="40" y="80" width="140" height="60" fill="#E8F0FE" stroke="#1a73e8" stroke-width="2"/>
+    <text x="110" y="105" font-weight="bold">Input</text>
+    <text x="110" y="125">DeepCAD .step</text>
+    <line x1="110" y1="140" x2="110" y2="178" stroke="#555" stroke-width="2" marker-end="url(#a3)"/>
+  </g>
+
+  <!-- output -->
+  <g font-size="12" text-anchor="middle">
+    <rect x="760" y="80" width="140" height="60" fill="#E8F0FE" stroke="#1a73e8" stroke-width="2"/>
+    <text x="830" y="100" font-weight="bold">Output</text>
+    <text x="830" y="118">.pkl: 64 325 + 6 095</text>
+    <text x="830" y="134" font-size="11" fill="#555">vocab 4 053</text>
+    <line x1="830" y1="178" x2="830" y2="140" stroke="#555" stroke-width="2" marker-end="url(#a3)"/>
+  </g>
+
+  <!-- details per stage -->
+  <g font-size="11" fill="#444" text-anchor="middle">
+    <text x="110" y="300">read solid</text>
+    <text x="110" y="316">→ shells/faces</text>
+
+    <text x="290" y="300">build face-edge</text>
+    <text x="290" y="316">adjacency graph</text>
+
+    <text x="470" y="300">7×7 UV / face</text>
+    <text x="470" y="316">+ 14 arc / edge</text>
+    <text x="470" y="332">+ canonical sort</text>
+
+    <text x="650" y="300">q(x) = ⌊(x+1)/2 · 4000⌋ + 50</text>
+    <text x="650" y="316">grid ~ 5×10⁻⁴</text>
+
+    <text x="830" y="300">DFS face order</text>
+    <text x="830" y="316">+ max-idx edge order</text>
+    <text x="830" y="332">+ START/SEP/END</text>
+  </g>
+
+  <!-- code paths -->
+  <g font-size="11" fill="#666" text-anchor="middle">
+    <text x="110" y="395">04-code/nurbs-code/</text>
+    <text x="110" y="410">utils.py</text>
+    <text x="290" y="395">2brep_nurbs_wcs.py</text>
+    <text x="290" y="410">(experiment-local/2brep.py)</text>
+    <text x="470" y="395">2sequence_nurbs.py</text>
+    <text x="470" y="410">(server mirror)</text>
+    <text x="650" y="395">utils.py · quantize</text>
+    <text x="650" y="410">vocab 4 053</text>
+    <text x="830" y="395">dataset.py</text>
+    <text x="830" y="410">NURBS_SORT_MODE</text>
+  </g>
+
+  <text x="450" y="490" text-anchor="middle" font-size="13" fill="#333">Output sequence: START [face_1 segment] [face_2] ... [face_F] SEP [edge_1] ... [edge_E] END</text>
+  <text x="450" y="513" text-anchor="middle" font-size="12" fill="#555">每个 face segment = 50 三元组（49 几何 + 1 索引） · 每个 edge segment = 16 三元组（14 几何 + 2 端面索引）</text>
+
+  <text x="450" y="560" text-anchor="middle" font-size="13" fill="#999">LaTeX label: fig:preprocess-pipeline · 章节建议: §3.1 总览</text>
+  <text x="450" y="578" text-anchor="middle" font-size="11" fill="#aaa">[PLACEHOLDER · 正式示意图草案]</text>
+
+  <defs>
+    <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+  </defs>
+</svg>
