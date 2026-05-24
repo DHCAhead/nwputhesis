@@ -3,15 +3,22 @@
 \chapter{自回归生成模型与逆向重建}
 \chaptermark{自回归生成模型与逆向重建}
 
-本章描述生成模型的总体架构、训练策略、推理流程，以及从 token 序列到 STEP / STL 文件的逆向重建管线。模型代码主体位于 \texttt{04-code/nurbs-code/model.py}，主要类有 \texttt{CompoundPointEmbedding}、\texttt{LLaMA3Block}、\texttt{LocalBlock}、\texttt{CompoundPointDecoder} 与 \texttt{LLaMA3ARModel}；训练代码位于 \texttt{04-code/nurbs-code/trainer.py} 与 \texttt{train\_ar.py}；生成与逆向重建分别在 \texttt{generate.py} 与 \texttt{sequence2nurbs.py} 中实现。
+本章描述生成模型的总体架构、训练策略、推理流程，以及从 token 序列到 STEP / STL 文件的逆向重建管线。工程实现主要包含 \texttt{CompoundPointEmbedding}、\texttt{LLaMA3Block}、\texttt{LocalBlock}、\texttt{CompoundPointDecoder} 与 \texttt{LLaMA3ARModel} 等模块；具体文件索引统一列入附录。
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.82\textwidth]{placeholders/placeholder.jpg}
+    \caption{自回归生成模型总体架构示意图（占位）}
+    \label{fig:model-architecture}
+\end{figure}
 
 \section{模型总体架构}
 
 \subsection{窗口化输入与生成头的两种分支}
 
-模型把第~3 章生成的分组序列张量（形状 $(L, 3)$）按窗口大小 $W$ 进一步组织为 $(L', W)$ 形式，其中 $L'$ 是窗口数。配置参数 \texttt{local\_window\_size} 控制窗口大小：当 $W = 1$ 时退化为「标准 next-token」自回归（每一行作为单步预测目标），主干 Transformer 的最终隐藏状态经 \texttt{ar\_lm\_head} 直接得到下一个 token 的 logits；当 $W > 1$ 时启用 CompoundPointDecoder，对窗口内的 $W$ 个分量做第二层因果自回归。
+模型把第~3 章生成的分组序列张量（形状 $(L, 3)$）按窗口大小 $W$ 进一步组织为 $(L', W)$ 形式，其中 $L'$ 是窗口数。配置参数 \texttt{local\_window\_size} 控制窗口大小：当 $W = 1$ 时退化为“标准 next-token”自回归（每一行作为单步预测目标），主干 Transformer 的最终隐藏状态经 \texttt{ar\_lm\_head} 直接得到下一个 token 的 logits；当 $W > 1$ 时启用 CompoundPointDecoder，对窗口内的 $W$ 个分量做第二层因果自回归。
 
-\textbf{本文主实验使用 $W = 1$ 配置}。训练日志 \texttt{experiment-local/logs/hr2\_patch1.log} 中明确写出：「\texttt{local\_window\_size=1: 标准 next-token（主干 norm $\to$ ar\_lm\_head），无 CompoundPointDecoder}」。CompoundPointDecoder 作为代码中的可选扩展保留，相关讨论见 §4.4。
+\textbf{本文主实验使用 $W = 1$ 配置}。训练日志明确记录 \texttt{local\_window\_size = 1}，对应标准 next-token 头（主干 norm $\to$ \texttt{ar\_lm\_head}），不启用 CompoundPointDecoder。CompoundPointDecoder 作为代码中的可选扩展保留，相关讨论见 §4.4。
 
 \subsection{级联结构}
 
@@ -43,7 +50,7 @@ CompoundPointEmbedding 包含一张大小为 $\text{vocab\_size} \times d_{\text
 
 \subsection{块结构}
 
-主干由 $n_{\text{layers}} = 8$ 个同构 LLaMA3 风格 Transformer block 串联（\texttt{04-code/nurbs-code/model.py:LLaMA3Block}）。每个 block 采用 pre-norm 残差结构：
+主干由 $n_{\text{layers}} = 8$ 个同构 LLaMA3 风格 Transformer block 串联。每个 block 采用 pre-norm 残差结构：
 
 \begin{align}
     \mathbf{h}' &= \mathbf{h} + \text{GQA}\big(\text{RMSNorm}(\mathbf{h})\big), \label{eq:block-attn} \\
@@ -52,28 +59,42 @@ CompoundPointEmbedding 包含一张大小为 $\text{vocab\_size} \times d_{\text
 
 注意力部分采用 Grouped Query Attention，前馈部分采用 SwiGLU，残差前后各使用一层 RMSNorm。本文主干配置如下：层数 $n_{\text{layers}} = 8$、查询头数 $n_{\text{heads}} = 8$、KV 头数 $n_{\text{kv\_heads}} = 4$（每个 KV 头由 2 个 Q 头共享）、隐藏维度 $d_{\text{model}} = 256$、前馈中间维度 $\text{dim\_ffn} = 1024$，RoPE 的 $\theta = 500\,000$，RMSNorm 的 $\epsilon = 10^{-5}$。
 
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.82\textwidth]{placeholders/placeholder.jpg}
+    \caption{Grouped Query Attention 与多头注意力对比示意图（占位）}
+    \label{fig:gqa-vs-mha}
+\end{figure}
+
 \subsection{RoPE 应用细节}
 
-RoPE 仅对 Q、K 应用，不作用于 V（实现见 \texttt{04-code/nurbs-code/model.py:apply\_rotary\_pos\_emb}）。RoPE 缓存的最大序列长度由配置中的 \texttt{max\_seq\_len} 决定，并在遇到超长输入时自动扩展。RoPE 的相对位置不变性使得主干在窗口数较多的场景下仍可保持稳定的注意力点积。
+RoPE 仅对 Q、K 应用，不作用于 V。RoPE 缓存的最大序列长度由配置中的 \texttt{max\_seq\_len} 决定，并在遇到超长输入时自动扩展。RoPE 的相对位置不变性使得主干在窗口数较多的场景下仍可保持稳定的注意力点积。
 
 \subsection{KV cache 与训练加速}
 
-主干在推理阶段使用 KV cache：每层缓存最近一次前向的 $K$、$V$，新增窗口只需与缓存做注意力点积，把单步推理复杂度由 $O(T^2)$ 降至 $O(T)$。训练阶段启用梯度检查点（gradient checkpointing）与 PyTorch AMP 混合精度（\texttt{use\_amp = True}），在 H20 上以 FP16/BF16 算子加速矩阵乘累加，记录见 \texttt{experiment-local/logs/hr2\_patch1.log}「梯度检查点已启用（节省显存）」一行。
+主干在推理阶段使用 KV cache：每层缓存最近一次前向的 $K$、$V$，新增窗口只需与缓存做注意力点积，把单步推理复杂度由 $O(T^2)$ 降至 $O(T)$。训练阶段启用梯度检查点（gradient checkpointing）与 PyTorch AMP 混合精度（\texttt{use\_amp = True}），在 H20 上以 FP16/BF16 算子加速矩阵乘累加，训练日志中记录了“梯度检查点已启用（节省显存）”。
 
 \subsection{主干末端：RMSNorm + ar\_lm\_head}
 
-主干末端为一层 RMSNorm，其输出的隐藏状态 $\mathbf{h}_t \in \mathbb{R}^{d_{\text{model}}}$ 直接送入 \texttt{ar\_lm\_head}（一层无偏置 \texttt{nn.Linear}）映射到 $\text{vocab\_size}$ 维 logits，预测下一个 token 的分布。该「主干 norm $\to$ ar\_lm\_head」即本文主实验所采用的标准 next-token 头。
+主干末端为一层 RMSNorm，其输出的隐藏状态 $\mathbf{h}_t \in \mathbb{R}^{d_{\text{model}}}$ 直接送入 \texttt{ar\_lm\_head}（一层无偏置 \texttt{nn.Linear}）映射到 $\text{vocab\_size}$ 维 logits，预测下一个 token 的分布。该“主干 norm $\to$ ar\_lm\_head”即本文主实验所采用的标准 next-token 头。
 
 \section{CompoundPointDecoder：代码中的可选窗口分解扩展}
 
 \subsection{设计动机}
 
-CompoundPointDecoder 是 \texttt{04-code/nurbs-code/model.py} 中实现的可选扩展，针对 $W > 1$ 的窗口化分支：当一个窗口包含三个语义不同的分量（例如 $t_0$ 为面索引或坐标 $x$、$t_1$ 为坐标 $y$、$t_2$ 为坐标 $z$）时，将主干隐藏状态 $\mathbf{h}_t$ 作为上下文，对窗口内的三个分量按因果链顺序生成：
+CompoundPointDecoder 是本文实现中保留的可选扩展，针对 $W > 1$ 的窗口化分支：当一个窗口包含三个语义不同的分量（例如 $t_0$ 为面索引或坐标 $x$、$t_1$ 为坐标 $y$、$t_2$ 为坐标 $z$）时，将主干隐藏状态 $\mathbf{h}_t$ 作为上下文，对窗口内的三个分量按因果链顺序生成：
 
 \begin{equation}
     p(t_0, t_1, t_2 \mid \mathbf{h}_t) = p(t_0 \mid \mathbf{h}_t)\, p(t_1 \mid \mathbf{h}_t, t_0)\, p(t_2 \mid \mathbf{h}_t, t_0, t_1).
     \label{eq:causal-chain}
 \end{equation}
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.82\textwidth]{placeholders/placeholder.jpg}
+    \caption{CompoundPointDecoder 窗口内因果链示意图（占位）}
+    \label{fig:compound-decoder}
+\end{figure}
 
 \subsection{实现结构}
 
@@ -83,7 +104,7 @@ CompoundPointDecoder 内部由 \texttt{decoder\_n\_layers} 个 LocalBlock 串联
 
 \subsection{在本文主实验中的地位}
 
-本文主实验配置 \texttt{local\_window\_size = 1}，因此模型实例化时 \texttt{LLaMA3ARModel} 的构造逻辑选择「\texttt{self.local\_decoder = None}、\texttt{self.ar\_lm\_head = nn.Linear(...)}」分支，\textbf{完全不构建也不调用 CompoundPointDecoder}。换言之，主实验的有效率与训练损失数字不依赖于 CompoundPointDecoder。本节描述的因果链分解结构与 LocalBlock 实现作为代码中的可选扩展保留，未来若启用 $W > 1$ 的窗口化设定可直接复用，相关方向见 §5.6 后续工作。
+本文主实验配置 \texttt{local\_window\_size = 1}，因此模型实例化时 \texttt{LLaMA3ARModel} 的构造逻辑选择“\texttt{self.local\_decoder = None}、\texttt{self.ar\_lm\_head = nn.Linear(...)}”分支，\textbf{完全不构建也不调用 CompoundPointDecoder}。换言之，主实验的有效率与训练损失数字不依赖于 CompoundPointDecoder。本节描述的因果链分解结构与 LocalBlock 实现作为代码中的可选扩展保留，未来若启用 $W > 1$ 的窗口化设定可直接复用，相关方向见 §5.6 后续工作。
 
 \section{损失函数与训练策略}
 
@@ -96,11 +117,11 @@ CompoundPointDecoder 内部由 \texttt{decoder\_n\_layers} 个 LocalBlock 串联
     \label{eq:ce-loss}
 \end{equation}
 
-实现使用 \texttt{nn.CrossEntropyLoss(ignore\_index = -100)}（见 \texttt{04-code/nurbs-code/model.py} 的 \texttt{forward} 与 \texttt{trainer.py} 调用处）。PAD 位置的 label 在数据侧已置为 $-100$，因此不会产生梯度。
+实现使用 \texttt{nn.CrossEntropyLoss(ignore\_index = -100)}。PAD 位置的 label 在数据侧已置为 $-100$，因此不会产生梯度。
 
 \subsection{优化器与学习率}
 
-优化器为 AdamW，初始学习率 $5 \times 10^{-4}$、权重衰减 $0.01$、dropout $0.1$，学习率调度采用「warmup $\to$ 中段稳定 $\to$ 末段衰减」三段式形态（曲线见 \texttt{03-experiments/toloacl/hr2\_patch1\_\_Train\_Learning\_Rate.csv}，共 201 条 step-level 记录）。训练全程启用混合精度（\texttt{use\_amp = True}），并在主干上启用梯度检查点以节省显存。
+优化器为 AdamW，初始学习率 $5 \times 10^{-4}$、权重衰减 $0.01$、dropout $0.1$，学习率调度采用“warmup $\to$ 中段稳定 $\to$ 末段衰减”三段式形态，对应曲线共有 201 条 step-level 记录。训练全程启用混合精度（\texttt{use\_amp = True}），并在主干上启用梯度检查点以节省显存。
 
 \subsection{分布式训练}
 
@@ -136,11 +157,18 @@ CompoundPointDecoder 内部由 \texttt{decoder\_n\_layers} 个 LocalBlock 串联
 
 \subsection{特殊 token / 索引 token 的位置约束}
 
-由于本文使用 $W = 1$ 的标准 next-token 头，原始 token 序列里的「面索引、坐标、特殊符号」三类 token 由模型按位置依次生成，序列骨架（face\_block / edge\_block 的分隔位置、SEP 的出现位置等）由训练数据中的高频统计模式自然学到。
+由于本文使用 $W = 1$ 的标准 next-token 头，原始 token 序列里的“面索引、坐标、特殊符号”三类 token 由模型按位置依次生成，序列骨架（face\_block / edge\_block 的分隔位置、SEP 的出现位置等）由训练数据中的高频统计模式自然学到。
 
 \section{逆向重建：序列 $\to$ NURBS $\to$ B-rep $\to$ STEP / STL}
 
-逆向重建管线由 \texttt{04-code/nurbs-code/sequence2nurbs.py} 调度，关键几何函数集中在 \texttt{utils.py} 中。整个流程分为四步。
+逆向重建管线由序列解析、NURBS 拟合、拓扑缝合与几何有效性检查组成，整个流程分为四步。
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=0.82\textwidth]{placeholders/placeholder.jpg}
+    \caption{逆向重建管线示意图（占位）}
+    \label{fig:reconstruction-pipeline}
+\end{figure}
 
 \subsection{Token 序列解析与反量化}
 
@@ -151,7 +179,7 @@ CompoundPointDecoder 内部由 \texttt{decoder\_n\_layers} 个 LocalBlock 串联
     \label{eq:dequantization}
 \end{equation}
 
-恢复为 $[-1, 1]$ 内的浮点坐标。面索引段直接读取 token 数值作为面索引；特殊符号段触发段落切换或终止。这一步的解析逻辑实现在 \texttt{04-code/nurbs-code/utils.py} 的 \texttt{parse\_sequence\_to\_cad\_data\_nurbs}。
+恢复为 $[-1, 1]$ 内的浮点坐标。面索引段直接读取 token 数值作为面索引；特殊符号段触发段落切换或终止。
 
 \subsection{NURBS 曲面 / 曲线拟合}
 
@@ -163,8 +191,8 @@ CompoundPointDecoder 内部由 \texttt{decoder\_n\_layers} 个 LocalBlock 串联
 
 \subsection{几何有效性检查}
 
-最终调用 \texttt{BRepCheck\_Analyzer(solid).IsValid()} 作为判据，结果写入评测 JSON。该 check 函数定义在 \texttt{04-code/nurbs-code/utils.py:check\_brep\_validity}，提供两个变体：一个从 STEP 路径读入并校验，另一个直接接收 \texttt{TopoDS\_Shape} 实例进行校验。判据语义与第~2 章 §2.5 一致：\texttt{IsValid()=True} 即认定该样本「有效」。
+最终调用 \texttt{BRepCheck\_Analyzer(solid).IsValid()} 作为判据，结果写入评测 JSON。有效性检查提供两个变体：一个从 STEP 路径读入并校验，另一个直接接收 \texttt{TopoDS\_Shape} 实例进行校验。判据语义与第~2 章 §2.5 一致：\texttt{IsValid()=True} 即认定该样本“有效”。
 
 \subsection{三态记录}
 
-整个评测脚本 \texttt{04-code/nurbs-code/eval\_generated\_brep.py} 输出五个标量：序列总数、重建成功、重建失败、有效 BREP、无效 BREP，按第~2 章\autoref{tab:three-state-def} 的三态口径分别对应 S1（重建失败）、S2（无效 BREP）、S3（有效 BREP）三个统计槽位。该输出格式直接支撑第~5 章主表口径。
+评测脚本输出五个标量：序列总数、重建成功、重建失败、有效 BREP、无效 BREP，按第~2 章\autoref{tab:three-state-def} 的三态口径分别对应 S1（重建失败）、S2（无效 BREP）、S3（有效 BREP）三个统计槽位。该输出格式直接支撑第~5 章主表口径。
