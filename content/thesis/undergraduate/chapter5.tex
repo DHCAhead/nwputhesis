@@ -9,7 +9,7 @@
 
 \subsection{硬件与软件}
 
-训练在校内 GPU 服务器上完成，单机配置 8 $\times$ NVIDIA H20 GPU（每张物理显存约 95\,GB，节点系统内存 1.0\,TiB）。本论文实际训练使用其中 4 张 H20，启动命令通过 \texttt{CUDA\_VISIBLE\_DEVICES=3,4,5,6} 显式锁定。软件栈在 Linux 节点上以 Python 3.10 为基础，深度学习框架使用 PyTorch 2.x 与 PyTorch Lightning 2.x（DDP 多卡并行），几何处理依托 OpenCASCADE Python 绑定，数据 I/O 使用 NumPy 与 h5py。
+训练在校内 GPU 服务器上完成，单机配置 8 $\times$ NVIDIA H20 GPU（每张物理显存约 95\,GB，节点系统内存 1.0\,TiB）。本论文实际训练使用其中 4 张 H20，启动命令通过 \texttt{CUDA\_VISIBLE\_DEVICES=3,4,5,6} 显式锁定。软件栈在 Linux 节点上以 Python 3.10 为基础，深度学习框架使用 PyTorch 2.x\cite{paszke_2019_pytorch} 与 PyTorch Lightning 2.x（DDP 多卡并行），几何处理依托 OpenCASCADE Python 绑定，数据 I/O 使用 NumPy 与 h5py。
 
 \subsection{数据集（DeepCAD 子集）}
 

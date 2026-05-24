@@ -121,7 +121,7 @@ CompoundPointDecoder 内部由 \texttt{decoder\_n\_layers} 个 LocalBlock 串联
 
 \subsection{优化器与学习率}
 
-优化器为 AdamW，初始学习率 $5 \times 10^{-4}$、权重衰减 $0.01$、dropout $0.1$，学习率调度采用“warmup $\to$ 中段稳定 $\to$ 末段衰减”三段式形态，对应曲线共有 201 条 step-level 记录。训练全程启用混合精度（\texttt{use\_amp = True}），并在主干上启用梯度检查点以节省显存。
+优化器为 AdamW\cite{loshchilov_2019_adamw}，初始学习率 $5 \times 10^{-4}$、权重衰减 $0.01$、dropout $0.1$，学习率调度采用“warmup $\to$ 中段稳定 $\to$ 末段衰减”三段式形态，对应曲线共有 201 条 step-level 记录。训练全程启用混合精度\cite{micikevicius_2018_mixed_precision}（\texttt{use\_amp = True}），并在主干上启用梯度检查点以节省显存。
 
 \subsection{分布式训练}
 
@@ -131,7 +131,7 @@ CompoundPointDecoder 内部由 \texttt{decoder\_n\_layers} 个 LocalBlock 串联
 
 \subsection{自回归采样}
 
-推理时输入只含一个 START 三元组，模型按因果顺序逐窗口生成；每一步从主干末端的 \texttt{ar\_lm\_head} 取 logits 后做温度缩放，再依次按 top-k 与 top-p 过滤，最后从过滤后的分布中按 \texttt{torch.multinomial} 采样。本文实际使用的采样配置为 top-k = 1 + top-p = 0.9（贪心式采样并保留累积概率 90\% 的候选集合），生成目录命名为 \texttt{1000\_1\_0.9}。
+推理时输入只含一个 START 三元组，模型按因果顺序逐窗口生成；每一步从主干末端的 \texttt{ar\_lm\_head} 取 logits 后做温度缩放，再依次按 top-k 与 top-p 过滤，最后从过滤后的分布中按 \texttt{torch.multinomial} 采样。本文实际使用的采样配置为 top-k = 1 + top-p = 0.9（贪心式采样并保留累积概率 90\% 的候选集合），该类截断采样思路与神经文本生成中的 nucleus sampling 口径相关\cite{holtzman_2020_nucleus}，生成目录命名为 \texttt{1000\_1\_0.9}。
 
 伪代码如\autoref{alg:ar-generate} 所示。
 

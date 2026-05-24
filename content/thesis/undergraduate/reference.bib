@@ -1,124 +1,80 @@
 %% 参考文献：本科毕业设计“基于深度学习的 B-rep 端到端生成算法研究”
-%% =====================================================================
-%% P0 核心引用：thesis-v1 audit Round 2 已经写入 (2026-05-24)
-%% 用户硬约束：不得编造 DOI / 作者 / 年份；对作者列表不能 100% 确认的字段
-%% 在 entry 注释中标 TODO_verify，请在 LaTeX 编译前人工核对。
+%% 来源原则：优先采用 PMLR / CVF / NeurIPS / ACL Anthology / DBLP / arXiv /
+%% DOI 元数据 / 国家标准信息页 / 中文期刊页面公开元数据，不根据论文内容臆造字段。
 %% =====================================================================
 
-% 期刊
-@article{周融2003,
-  author  = {周融 and 任志国 and 杨尚雷 and 厉星星},
-  title   = {对新形势下毕业设计管理工作的思考与实践},
-  journal = {电气电子教学学报},
-  year    = {2003},
-  volume  = {283},
-  number  = {6},
-  pages   = {107--109}
-}
+% ----------------------------
+% 中文文献、标准与中文教材
+% ----------------------------
 
-@article{DUBAR2013--,
-  author  = {DUBAR, K L. and MITCHELL, D A.},
-  title   = {Revealing nature's synthetic potential through the study of ribosomal natural product biosynthesis},
-  journal = {ACS chemical biology},
-  date    = {2013},
-  volume  = {8},
-  number  = {1},
-  pages   = {473-487}
-}
-
-% 专著
-@book{图书馆,
-  author    = {刘国钧 and 王连成},
-  title     = {图书馆史研究},
+@book{shi_2013_cagd_nurbs,
+  author    = {施法中},
+  title     = {计算机辅助几何设计与非均匀有理 B 样条},
   edition   = {2},
   address   = {北京},
   publisher = {高等教育出版社},
-  year      = {1979},
-  pages     = {15--18}
+  year      = {2013},
+  isbn      = {978-7-04-036326-6}
 }
 
-% 报纸
-@newspaper{李大伦1998,
-  author  = {李大伦},
-  title   = {经济全球化的重要性},
-  journal = {光明日报},
-  date    = {1998-12-27},
-  number  = {3}
+@book{piegl_tiller_2010_nurbs_cn,
+  author     = {Piegl, Les and Tiller, Wayne},
+  translator = {赵罡 and 穆国旺},
+  title      = {非均匀有理 B 样条},
+  address    = {北京},
+  publisher  = {清华大学出版社},
+  year       = {2010}
 }
 
-% 论文集
-@inproceedings{伍蠡甫,
-  author    = {伍蠡甫},
-  title     = {西方文论选},
-  location  = {上海},
-  publisher = {上海译文出版社},
-  year      = {1979},
-  pages     = {12--17}
+@standard{gbt16656_1_2008,
+  title  = {工业自动化系统与集成 产品数据表达与交换 第 1 部分：概述与基本原理},
+  number = {GB/T 16656.1-2008},
+  year   = {2008},
+  organization = {中华人民共和国国家质量监督检验检疫总局 and 中国国家标准化管理委员会}
 }
 
-@inproceedings{FOURNEY,
-  author    = {M E FOURNEY},
-  title     = {Advances in holographic photoelasticity},
-  location  = {New York},
-  publisher = {ASME},
-  date      = {1971},
-  pages     = {17-38}
+@standard{gbt16656_11_2010,
+  title  = {工业自动化系统与集成 产品数据表达与交换 第 11 部分：描述方法：EXPRESS 语言参考手册},
+  number = {GB/T 16656.11-2010},
+  year   = {2010},
+  organization = {中华人民共和国国家质量监督检验检疫总局 and 中国国家标准化管理委员会}
 }
 
-% 学位论文
-@thesis{张筑生,
-  author      = {张筑生},
-  title       = {微分半动力系统的不变集},
-  address     = {北京},
-  institution = {北京大学数学系数学研究所},
-  date        = {1983},
-  pages       = {1--7}
+@standard{gbt16656_21_2008,
+  title  = {工业自动化系统与集成 产品数据表达与交换 第 21 部分：实现方法：交换文件结构的纯正文编码},
+  number = {GB/T 16656.21-2008},
+  year   = {2008},
+  organization = {中华人民共和国国家质量监督检验检疫总局 and 中国国家标准化管理委员会}
 }
 
-% 研究报告
-@report{冯西桥1998,
-  author      = {冯西桥},
-  title       = {核反应堆管道和压力容器的LBB分析},
-  location    = {北京},
-  institution = {清华大学核能技术设计研究院},
-  year        = {1997},
-  pages       = {9--10}
+@article{liang_2023_cad_kernel,
+  author  = {梁聪 and 陈学广 and 石运涛 and 秦科 and 王金凤 and 李莉},
+  title   = {面向多角色开发的三维 CAD 内核开放架构},
+  journal = {计算机辅助设计与图形学学报},
+  year    = {2023},
+  doi     = {10.3724/SP.J.1089.2023.19794}
 }
 
-% 专利
-@patent{姜锡洲,
-  author   = {姜锡洲},
-  title    = {一种温热外敷药制备方案},
-  location = {中国},
-  number   = {881056073},
-  date     = {1989-07-26}
+@article{tai_2023_brep_csg,
+  author  = {太志伟 and 鞠全勇 and 贾保祥 and 傅建中 and 王波 and 程磊 and 郑浩},
+  title   = {一种面向船舶 CAD 的 B-Rep 转 CSG 方法},
+  journal = {计算机辅助设计与图形学学报},
+  year    = {2023},
+  doi     = {10.3724/SP.J.1089.2023.20168}
 }
 
-% 标准
-@standard{gbt7714_2006,
-  number = {GB/T 16159—1996},
-  title  = {汉语拼音正词法基本规则}
+@article{tan_2025_intelligent_cad_review,
+  author  = {谭柏君 and 邓建 and 何从俊 and 赵双 and 李纯义 and 蔡浩俊 and 李会军},
+  title   = {数据驱动的智能 CAD 研究综述},
+  journal = {计算机辅助设计与图形学学报},
+  year    = {2025},
+  doi     = {10.3724/SP.J.1089.2025-00241}
 }
 
-% 条例
-@misc{科学技术期刊管理办法,
-  author = {中华人民共和国科学技术委员会},
-  title  = {科学技术期刊管理办法},
-  date   = {1991-06-05}
-}
+% ----------------------------
+% CAD / B-rep / NURBS / 几何建模基础
+% ----------------------------
 
-% 电子文献
-@database{中国大学学报论文文摘,
-  medium      = {CD},
-  author      = {万锦},
-  title       = {中国大学学报论文文摘（1983—1993）. 英文版},
-  institution = {北京：中国大百科全书出版社},
-  date        = {1996}
-}
-
-%% [P0-1] B-rep / NURBS 几何标准教科书。
-%% 引用位置：§1.1.1 / §1.2.1 / §2.1.1。
-%% 字段核对：标题 + 作者 + 出版社 + 版次 + 年份均为 100% 确信（经典教科书）。
 @book{piegl_tiller_1997_nurbs,
   author    = {Piegl, Les and Tiller, Wayne},
   title     = {The {NURBS} Book},
@@ -126,28 +82,251 @@
   publisher = {Springer-Verlag},
   address   = {Berlin, Heidelberg},
   year      = {1997},
-  isbn      = {978-3-540-61545-3},
+  isbn      = {978-3-540-61545-3}
 }
 
-%% [P0-2] PolyGen，DeepMind 团队，ICML 2020。
-%% 引用位置：§1.1.2 / §1.3.2 / §2.2.3。
-%% 字段核对：arXiv 2002.10880 已确认；作者顺序按 arXiv 与 ICML 公开版本。
+@book{farin_2002_curves_surfaces,
+  author    = {Farin, Gerald},
+  title     = {Curves and Surfaces for {CAGD}: A Practical Guide},
+  edition   = {5},
+  publisher = {Morgan Kaufmann},
+  address   = {San Francisco},
+  year      = {2002},
+  isbn      = {978-1-55860-737-8}
+}
+
+@book{mantyla_1988_solid_modeling,
+  author    = {M{\"a}ntyl{\"a}, Martti},
+  title     = {An Introduction to Solid Modeling},
+  publisher = {Computer Science Press},
+  address   = {Rockville, MD},
+  year      = {1988},
+  isbn      = {978-0-88175-108-6}
+}
+
+@book{hoffmann_1989_geometric_solid_modeling,
+  author    = {Hoffmann, Christoph M.},
+  title     = {Geometric and Solid Modeling: An Introduction},
+  publisher = {Morgan Kaufmann},
+  address   = {San Mateo, CA},
+  year      = {1989},
+  isbn      = {978-1-55860-067-8}
+}
+
+@article{requicha_1980_representations,
+  author  = {Requicha, Aristides A. G.},
+  title   = {Representations for Rigid Solids: Theory, Methods, and Systems},
+  journal = {ACM Computing Surveys},
+  year    = {1980},
+  volume  = {12},
+  number  = {4},
+  pages   = {437--464},
+  doi     = {10.1145/356827.356833}
+}
+
+@inproceedings{lorensen_1987_marching_cubes,
+  author    = {Lorensen, William E. and Cline, Harvey E.},
+  title     = {Marching Cubes: A High Resolution 3D Surface Construction Algorithm},
+  booktitle = {Proceedings of the 14th Annual Conference on Computer Graphics and Interactive Techniques},
+  series    = {SIGGRAPH '87},
+  year      = {1987},
+  pages     = {163--169},
+  publisher = {ACM},
+  doi       = {10.1145/37401.37422}
+}
+
+@inproceedings{hoppe_1992_surface_reconstruction,
+  author    = {Hoppe, Hugues and DeRose, Tony and Duchamp, Tom and McDonald, John and Stuetzle, Werner},
+  title     = {Surface Reconstruction from Unorganized Points},
+  booktitle = {Proceedings of the 19th Annual Conference on Computer Graphics and Interactive Techniques},
+  series    = {SIGGRAPH '92},
+  year      = {1992},
+  pages     = {71--78},
+  publisher = {ACM},
+  doi       = {10.1145/133994.134011}
+}
+
+@inproceedings{kazhdan_2006_poisson,
+  author    = {Kazhdan, Michael and Bolitho, Matthew and Hoppe, Hugues},
+  title     = {Poisson Surface Reconstruction},
+  booktitle = {Proceedings of the Fourth Eurographics Symposium on Geometry Processing},
+  series    = {SGP '06},
+  year      = {2006},
+  pages     = {61--70},
+  publisher = {Eurographics Association}
+}
+
+% ----------------------------
+% 3D 表示学习、数据集与生成模型
+% ----------------------------
+
+@inproceedings{wu_2015_3dshapenets,
+  author    = {Wu, Zhirong and Song, Shuran and Khosla, Aditya and Yu, Fisher and Zhang, Linguang and Tang, Xiaoou and Xiao, Jianxiong},
+  title     = {3D {ShapeNets}: A Deep Representation for Volumetric Shapes},
+  booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
+  series    = {CVPR},
+  year      = {2015},
+  pages     = {1912--1920},
+  doi       = {10.1109/CVPR.2015.7298801}
+}
+
+@misc{chang_2015_shapenet,
+  author        = {Chang, Angel X. and Funkhouser, Thomas and Guibas, Leonidas and Hanrahan, Pat and Huang, Qixing and Li, Zimo and Savarese, Silvio and Savva, Manolis and Song, Shuran and Su, Hao and Xiao, Jianxiong and Yi, Li and Yu, Fisher},
+  title         = {{ShapeNet}: An Information-Rich 3D Model Repository},
+  year          = {2015},
+  howpublished  = {arXiv preprint arXiv:1512.03012},
+  eprint        = {1512.03012},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.GR}
+}
+
+@inproceedings{choy_2016_3dr2n2,
+  author    = {Choy, Christopher B. and Xu, Danfei and Gwak, JunYoung and Chen, Kevin and Savarese, Silvio},
+  title     = {3D-R2N2: A Unified Approach for Single and Multi-view 3D Object Reconstruction},
+  booktitle = {Proceedings of the European Conference on Computer Vision},
+  series    = {ECCV},
+  year      = {2016},
+  pages     = {628--644},
+  publisher = {Springer},
+  doi       = {10.1007/978-3-319-46484-8_38}
+}
+
+@inproceedings{fan_2017_pointset,
+  author    = {Fan, Haoqiang and Su, Hao and Guibas, Leonidas J.},
+  title     = {A Point Set Generation Network for 3D Object Reconstruction from a Single Image},
+  booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
+  series    = {CVPR},
+  year      = {2017},
+  pages     = {605--613}
+}
+
+@inproceedings{qi_2017_pointnet,
+  author    = {Qi, Charles R. and Su, Hao and Mo, Kaichun and Guibas, Leonidas J.},
+  title     = {{PointNet}: Deep Learning on Point Sets for 3D Classification and Segmentation},
+  booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
+  series    = {CVPR},
+  year      = {2017},
+  pages     = {652--660}
+}
+
+@inproceedings{qi_2017_pointnetplusplus,
+  author    = {Qi, Charles R. and Yi, Li and Su, Hao and Guibas, Leonidas J.},
+  title     = {{PointNet++}: Deep Hierarchical Feature Learning on Point Sets in a Metric Space},
+  booktitle = {Advances in Neural Information Processing Systems 30},
+  year      = {2017},
+  pages     = {5099--5108},
+  publisher = {Curran Associates, Inc.}
+}
+
+@inproceedings{groueix_2018_atlasnet,
+  author    = {Groueix, Thibault and Fisher, Matthew and Kim, Vladimir G. and Russell, Bryan C. and Aubry, Mathieu},
+  title     = {{AtlasNet}: A Papier-M{\^a}ch{\'e} Approach to Learning 3D Surface Generation},
+  booktitle = {Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
+  series    = {CVPR},
+  year      = {2018},
+  pages     = {216--224}
+}
+
+@inproceedings{achlioptas_2018_learning_representations,
+  author    = {Achlioptas, Panos and Diamanti, Olga and Mitliagkas, Ioannis and Guibas, Leonidas J.},
+  title     = {Learning Representations and Generative Models for 3D Point Clouds},
+  booktitle = {Proceedings of the 35th International Conference on Machine Learning},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {80},
+  pages     = {40--49},
+  year      = {2018},
+  publisher = {PMLR}
+}
+
+@inproceedings{koch_2019_abc,
+  author    = {Koch, Sebastian and Matveev, Albert and Jiang, Zhongshi and Williams, Francis and Artemov, Alexey and Burnaev, Evgeny and Alexa, Marc and Zorin, Denis and Panozzo, Daniele},
+  title     = {{ABC}: A Big {CAD} Model Dataset for Geometric Deep Learning},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  series    = {CVPR},
+  year      = {2019},
+  pages     = {9601--9611}
+}
+
+@inproceedings{park_2019_deepsdf,
+  author    = {Park, Jeong Joon and Florence, Peter and Straub, Julian and Newcombe, Richard and Lovegrove, Steven},
+  title     = {{DeepSDF}: Learning Continuous Signed Distance Functions for Shape Representation},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  series    = {CVPR},
+  year      = {2019},
+  pages     = {165--174}
+}
+
+@inproceedings{mescheder_2019_occupancy,
+  author    = {Mescheder, Lars and Oechsle, Michael and Niemeyer, Michael and Nowozin, Sebastian and Geiger, Andreas},
+  title     = {Occupancy Networks: Learning 3D Reconstruction in Function Space},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  series    = {CVPR},
+  year      = {2019},
+  pages     = {4460--4470}
+}
+
+@inproceedings{yang_2019_pointflow,
+  author    = {Yang, Guandao and Huang, Xun and Hao, Zekun and Liu, Ming-Yu and Belongie, Serge and Hariharan, Bharath},
+  title     = {{PointFlow}: 3D Point Cloud Generation with Continuous Normalizing Flows},
+  booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision},
+  series    = {ICCV},
+  year      = {2019},
+  pages     = {4541--4550}
+}
+
 @inproceedings{nash_2020_polygen,
   author        = {Nash, Charlie and Ganin, Yaroslav and Eslami, S. M. Ali and Battaglia, Peter W.},
-  title         = {{PolyGen}: An Autoregressive Generative Model of {3D} Meshes},
+  title         = {{PolyGen}: An Autoregressive Generative Model of 3D Meshes},
   booktitle     = {Proceedings of the 37th International Conference on Machine Learning},
   series        = {Proceedings of Machine Learning Research},
   volume        = {119},
   year          = {2020},
+  pages         = {7220--7229},
   publisher     = {PMLR},
   eprint        = {2002.10880},
   archivePrefix = {arXiv},
-  primaryClass  = {cs.GR},
+  primaryClass  = {cs.GR}
 }
 
-%% [P0-3] DeepCAD，Columbia University，ICCV 2021。
-%% 引用位置：§1.3.3 / §2.2.1 / §5.1.3。
-%% 字段核对：arXiv 2105.09492 已确认；ICCV 2021 venue + 作者已确认。
+@article{willis_2021_fusion360,
+  author  = {Willis, Karl D. D. and Pu, Yewen and Luo, Jieliang and Chu, Hang and Du, Tao and Lambourne, Joseph G. and Solar-Lezama, Armando and Matusik, Wojciech},
+  title   = {Fusion 360 Gallery: A Dataset and Environment for Programmatic {CAD} Construction from Human Design Sequences},
+  journal = {ACM Transactions on Graphics},
+  year    = {2021},
+  volume  = {40},
+  number  = {4},
+  pages   = {54:1--54:24},
+  doi     = {10.1145/3450626.3459818}
+}
+
+@article{seff_2020_sketchgraphs,
+  author        = {Seff, Ari and Ovadia, Yaniv and Zhou, Wenda and Adams, Ryan P.},
+  title         = {{SketchGraphs}: A Large-Scale Dataset for Modeling Relational Geometry in Computer-Aided Design},
+  journal       = {arXiv preprint arXiv:2007.08506},
+  year          = {2020},
+  eprint        = {2007.08506},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.LG}
+}
+
+@inproceedings{jayaraman_2021_uvnet,
+  author    = {Jayaraman, Pradeep Kumar and Sanghi, Aditya and Lambourne, Joseph G. and Willis, Karl D. D. and Davies, Thomas and Shayani, Hooman and Morris, Nigel},
+  title     = {{UV-Net}: Learning from Boundary Representations},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  series    = {CVPR},
+  year      = {2021},
+  pages     = {11703--11712}
+}
+
+@inproceedings{lambourne_2021_brepnet,
+  author    = {Lambourne, Joseph G. and Willis, Karl D. D. and Jayaraman, Pradeep Kumar and Sanghi, Aditya and Meltzer, Peter and Shayani, Hooman},
+  title     = {{BRepNet}: A Topological Message Passing System for Solid Models},
+  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  series    = {CVPR},
+  year      = {2021},
+  pages     = {12773--12782}
+}
+
 @inproceedings{wu_2021_deepcad,
   author        = {Wu, Rundi and Xiao, Chang and Zheng, Changxi},
   title         = {{DeepCAD}: A Deep Generative Network for Computer-Aided Design Models},
@@ -157,57 +336,87 @@
   pages         = {6772--6782},
   eprint        = {2105.09492},
   archivePrefix = {arXiv},
-  primaryClass  = {cs.GR},
+  primaryClass  = {cs.GR}
 }
 
-%% [P0-4] BrepGen，SIGGRAPH 2024。
-%% 引用位置：§1.3.4 / §2.5.4。
-%% 字段核对：arXiv 2401.15563 已确认；TODO_verify: 完整作者列表与 ACM TOG 卷号请用户在
-%% LaTeX 编译前核对（本 entry 给出 6 位作者，按 arXiv 首页公开版本顺序）。
+@inproceedings{xu_2022_skexgen,
+  author    = {Xu, Xiang and Willis, Karl D. D. and Lambourne, Joseph G. and Cheng, Chin-Yi and Jayaraman, Pradeep Kumar and Furukawa, Yasutaka},
+  title     = {{SkexGen}: Autoregressive Generation of {CAD} Construction Sequences with Disentangled Codebooks},
+  booktitle = {Proceedings of the 39th International Conference on Machine Learning},
+  series    = {Proceedings of Machine Learning Research},
+  volume    = {162},
+  pages     = {24698--24724},
+  year      = {2022},
+  publisher = {PMLR}
+}
+
+@misc{jayaraman_2022_solidgen,
+  author        = {Jayaraman, Pradeep Kumar and Sanghi, Aditya and Lambourne, Joseph G. and Davies, Thomas and Willis, Karl D. D. and Shayani, Hooman and Morris, Nigel},
+  title         = {{SolidGen}: An Autoregressive Model for Direct {B-rep} Synthesis},
+  year          = {2022},
+  howpublished  = {arXiv preprint arXiv:2203.13944},
+  eprint        = {2203.13944},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.GR}
+}
+
 @article{xu_2024_brepgen,
   author        = {Xu, Xiang and Lambourne, Joseph G. and Jayaraman, Pradeep Kumar and Wang, Zhengqing and Willis, Karl D. D. and Furukawa, Yasutaka},
   title         = {{BrepGen}: A {B-rep} Generative Diffusion Model with Structured Latent Geometry},
-  journal       = {ACM Transactions on Graphics ({SIGGRAPH} 2024)},
+  journal       = {ACM Transactions on Graphics},
   year          = {2024},
   volume        = {43},
   number        = {4},
   eprint        = {2401.15563},
   archivePrefix = {arXiv},
-  primaryClass  = {cs.GR},
+  primaryClass  = {cs.GR}
 }
 
-%% [P0-5] Transformer，Vaswani et al.，NeurIPS 2017。
-%% 引用位置：§2.3.1。
-%% 字段核对：arXiv 1706.03762 已确认；NeurIPS 2017 venue + 8 位作者 + 页码均 100% 确信
-%% （AI 领域标杆引用）。
+% ----------------------------
+% Transformer、优化与生成建模基础
+% ----------------------------
+
 @inproceedings{vaswani_2017_attention,
   author        = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N. and Kaiser, {\L}ukasz and Polosukhin, Illia},
   title         = {Attention is All You Need},
-  booktitle     = {Advances in Neural Information Processing Systems 30 ({NeurIPS} 2017)},
+  booktitle     = {Advances in Neural Information Processing Systems 30},
   year          = {2017},
   pages         = {5998--6008},
   publisher     = {Curran Associates, Inc.},
   eprint        = {1706.03762},
   archivePrefix = {arXiv},
-  primaryClass  = {cs.CL},
+  primaryClass  = {cs.CL}
 }
 
-%% [P0-6] LLaMA3，Meta AI，arXiv 2024。
-%% 引用位置：第 2 章 LLaMA3 组件 / 第 4 章主干描述。
-%% 字段核对：arXiv 2407.21783 已确认；论文署名众多，采用机构作者形式。
-@misc{meta_2024_llama3,
-  author        = {{Meta AI}},
-  title         = {The {Llama 3} Herd of Models},
-  year          = {2024},
-  howpublished  = {arXiv preprint arXiv:2407.21783},
-  eprint        = {2407.21783},
+@inproceedings{zhang_2019_rmsnorm,
+  author    = {Zhang, Biao and Sennrich, Rico},
+  title     = {Root Mean Square Layer Normalization},
+  booktitle = {Advances in Neural Information Processing Systems 32},
+  year      = {2019},
+  pages     = {12360--12371},
+  publisher = {Curran Associates, Inc.}
+}
+
+@misc{shazeer_2020_glu,
+  author        = {Shazeer, Noam},
+  title         = {{GLU} Variants Improve Transformer},
+  year          = {2020},
+  howpublished  = {arXiv preprint arXiv:2002.05202},
+  eprint        = {2002.05202},
   archivePrefix = {arXiv},
-  primaryClass  = {cs.AI},
+  primaryClass  = {cs.LG}
 }
 
-%% [P0-7] RoFormer (RoPE)，Su et al.，Neurocomputing 2024（arXiv 首发 2021）。
-%% 引用位置：§2.4.2。
-%% 字段核对：arXiv 2104.09864 已确认；Neurocomputing vol 568, p. 127063 已确认。
+@inproceedings{ainslie_2023_gqa,
+  author    = {Ainslie, Joshua and Lee-Thorp, James and de Jong, Michiel and Zemlyanskiy, Yury and Lebr{\'o}n, Federico and Sanghai, Sumit},
+  title     = {{GQA}: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints},
+  booktitle = {Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing},
+  year      = {2023},
+  pages     = {4895--4901},
+  publisher = {Association for Computational Linguistics},
+  doi       = {10.18653/v1/2023.emnlp-main.298}
+}
+
 @article{su_2024_roformer,
   author        = {Su, Jianlin and Lu, Yu and Pan, Shengfeng and Murtadha, Ahmed and Wen, Bo and Liu, Yunfeng},
   title         = {{RoFormer}: Enhanced Transformer with Rotary Position Embedding},
@@ -218,97 +427,84 @@
   eprint        = {2104.09864},
   archivePrefix = {arXiv},
   primaryClass  = {cs.CL},
+  doi           = {10.1016/j.neucom.2023.127063}
 }
 
-%% =====================================================================
-%% P1 / P2 待补：以下文献已在正文中以 % REF-PENDING 注释形式标记，
-%% 调研到完整字段后取消注释并填写真实 BibLaTeX entry，再在正文中将
-%% 对应的 % REF-PENDING 行替换为 \cite{<bibkey>}。
-%% 严禁编造 DOI、作者、年份或页码。
-%% =====================================================================
-%
-% % [P1] DeepSDF, Park et al., CVPR 2019
-% @inproceedings{park_2019_deepsdf,
-%   author    = {Park, Jeong Joon and ...},
-%   title     = {{DeepSDF}: Learning Continuous Signed Distance Functions for Shape Representation},
-%   booktitle = {CVPR},
-%   year      = {2019},
-% }
-%
-% % [P1] SkexGen, ICML 2022
-% @inproceedings{xu_2022_skexgen,
-%   author    = {Xu, ... and ...},
-%   title     = {{SkexGen}: Autoregressive Generation of CAD Construction Sequences with Disentangled Codebooks},
-%   booktitle = {ICML},
-%   year      = {2022},
-% }
-%
-% % [P1] BrepDiff
-% @article{ref_brepdiff,
-%   author    = {... and ...},
-%   title     = {{BrepDiff}: Single-stage B-rep Diffusion Model},
-%   year      = {2024},
-% }
-%
-% % [P1] SolidGen, NeurIPS 2022/2023
-% @inproceedings{jayaraman_solidgen,
-%   author    = {Jayaraman, Pradeep Kumar and ...},
-%   title     = {{SolidGen}: An Autoregressive Model for Direct B-rep Synthesis},
-%   booktitle = {NeurIPS},
-%   year      = {2023},
-% }
-%
-% % [P1] DTGBrepGen
-% @article{ref_dtgbrepgen,
-%   author    = {... and ...},
-%   title     = {{DTGBrepGen}: Disentangled Topology-Geometry B-rep Generation},
-%   year      = {2024},
-% }
-%
-% % [P1] BrepARG
-% @article{ref_breparg,
-%   author    = {... and ...},
-%   title     = {{BrepARG}: B-rep Autoregressive Generation},
-%   year      = {2024},
-% }
-%
-% % [P1] Koch et al., ABC, CVPR 2019
-% @inproceedings{koch_2019_abc,
-%   author    = {Koch, Sebastian and Matveev, Albert and Jiang, Zhongshi and Williams, Francis and Artemov, Alexey and Burnaev, Evgeny and Alexa, Marc and Zorin, Denis and Panozzo, Daniele},
-%   title     = {{ABC}: A Big {CAD} Model Dataset for Geometric Deep Learning},
-%   booktitle = {CVPR},
-%   year      = {2019},
-% }
-%
-% % [P2] Willis et al., Fusion360 Gallery
-% @inproceedings{willis_fusion360,
-%   author    = {Willis, Karl D. D. and ...},
-%   title     = {{Fusion 360 Gallery}: A Dataset and Environment for Programmatic CAD Construction from Human Design Sequences},
-%   booktitle = {SIGGRAPH},
-%   year      = {2021},
-% }
-%
-% % [P1] Zhang & Sennrich, RMSNorm, NeurIPS 2019
-% @inproceedings{zhang_2019_rmsnorm,
-%   author    = {Zhang, Biao and Sennrich, Rico},
-%   title     = {Root Mean Square Layer Normalization},
-%   booktitle = {NeurIPS},
-%   year      = {2019},
-% }
-%
-% % [P1] Shazeer 2020, GLU Variants Improve Transformer
-% @article{shazeer_2020_glu,
-%   author    = {Shazeer, Noam},
-%   title     = {{GLU} Variants Improve Transformer},
-%   journal   = {arXiv preprint},
-%   eprint    = {2002.05202},
-%   year      = {2020},
-% }
-%
-% % [P1] Ainslie et al. 2023, GQA, EMNLP 2023
-% @inproceedings{ainslie_2023_gqa,
-%   author    = {Ainslie, Joshua and Lee-Thorp, James and de Jong, Michiel and Zemlyanskiy, Yury and Lebr\'{o}n, Federico and Sanghai, Sumit},
-%   title     = {{GQA}: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints},
-%   booktitle = {EMNLP},
-%   year      = {2023},
-% }
+@misc{meta_2024_llama3,
+  author        = {{Meta AI}},
+  title         = {The {Llama 3} Herd of Models},
+  year          = {2024},
+  howpublished  = {arXiv preprint arXiv:2407.21783},
+  eprint        = {2407.21783},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.AI}
+}
+
+@inproceedings{kingma_2015_adam,
+  author    = {Kingma, Diederik P. and Ba, Jimmy},
+  title     = {Adam: A Method for Stochastic Optimization},
+  booktitle = {3rd International Conference on Learning Representations},
+  series    = {ICLR},
+  year      = {2015},
+  eprint    = {1412.6980},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{loshchilov_2019_adamw,
+  author    = {Loshchilov, Ilya and Hutter, Frank},
+  title     = {Decoupled Weight Decay Regularization},
+  booktitle = {7th International Conference on Learning Representations},
+  series    = {ICLR},
+  year      = {2019},
+  eprint    = {1711.05101},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{paszke_2019_pytorch,
+  author    = {Paszke, Adam and Gross, Sam and Massa, Francisco and Lerer, Adam and Bradbury, James and Chanan, Gregory and Killeen, Trevor and Lin, Zeming and Gimelshein, Natalia and Antiga, Luca and Desmaison, Alban and Kopf, Andreas and Yang, Edward and DeVito, Zachary and Raison, Martin and Tejani, Alykhan and Chilamkurthy, Sasank and Steiner, Benoit and Fang, Lu and Bai, Junjie and Chintala, Soumith},
+  title     = {{PyTorch}: An Imperative Style, High-Performance Deep Learning Library},
+  booktitle = {Advances in Neural Information Processing Systems 32},
+  year      = {2019},
+  pages     = {8024--8035},
+  publisher = {Curran Associates, Inc.}
+}
+
+@inproceedings{micikevicius_2018_mixed_precision,
+  author    = {Micikevicius, Paulius and Narang, Sharan and Alben, Jonah and Diamos, Gregory and Elsen, Erich and Garcia, David and Ginsburg, Boris and Houston, Michael and Kuchaiev, Oleksii and Venkatesh, Ganesh and Wu, Hao},
+  title     = {Mixed Precision Training},
+  booktitle = {6th International Conference on Learning Representations},
+  series    = {ICLR},
+  year      = {2018},
+  eprint    = {1710.03740},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{holtzman_2020_nucleus,
+  author    = {Holtzman, Ari and Buys, Jan and Du, Li and Forbes, Maxwell and Choi, Yejin},
+  title     = {The Curious Case of Neural Text Degeneration},
+  booktitle = {8th International Conference on Learning Representations},
+  series    = {ICLR},
+  year      = {2020},
+  eprint    = {1904.09751},
+  archivePrefix = {arXiv}
+}
+
+@inproceedings{van_den_oord_2017_vqvae,
+  author    = {van den Oord, Aaron and Vinyals, Oriol and Kavukcuoglu, Koray},
+  title     = {Neural Discrete Representation Learning},
+  booktitle = {Advances in Neural Information Processing Systems 30},
+  year      = {2017},
+  pages     = {6306--6315},
+  publisher = {Curran Associates, Inc.}
+}
+
+@inproceedings{ho_2020_ddpm,
+  author    = {Ho, Jonathan and Jain, Ajay and Abbeel, Pieter},
+  title     = {Denoising Diffusion Probabilistic Models},
+  booktitle = {Advances in Neural Information Processing Systems 33},
+  year      = {2020},
+  pages     = {6840--6851},
+  publisher = {Curran Associates, Inc.},
+  eprint    = {2006.11239},
+  archivePrefix = {arXiv}
+}

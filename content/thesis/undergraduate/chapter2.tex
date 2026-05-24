@@ -9,7 +9,7 @@
 
 \subsection{B-rep 拓扑层次}
 
-B-rep 实体由 Solid、Shell、Face、Loop、Edge、Vertex 六层拓扑组成。Shell 提供方向（朝外或朝内），Face 通过其外环和若干内环对参数曲面进行裁剪，Wire 是 Edge 的有序集合，Edge 由几何曲线 + 起止 Vertex 描述。这种层级表示既保留了局部几何（曲面与曲线方程），又保留了全局拓扑（面—边邻接、边—顶点共享）\cite{piegl_tiller_1997_nurbs}。这种“几何与拓扑分离”是 B-rep 区别于体素或网格的根本特征，本文方法也正是利用这一特征——分别为面与边设计采样规则，再用面索引把几何与拓扑串成统一序列。
+B-rep 实体由 Solid、Shell、Face、Loop、Edge、Vertex 六层拓扑组成。Shell 提供方向（朝外或朝内），Face 通过其外环和若干内环对参数曲面进行裁剪，Wire 是 Edge 的有序集合，Edge 由几何曲线 + 起止 Vertex 描述。这种层级表示既保留了局部几何（曲面与曲线方程），又保留了全局拓扑（面—边邻接、边—顶点共享）\cite{mantyla_1988_solid_modeling,hoffmann_1989_geometric_solid_modeling,piegl_tiller_1997_nurbs}。这种“几何与拓扑分离”是 B-rep 区别于体素或网格的根本特征，本文方法也正是利用这一特征——分别为面与边设计采样规则，再用面索引把几何与拓扑串成统一序列。
 
 \subsection{NURBS 曲线与曲面定义}
 
@@ -38,13 +38,13 @@ NURBS 曲面 $S(u, v)$ 由两组方向上的基函数与控制网格 $\mathbf{P}
 
 \subsection{STEP / STL 文件格式}
 
-STEP（ISO 10303）是工业 CAD 标准交换格式，可直接存储 B-rep 拓扑、NURBS 曲面与曲线参数。STL 仅存三角网格，常用于 3D 打印或可视化。本文最终输出 STEP 文件以保留几何精度，STL 仅作为可视化辅助。STEP 的读写、有效性检查与导出均通过 OpenCASCADE 完成，工程实现位置见附录。
+STEP（ISO 10303）是工业 CAD 标准交换格式，可直接存储 B-rep 拓扑、NURBS 曲面与曲线参数；其产品数据表达与交换体系在国内标准中也有对应规范\cite{gbt16656_1_2008,gbt16656_11_2010,gbt16656_21_2008}。STL 仅存三角网格，常用于 3D 打印或可视化。本文最终输出 STEP 文件以保留几何精度，STL 仅作为可视化辅助。STEP 的读写、有效性检查与导出均通过 OpenCASCADE 完成，工程实现位置见附录。
 
 \section{CAD 数据集与生成方法概览}
 
 \subsection{常用 CAD 数据集}
 
-ABC 数据集由百万级机械零件 CAD 构成，覆盖几何复杂度与拓扑形态较广；DeepCAD\cite{wu_2021_deepcad} 在 ABC 基础上经过过滤和参数化操作还原，提供约十八万个可执行的草图—拉伸命令序列；Fusion 360 Gallery 子集规模较小但拓扑形态更接近工业产品。本文采用 DeepCAD 作为主数据集（详 §5.1），以保证数据口径与现有 baseline 一致。
+ABC 数据集由百万级机械零件 CAD 构成，覆盖几何复杂度与拓扑形态较广\cite{koch_2019_abc}；DeepCAD\cite{wu_2021_deepcad} 在 ABC 基础上经过过滤和参数化操作还原，提供约十八万个可执行的草图—拉伸命令序列；Fusion 360 Gallery 与 SketchGraphs 则从人类 CAD 设计序列和草图约束图角度提供补充数据来源\cite{willis_2021_fusion360,seff_2020_sketchgraphs}。本文采用 DeepCAD 作为主数据集（详 §5.1），以保证数据口径与现有 baseline 一致。
 
 \subsection{生成方法的三条主线}
 
@@ -92,7 +92,7 @@ Transformer\cite{vaswani_2017_attention} 提出多头注意力机制，通过查
 
 \section{LLaMA3 关键组件}
 
-LLaMA3\cite{meta_2024_llama3} 是 Meta 发布的开源大模型家族，其核心组件已经被多数当代大模型采纳。本文主干网络借鉴这些组件，与生成质量直接相关的有以下四项。
+LLaMA3\cite{meta_2024_llama3} 是 Meta 发布的开源大模型家族，其核心组件与当代大模型常用的归一化、门控前馈和注意力变体一脉相承\cite{zhang_2019_rmsnorm,shazeer_2020_glu,ainslie_2023_gqa}。本文主干网络借鉴这些组件，与生成质量直接相关的有以下四项。
 
 \subsection{RMSNorm}
 
