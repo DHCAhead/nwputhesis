@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" font-family="sans-serif">
+  <rect width="900" height="550" fill="#F8F8F8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#222">Fig 4-3 · CompoundPointDecoder Causal Chain over (t₀, t₁, t₂)</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#666">同一时间步内三分量因果链：p(t₀, t₁, t₂ | h) = p(t₀|h) · p(t₁|h, t₀) · p(t₂|h, t₀, t₁) — 占位图（正式示意草案）</text>
+
+  <!-- backbone hidden state input -->
+  <g>
+    <rect x="60" y="100" width="160" height="60" fill="#E8F0FE" stroke="#1a73e8" stroke-width="2"/>
+    <text x="140" y="125" text-anchor="middle" font-size="13" font-weight="bold">h_t ∈ R²⁵⁶</text>
+    <text x="140" y="145" text-anchor="middle" font-size="11" fill="#555">from backbone</text>
+    <line x1="220" y1="130" x2="260" y2="130" stroke="#555" stroke-width="2" marker-end="url(#a43)"/>
+  </g>
+
+  <!-- LocalBlock micro Transformer -->
+  <g>
+    <rect x="260" y="80" width="580" height="380" fill="#FFFFFF" stroke="#1a8a3a" stroke-width="2" rx="8"/>
+    <text x="550" y="110" text-anchor="middle" font-size="15" font-weight="bold" fill="#1a8a3a">CompoundPointDecoder (LocalBlock × 8, n_heads = 4)</text>
+
+    <!-- 3 positions -->
+    <g font-size="13" text-anchor="middle">
+      <!-- Pos 0 -->
+      <rect x="290" y="160" width="140" height="60" fill="#E8F0FE" stroke="#1a73e8"/>
+      <text x="360" y="183" font-weight="bold">Position 0</text>
+      <text x="360" y="205">context: [h_t]</text>
+
+      <line x1="360" y1="220" x2="360" y2="250" stroke="#555" stroke-width="2" marker-end="url(#a43)"/>
+
+      <rect x="290" y="250" width="140" height="36" fill="#FFFFFF" stroke="#333"/>
+      <text x="360" y="273">softmax → t̂₀</text>
+
+      <!-- Pos 1 -->
+      <line x1="430" y1="190" x2="490" y2="190" stroke="#555" stroke-width="2" marker-end="url(#a43)"/>
+
+      <rect x="490" y="160" width="140" height="60" fill="#E8F0FE" stroke="#1a73e8"/>
+      <text x="560" y="183" font-weight="bold">Position 1</text>
+      <text x="560" y="205">context: [h_t, E(t₀)]</text>
+
+      <line x1="560" y1="220" x2="560" y2="250" stroke="#555" stroke-width="2" marker-end="url(#a43)"/>
+
+      <rect x="490" y="250" width="140" height="36" fill="#FFFFFF" stroke="#333"/>
+      <text x="560" y="273">softmax → t̂₁</text>
+
+      <!-- Pos 2 -->
+      <line x1="630" y1="190" x2="690" y2="190" stroke="#555" stroke-width="2" marker-end="url(#a43)"/>
+
+      <rect x="690" y="160" width="140" height="60" fill="#E8F0FE" stroke="#1a73e8"/>
+      <text x="760" y="183" font-weight="bold">Position 2</text>
+      <text x="760" y="205">context: [h_t, E(t₀), E(t₁)]</text>
+
+      <line x1="760" y1="220" x2="760" y2="250" stroke="#555" stroke-width="2" marker-end="url(#a43)"/>
+
+      <rect x="690" y="250" width="140" height="36" fill="#FFFFFF" stroke="#333"/>
+      <text x="760" y="273">softmax → t̂₂</text>
+    </g>
+
+    <!-- conditional arrows down -->
+    <g stroke="#aaa" stroke-width="1" stroke-dasharray="3,3">
+      <line x1="360" y1="286" x2="560" y2="190"/>
+      <line x1="560" y1="286" x2="760" y2="190"/>
+    </g>
+
+    <!-- training vs inference notes -->
+    <g font-size="12" text-anchor="middle">
+      <rect x="290" y="320" width="250" height="120" fill="#FFF8DC" stroke="#d4a017"/>
+      <text x="415" y="345" font-weight="bold">Training: Teacher Forcing</text>
+      <text x="415" y="365">真实 (t₀, t₁, t₂) 同时进入</text>
+      <text x="415" y="383">3 位置并行计算 logits</text>
+      <text x="415" y="401">CrossEntropy + ignore_index = −100</text>
+      <text x="415" y="420" font-size="11" fill="#555">(详 §4.4.3)</text>
+
+      <rect x="560" y="320" width="250" height="120" fill="#DFF5DF" stroke="#1a8a3a"/>
+      <text x="685" y="345" font-weight="bold">Inference: step() per position</text>
+      <text x="685" y="365">采样 t̂₀ → 喂入 → 采样 t̂₁</text>
+      <text x="685" y="383">→ 喂入 → 采样 t̂₂</text>
+      <text x="685" y="401">若 t̂₀ 为 face index / special</text>
+      <text x="685" y="419">→ t̂₁, t̂₂ 直接置 PAD</text>
+    </g>
+  </g>
+
+  <text x="450" y="488" text-anchor="middle" font-size="12" fill="#555">04-code/nurbs-code/model.py · LocalBlock (L317) · CompoundPointDecoder (L384) · decoder_n_layers = 8 (对称主干)</text>
+
+  <text x="450" y="520" text-anchor="middle" font-size="13" fill="#999">LaTeX label: fig:compound-decoder · 章节建议: §4.4.1 因果链定义</text>
+  <text x="450" y="538" text-anchor="middle" font-size="11" fill="#aaa">[PLACEHOLDER · 正式示意图草案]</text>
+
+  <defs>
+    <marker id="a43" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

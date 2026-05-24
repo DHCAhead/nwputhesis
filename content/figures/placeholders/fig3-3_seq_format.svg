@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="sans-serif">
+  <rect width="900" height="500" fill="#F8F8F8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#222">Fig 3-3 · Sequence Format with Triplet Tokens (t₀, t₁, t₂)</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#666">点级序列结构与三元组 token 语义 — 占位图（正式示意草案）</text>
+
+  <!-- main sequence layout -->
+  <g font-size="13" text-anchor="middle">
+    <!-- START -->
+    <rect x="30" y="120" width="60" height="40" fill="#FFE0E0" stroke="#c33" stroke-width="2"/>
+    <text x="60" y="145">START</text>
+
+    <!-- face_1 segment -->
+    <rect x="100" y="100" width="190" height="80" fill="#E8F0FE" stroke="#1a73e8" stroke-width="2"/>
+    <text x="195" y="120" font-weight="bold">face_1 segment</text>
+    <text x="195" y="140" font-size="12">49 geometry triplets</text>
+    <text x="195" y="158" font-size="12">+ 1 face-index triplet</text>
+    <text x="195" y="174" font-size="11" fill="#555">= 50 三元组</text>
+
+    <text x="300" y="145">…</text>
+
+    <!-- face_F segment -->
+    <rect x="320" y="100" width="190" height="80" fill="#E8F0FE" stroke="#1a73e8" stroke-width="2"/>
+    <text x="415" y="120" font-weight="bold">face_F segment</text>
+    <text x="415" y="140" font-size="12">49 + 1 triplets</text>
+    <text x="415" y="158" font-size="12">(same shape)</text>
+
+    <!-- SEP -->
+    <rect x="520" y="120" width="60" height="40" fill="#FFE0E0" stroke="#c33" stroke-width="2"/>
+    <text x="550" y="145">SEP</text>
+
+    <!-- edge_1 segment -->
+    <rect x="590" y="100" width="190" height="80" fill="#E8F8E8" stroke="#1a8a3a" stroke-width="2"/>
+    <text x="685" y="120" font-weight="bold">edge_1 segment</text>
+    <text x="685" y="140" font-size="12">14 geometry triplets</text>
+    <text x="685" y="158" font-size="12">+ 2 face-index triplets</text>
+    <text x="685" y="174" font-size="11" fill="#555">= 16 三元组</text>
+
+    <text x="800" y="145">…</text>
+
+    <!-- END -->
+    <rect x="820" y="120" width="60" height="40" fill="#FFE0E0" stroke="#c33" stroke-width="2"/>
+    <text x="850" y="145">END</text>
+  </g>
+
+  <!-- triplet detail expansion -->
+  <g font-size="13" text-anchor="middle">
+    <text x="450" y="240" font-weight="bold">Each time step = ordered triplet (t₀, t₁, t₂):</text>
+
+    <!-- geometric point -->
+    <rect x="80" y="270" width="350" height="120" fill="#FFFFFF" stroke="#333" stroke-width="2"/>
+    <text x="255" y="295" font-weight="bold">Geometric point triplet</text>
+    <text x="255" y="320" font-size="12">t₀ = face index ∈ [0, 49]</text>
+    <text x="255" y="340" font-size="12">t₁ = quantized coord ∈ [50, 4 049]</text>
+    <text x="255" y="360" font-size="12">t₂ = quantized coord ∈ [50, 4 049]</text>
+    <text x="255" y="380" font-size="11" fill="#555">(3rd coord packed in adjacent step)</text>
+
+    <!-- index / special triplet -->
+    <rect x="470" y="270" width="350" height="120" fill="#FFFFFF" stroke="#333" stroke-width="2"/>
+    <text x="645" y="295" font-weight="bold">Index / Special triplet</text>
+    <text x="645" y="320" font-size="12">t₀ = face index or special token</text>
+    <text x="645" y="340" font-size="12">t₁ = PAD (forced)</text>
+    <text x="645" y="360" font-size="12">t₂ = PAD (forced)</text>
+    <text x="645" y="380" font-size="11" fill="#555">CE loss uses ignore_index = −100 here</text>
+  </g>
+
+  <!-- vocabulary block -->
+  <g font-size="12">
+    <text x="60" y="430" font-weight="bold">Unified vocabulary (size 4 053):</text>
+    <text x="60" y="450">[0, 49] face indices (50)</text>
+    <text x="220" y="450">[50, 4 049] quantized coords (4 000)</text>
+    <text x="470" y="450">START=4 050  ·  SEP=4 051  ·  END=4 052  ·  PAD=4 053</text>
+  </g>
+
+  <text x="450" y="478" text-anchor="middle" font-size="12" fill="#999">LaTeX label: fig:seq-format · 章节建议: §3.4.1 序列结构</text>
+  <text x="450" y="495" text-anchor="middle" font-size="11" fill="#aaa">[PLACEHOLDER · 正式示意图草案]</text>
+</svg>

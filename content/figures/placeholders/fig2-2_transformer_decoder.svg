@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" font-family="sans-serif">
+  <rect width="800" height="600" fill="#F8F8F8"/>
+  <text x="400" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#222">Fig 2-2 · Transformer Decoder Block (LLaMA3-style)</text>
+  <text x="400" y="58" text-anchor="middle" font-size="13" fill="#666">LLaMA3 风格 decoder-only Transformer block：RMSNorm + RoPE + GQA + SwiGLU — 占位图（正式示意草案）</text>
+
+  <!-- block diagram (pre-norm) -->
+  <g font-size="13" text-anchor="middle">
+    <!-- input -->
+    <rect x="320" y="90" width="160" height="36" fill="#FFFFFF" stroke="#333" stroke-width="2"/>
+    <text x="400" y="113">Input h_t (d_model = 256)</text>
+    <line x1="400" y1="126" x2="400" y2="148" stroke="#555" stroke-width="2" marker-end="url(#arr)"/>
+
+    <!-- residual split (left line) -->
+    <line x1="220" y1="135" x2="220" y2="320" stroke="#888" stroke-width="2" stroke-dasharray="4,4"/>
+    <line x1="400" y1="135" x2="220" y2="135" stroke="#888" stroke-width="2" stroke-dasharray="4,4"/>
+
+    <!-- RMSNorm 1 -->
+    <rect x="320" y="148" width="160" height="36" fill="#E8F0FE" stroke="#1a73e8" stroke-width="2"/>
+    <text x="400" y="171">RMSNorm</text>
+    <line x1="400" y1="184" x2="400" y2="206" stroke="#555" stroke-width="2" marker-end="url(#arr)"/>
+
+    <!-- GQA (with RoPE annotation) -->
+    <rect x="280" y="206" width="240" height="46" fill="#E8F0FE" stroke="#1a73e8" stroke-width="2"/>
+    <text x="400" y="230">GQA (n_heads=4, n_kv_heads=4)</text>
+    <text x="400" y="246" font-size="11" fill="#555">RoPE applied to Q, K only</text>
+    <line x1="400" y1="252" x2="400" y2="278" stroke="#555" stroke-width="2" marker-end="url(#arr)"/>
+
+    <!-- Add 1 -->
+    <circle cx="400" cy="296" r="14" fill="#FFFFFF" stroke="#333" stroke-width="2"/>
+    <text x="400" y="301" font-size="18">+</text>
+    <line x1="220" y1="296" x2="386" y2="296" stroke="#888" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arr)"/>
+    <line x1="400" y1="310" x2="400" y2="332" stroke="#555" stroke-width="2" marker-end="url(#arr)"/>
+
+    <!-- residual split 2 -->
+    <line x1="220" y1="320" x2="220" y2="500" stroke="#888" stroke-width="2" stroke-dasharray="4,4"/>
+    <line x1="400" y1="320" x2="220" y2="320" stroke="#888" stroke-width="2" stroke-dasharray="4,4"/>
+
+    <!-- RMSNorm 2 -->
+    <rect x="320" y="332" width="160" height="36" fill="#E8F0FE" stroke="#1a73e8" stroke-width="2"/>
+    <text x="400" y="355">RMSNorm</text>
+    <line x1="400" y1="368" x2="400" y2="390" stroke="#555" stroke-width="2" marker-end="url(#arr)"/>
+
+    <!-- SwiGLU FFN -->
+    <rect x="280" y="390" width="240" height="46" fill="#E8F0FE" stroke="#1a73e8" stroke-width="2"/>
+    <text x="400" y="414">SwiGLU FFN</text>
+    <text x="400" y="430" font-size="11" fill="#555">(d_model → ~4·d_model → d_model)</text>
+    <line x1="400" y1="436" x2="400" y2="462" stroke="#555" stroke-width="2" marker-end="url(#arr)"/>
+
+    <!-- Add 2 -->
+    <circle cx="400" cy="480" r="14" fill="#FFFFFF" stroke="#333" stroke-width="2"/>
+    <text x="400" y="485" font-size="18">+</text>
+    <line x1="220" y1="480" x2="386" y2="480" stroke="#888" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arr)"/>
+    <line x1="400" y1="494" x2="400" y2="516" stroke="#555" stroke-width="2" marker-end="url(#arr)"/>
+
+    <!-- output -->
+    <rect x="320" y="516" width="160" height="36" fill="#FFFFFF" stroke="#333" stroke-width="2"/>
+    <text x="400" y="539">Output h'_t (× n_layers = 8)</text>
+  </g>
+
+  <!-- side notes -->
+  <g font-size="12" fill="#444">
+    <text x="600" y="171">RMSNorm: x / RMS(x) · γ</text>
+    <text x="600" y="220">Attn: GQA (Q heads share K/V)</text>
+    <text x="600" y="246">n_kv_heads = n_heads ⇒ MHA-equivalent</text>
+    <text x="600" y="414">SwiGLU = Swish(xW1) ⊙ (xW2) · W3</text>
+    <text x="600" y="430">Causal mask preserved (decoder-only)</text>
+    <text x="120" y="296" font-size="12">residual</text>
+    <text x="120" y="480" font-size="12">residual</text>
+  </g>
+
+  <text x="60" y="568" font-size="13" fill="#999">LaTeX label: fig:transformer-decoder · 章节建议: §2.3.1 或 §2.4 引子</text>
+  <text x="60" y="585" font-size="11" fill="#aaa">[PLACEHOLDER · 正式示意图草案]</text>
+
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

@@ -2,15 +2,96 @@
 
 \chapter{绪论}
 \chaptermark{绪论}
-XXX
-\section{这是中标题}
-XXX
-\subsection{这是小标题}
-\subsubsection{这是小小标题}
-\paragraph{这是段标题}
-这是段标题后的内容，段标题与正文同行显示。
-\subparagraph{这是段标题}
-这是段标题后的内容，段标题与正文同行显示。
 
-测试引用 1\cite{周融2003}，引用 2\cite{伍蠡甫,图书馆,张筑生}，引用 3\cite{gbt7714_2006,冯西桥1998,姜锡洲,中国大学学报论文文摘,DUBAR2013--,FOURNEY}。
+\section{研究背景与意义}
 
+\subsection{CAD 与 B-rep 在工业设计中的地位}
+
+计算机辅助设计（CAD）已成为机械、航空、消费电子等行业产品研发的核心环节。在 CAD 系统内部，边界表示是描述实体几何最常见的形式：一个实体由若干 Shell 组成，每个 Shell 由有方向的 Face 组成，Face 由若干 Loop 围成的边界限定，每个 Loop 又由 Edge 序列组成，Edge 端点为 Vertex\cite{piegl_tiller_1997_nurbs}。这种「几何 + 拓扑」分离的层级结构使得参数化建模、布尔运算和工艺仿真都可以在统一的数据结构上进行。STEP（ISO 10303）与 IGES 等工业交换格式都直接序列化 B-rep 数据，行业内主流 CAD 内核（如 Parasolid、ACIS 与开源的 OpenCASCADE）也均以 B-rep 作为内部表示。
+
+相比之下，常见的离散几何（如三角网格 STL）虽然适合可视化和有限元前处理，却丢失了曲面参数与拓扑层级，难以直接进入工业 CAD 工作流。因此，面向工业应用的几何生成模型必须最终能够输出可读、可校验的 B-rep 实体，否则生成结果难以进入下游设计与制造管线。
+
+\subsection{深度学习驱动的 3D 生成趋势}
+
+近年来生成式人工智能在二维图像和自然语言任务上取得显著进展，三维生成方向也已经从早期的体素生成、点云生成扩展到隐式表面与多边形网格的自回归生成\cite{nash_2020_polygen}。能够直接产出工业可用 B-rep 的方法仍然不多，且大部分集中在草图序列、参数化操作或离散码本的间接表示路线，几何精度与拓扑闭合性仍存在改进空间。
+
+\subsection{研究意义}
+
+直接生成可用的 B-rep 模型在三个层面具有实际价值：降低工业建模门槛，使非专业用户也能快速获得参数化几何；加速概念设计阶段的方案搜索；为后续基于约束的细化与拓扑优化提供初始候选。本研究以毕业设计任务书要求为锚点，目标是验证一种端到端 B-rep 生成框架的工程可行性，并以 OpenCASCADE BRepCheck 通过率不低于 60\% 作为可量化的工程指标。后续章节将给出实测结果（详见第~5 章）。
+
+\section{CAD B-rep 生成问题定义}
+
+\subsection{B-rep 表示与 NURBS 几何要素}
+
+B-rep 实体的拓扑层级可由如下偏序集刻画：Solid $\to$ Shell $\to$ Face $\to$ Loop $\to$ Edge $\to$ Vertex。每个 Face 关联一个参数化曲面 $S(u, v)$，每个 Edge 关联一条参数化曲线 $C(u)$。本文采用工业中应用最广的 NURBS 曲面与曲线作为承载几何\cite{piegl_tiller_1997_nurbs}。NURBS 曲面定义为
+
+\begin{equation}
+    S(u, v) = \frac{\sum_{i=0}^{m}\sum_{j=0}^{n} N_{i,p}(u) N_{j,q}(v) w_{ij} \mathbf{P}_{ij}}{\sum_{i=0}^{m}\sum_{j=0}^{n} N_{i,p}(u) N_{j,q}(v) w_{ij}},
+    \label{eq:nurbs-surface}
+\end{equation}
+
+其中 $N_{i,p}$ 与 $N_{j,q}$ 是节点向量上由 Cox--de Boor 递推得到的 B 样条基函数，$\mathbf{P}_{ij}$ 是控制点，$w_{ij}$ 是对应权重。NURBS 曲线由相应的一维形式定义。NURBS 表示具有平移、旋转不变和局部支撑性质，可以精确描述包括二次曲面在内的常见工业曲面，因此被多数 CAD 内核采用。
+
+\subsection{生成任务的输入输出定义}
+
+本文考虑的是无条件 B-rep 生成任务。模型接收起始标志 START 后，自回归地输出一条 token 序列；序列经反向解析与曲面 / 曲线拟合，最终交付一个可写入 STEP 文件的 Solid。本文不在生成阶段提供任何文本或图像条件信号，目的是先验证基础的「几何 + 拓扑」联合生成能力。重建管线由代码主目录 \texttt{04-code/nurbs-code/sequence2nurbs.py} 调度，曲面 / 边解析与重建函数位于 \texttt{04-code/nurbs-code/utils.py}，OpenCASCADE 提供拟合、缝合与导出原语。
+
+\subsection{几何与拓扑有效性的判据}
+
+本文以 OpenCASCADE 的 \texttt{BRepCheck\_Analyzer} 作为最终判据：当且仅当 \texttt{BRepCheck\_Analyzer.IsValid()=True} 时，生成实体被认定为「有效」。该判据同时覆盖几何细节（曲面拟合质量、曲线连续性）与拓扑约束（Wire 闭合、Shell 不含游离边、唯一 Solid）。在统计层面，针对每一个采样得到的 token 序列，按三种状态之一记录，如\autoref{tab:three-state-def} 所示。
+
+\begin{table}[!h]
+    \caption{生成样本的三态记录口径}
+    \label{tab:three-state-def}
+    \begin{tabular}{p{2.5cm}p{5cm}p{4.5cm}}
+        \toprule
+        状态 & 触发条件 & 统计槽位 \\
+        \midrule
+        S1：未产出 STEP/STL & 解析或重建管线抛异常 / 返回 None，没有任何文件写出 & 计入「重建失败」 \\
+        S2：产出但 BRepCheck 无效 & 写出 STEP/STL，但 \texttt{BRepCheck\_Analyzer.IsValid()=False} & 计入「无效 BREP」 \\
+        S3：产出且有效 & 写出 STEP/STL 且 \texttt{BRepCheck\_Analyzer.IsValid()=True} & 计入「有效 BREP」 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+记 S1、S2、S3 三类样本数之和为序列总数，本文主表口径采用「有效率（of saved）$= \mathrm{S3} / (\mathrm{S2} + \mathrm{S3})$」，即在所有成功写出 STEP 文件的样本中 BRepCheck 通过的比例。
+
+\section{国内外研究现状}
+
+\subsection{体素 / 点云 / 隐式表面路线}
+
+体素生成方法以三维网格为载体，分辨率受立方级开销限制；点云方法（如 PointNet 家族）轻量但缺乏面、边等拓扑结构；以 DeepSDF 为代表的隐式表面方法用神经网络表示符号距离场并通过等值面提取生成三角网格。这些方法擅长平滑曲面的连续生成，但都不直接输出 B-rep。要落到 STEP 文件，仍需后处理拟合，过程中容易引入额外的几何与拓扑误差，难以直接进入工业 CAD 工作流。
+
+\subsection{多边形网格自回归路线：PolyGen}
+
+PolyGen\cite{nash_2020_polygen} 将三角网格视为「顶点序列 + 面索引序列」的有序对象，使用两个 Transformer 顺序生成顶点和面，证明了对结构化几何 token 化建模的可行性。该工作启发了「几何要素直接序列化 + 自回归预测」的整体思路，但其表征仍停留在三角网格层面，未触及 B-rep 的拓扑层级，也未涉及参数化曲面。
+
+\subsection{CAD 操作序列路线：DeepCAD}
+
+DeepCAD\cite{wu_2021_deepcad} 将 CAD 设计还原为草图—拉伸—布尔等参数化 CAD 操作序列，并用基于 Transformer 的自回归模型在这条「CAD 操作字典」上生成可执行的命令序列；其生成对象不是 B-rep 几何本身，而是构造该 B-rep 的参数化操作脚本。这条路线生成结果可解释、可编辑，但受限于操作字典的覆盖范围，对自由曲面与复杂拓扑的表达能力相对有限。
+
+\subsection{草图—拉伸解耦路线：SkexGen}
+
+SkexGen 在 DeepCAD 风格的草图—拉伸表征基础上，将草图分支与拉伸分支的表征解耦为多组离散码本，并对每组码本分别训练自回归生成器，再以联合采样得到完整的 sketch-extrude 设计序列。它进一步发掘了 sketch-extrude 路线的多样性，但仍以离散码本为中间表示，几何精度同样受限于码本规模。
+
+\subsection{结构化 B-rep 生成路线：BrepGen}
+
+BrepGen\cite{xu_2024_brepgen} 不再以 CAD 操作序列为目标，而是直接对 B-rep 的结构化潜空间几何建模。其核心是将 B-rep 的面、边、顶点编码为带有拓扑约束的结构化潜变量，并以扩散模型在潜空间中联合采样几何与拓扑，再解码回 B-rep。BrepGen 在 DeepCAD 数据集上展示了较强的几何质量，但其潜空间编码—解码同样需要预训练几何编码器，几何精度依赖于潜变量分布的捕获质量。
+
+\subsection{研究路线对比与本文切入点}
+
+综上，现有方法在表征层面大致分为「CAD 操作序列」「离散码本上的 sketch-extrude 解耦」「结构化潜空间 + 扩散」三条路线。它们各自的中间表征（操作字典、码本索引、潜变量）都不是 B-rep 几何点本身。本文工作与上述方法的差异在于：\textbf{不依赖显式 VQ-VAE 码本与潜空间扩散，而是直接将 B-rep 的面 / 边 NURBS 采样点与拓扑面索引序列化为统一词表的 token 序列，并以标准 next-token 自回归方式建模}。这种点级序列化方案可以将几何精度的下界直接由标量量化粒度决定，避免码本规模对几何细节表达的硬约束。
+
+\section{本文研究内容与主要工作}
+
+本文围绕「不依赖显式 VQ-VAE 码本、端到端可重建为合法 STEP 文件」这一总体目标，开展了以下三方面工作：
+
+\begin{enumerate}
+    \item \textbf{面向 B-rep / NURBS 的点级量化与窗口化序列表示方法}。给出了面 / 边几何采样规则（每个面采样 16 个三维点 + 1 个面索引，对应 face\_block = 49；每条边采样 4 个三维点 + 2 个面索引，对应 edge\_block = 14）、4000 级标量均匀量化方案与 4053 维统一词表（50 面索引 + 4000 量化坐标 + 3 个结构 token），并设计了拓扑感知的面 / 边排序作为序列化时的确定性顺序约定。
+    \item \textbf{基于 LLaMA3 风格 Transformer 的标准 next-token 自回归生成模型}。主干由 RoPE、SwiGLU 与 RMSNorm 组成 8 层因果 Transformer，序列以「主干 norm $\to$ \texttt{ar\_lm\_head}」的标准 next-token 形式生成；代码中同时实现了 CompoundPointDecoder 作为可选的窗口化分解扩展，但本文主实验未启用，相关讨论作为扩展设计与未来工作给出。
+    \item \textbf{基于 OpenCASCADE 的逆向重建与 BRepCheck 评估闭环}。给出了从 token 序列经反量化、NURBS 曲面 / 曲线拟合、拓扑缝合到 STEP 导出与 BRepCheck 校验的端到端管线；并据此在 DeepCAD 子集上完成训练与有效性评测，将「有效率（of saved）」作为可量化的工程指标。
+\end{enumerate}
+
+\section{论文组织结构}
+
+全文按以下五章组织：第~1 章交代研究背景、问题定义、国内外现状与主要工作；第~2 章介绍 B-rep / NURBS 几何、自回归序列建模、LLaMA3 关键组件和 CAD 生成评价指标；第~3 章给出 B-rep 序列化与数据预处理方案，包括面 / 边采样、坐标量化、统一词表与拓扑感知排序；第~4 章描述自回归生成模型架构、训练 / 推理流程以及序列到 STEP/STL 的逆向重建管线；第~5 章在 DeepCAD 子集上汇报训练收敛性、生成有效率与三态分布，讨论局限并给出结论与展望。

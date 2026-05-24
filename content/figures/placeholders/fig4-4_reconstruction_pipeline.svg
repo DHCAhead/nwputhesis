@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="sans-serif">
+  <rect width="900" height="500" fill="#F8F8F8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#222">Fig 4-4 · Reverse Reconstruction Pipeline: Token Stream → STEP/STL</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#666">逆向重建管线：token 流 → NURBS 拟合 → 拓扑缝合 → BRepCheck → STEP/STL — 占位图（正式示意草案）</text>
+
+  <!-- 6 stages horizontal -->
+  <g font-size="12" text-anchor="middle">
+    <!-- 1 token stream -->
+    <rect x="20"  y="180" width="130" height="100" fill="#FFFFFF" stroke="#333" stroke-width="2" rx="4"/>
+    <text x="85" y="208" font-weight="bold">1. Token Stream</text>
+    <text x="85" y="230">START [face] …</text>
+    <text x="85" y="246">SEP [edge] … END</text>
+    <text x="85" y="266" font-size="10" fill="#555">model output</text>
+
+    <line x1="150" y1="230" x2="180" y2="230" stroke="#555" stroke-width="2" marker-end="url(#a44)"/>
+
+    <!-- 2 parse + dequantize -->
+    <rect x="180" y="180" width="130" height="100" fill="#FFFFFF" stroke="#333" stroke-width="2" rx="4"/>
+    <text x="245" y="208" font-weight="bold">2. Parse</text>
+    <text x="245" y="230">flatten + de-quantize</text>
+    <text x="245" y="246">→ point arrays</text>
+    <text x="245" y="266" font-size="10" fill="#555">utils.py L518</text>
+
+    <line x1="310" y1="230" x2="340" y2="230" stroke="#555" stroke-width="2" marker-end="url(#a44)"/>
+
+    <!-- 3 NURBS fit -->
+    <rect x="340" y="180" width="130" height="100" fill="#FFFFFF" stroke="#333" stroke-width="2" rx="4"/>
+    <text x="405" y="208" font-weight="bold">3. NURBS Fit</text>
+    <text x="405" y="230">GeomAPI_PointsTo</text>
+    <text x="405" y="246">BSplineSurface / Curve</text>
+    <text x="405" y="266" font-size="10" fill="#555">degree 3, 49 / 14 pts</text>
+
+    <line x1="470" y1="230" x2="500" y2="230" stroke="#555" stroke-width="2" marker-end="url(#a44)"/>
+
+    <!-- 4 topology sewing -->
+    <rect x="500" y="180" width="130" height="100" fill="#FFFFFF" stroke="#333" stroke-width="2" rx="4"/>
+    <text x="565" y="208" font-weight="bold">4. Sewing</text>
+    <text x="565" y="230">MakeFace + Sewing</text>
+    <text x="565" y="246">+ ShapeFix_Shape</text>
+    <text x="565" y="266" font-size="10" fill="#555">tolerance heal</text>
+
+    <line x1="630" y1="230" x2="660" y2="230" stroke="#555" stroke-width="2" marker-end="url(#a44)"/>
+
+    <!-- 5 make solid -->
+    <rect x="660" y="180" width="130" height="100" fill="#FFFFFF" stroke="#333" stroke-width="2" rx="4"/>
+    <text x="725" y="208" font-weight="bold">5. MakeSolid</text>
+    <text x="725" y="230">Shell → Solid</text>
+    <text x="725" y="246">enclosure</text>
+    <text x="725" y="266" font-size="10" fill="#555">BRepBuilderAPI</text>
+
+    <line x1="790" y1="230" x2="820" y2="230" stroke="#555" stroke-width="2" marker-end="url(#a44)"/>
+
+    <!-- 6 BRepCheck -->
+    <rect x="820" y="180" width="75" height="100" fill="#E8F0FE" stroke="#1a73e8" stroke-width="2" rx="4"/>
+    <text x="857" y="208" font-weight="bold">6. Check</text>
+    <text x="857" y="230">BRepCheck</text>
+    <text x="857" y="246">.IsValid()</text>
+    <text x="857" y="266" font-size="10" fill="#555">utils.py L225</text>
+  </g>
+
+  <!-- Q3-B three states (output branches) -->
+  <g font-size="12" text-anchor="middle">
+    <text x="450" y="320" font-weight="bold" font-size="13">↓ Q3-B Three-State Record (主表口径)</text>
+
+    <rect x="80"  y="340" width="220" height="80" fill="#FFE0E0" stroke="#c33" stroke-width="2"/>
+    <text x="190" y="362" font-weight="bold">S1 · 未产出 STEP/STL</text>
+    <text x="190" y="382">flatten 抛异常 / reconstruct</text>
+    <text x="190" y="398">返回 None / 写文件失败</text>
+    <text x="190" y="414" font-size="11" fill="#555">→ reconstruct_fail</text>
+
+    <rect x="340" y="340" width="220" height="80" fill="#FFF8DC" stroke="#d4a017" stroke-width="2"/>
+    <text x="450" y="362" font-weight="bold">S2 · 产出但无效</text>
+    <text x="450" y="382">STEP 写出</text>
+    <text x="450" y="398">BRepCheck IsValid() = False</text>
+    <text x="450" y="414" font-size="11" fill="#555">→ invalid_brep</text>
+
+    <rect x="600" y="340" width="220" height="80" fill="#DFF5DF" stroke="#1a8a3a" stroke-width="2"/>
+    <text x="710" y="362" font-weight="bold">S3 · 产出且有效</text>
+    <text x="710" y="382">STEP 写出</text>
+    <text x="710" y="398">BRepCheck IsValid() = True</text>
+    <text x="710" y="414" font-size="11" fill="#555">→ valid_brep (主表分子)</text>
+  </g>
+
+  <text x="450" y="450" text-anchor="middle" font-size="11" fill="#555">valid rate (of saved) = S3 / (S2 + S3)   ·   valid rate (of attempts) = S3 / (S1 + S2 + S3)</text>
+
+  <text x="450" y="475" text-anchor="middle" font-size="13" fill="#999">LaTeX label: fig:reconstruction-pipeline · 章节建议: §4.7 总览 (推荐放 §4.7.3 之前)</text>
+  <text x="450" y="493" text-anchor="middle" font-size="11" fill="#aaa">[PLACEHOLDER · 正式示意图草案]</text>
+
+  <defs>
+    <marker id="a44" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

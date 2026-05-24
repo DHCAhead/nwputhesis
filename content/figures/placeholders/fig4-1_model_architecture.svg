@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" font-family="sans-serif">
+  <rect width="900" height="600" fill="#F8F8F8"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#222">Fig 4-1 · Overall Model Architecture (3-Stage Cascade)</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#666">点级自回归生成模型总体架构 — 占位图（正式示意草案）</text>
+
+  <!-- Stage 1: CompoundPointEmbedding -->
+  <g>
+    <rect x="60" y="180" width="220" height="180" fill="#FFE9D9" stroke="#d97a1a" stroke-width="2" rx="6"/>
+    <text x="170" y="210" text-anchor="middle" font-size="15" font-weight="bold">CompoundPointEmbedding</text>
+    <text x="170" y="232" text-anchor="middle" font-size="12">(t₀, t₁, t₂) → h ∈ R²⁵⁶</text>
+
+    <g font-size="11">
+      <rect x="80" y="248" width="60" height="28" fill="#FFFFFF" stroke="#333"/><text x="110" y="266" text-anchor="middle">E₀(t₀)</text>
+      <rect x="145" y="248" width="60" height="28" fill="#FFFFFF" stroke="#333"/><text x="175" y="266" text-anchor="middle">E₁(t₁)</text>
+      <rect x="210" y="248" width="60" height="28" fill="#FFFFFF" stroke="#333"/><text x="240" y="266" text-anchor="middle">E₂(t₂)</text>
+    </g>
+
+    <text x="170" y="298" text-anchor="middle" font-size="12">↓ concat</text>
+    <rect x="100" y="305" width="140" height="28" fill="#FFFFFF" stroke="#333"/>
+    <text x="170" y="324" text-anchor="middle" font-size="12">Linear W_fuse</text>
+
+    <text x="170" y="354" text-anchor="middle" font-size="12" fill="#555">→ h_t ∈ R²⁵⁶</text>
+  </g>
+
+  <line x1="280" y1="270" x2="320" y2="270" stroke="#555" stroke-width="2" marker-end="url(#a41)"/>
+
+  <!-- Stage 2: LLaMA3 backbone -->
+  <g>
+    <rect x="320" y="180" width="260" height="180" fill="#E8F0FE" stroke="#1a73e8" stroke-width="2" rx="6"/>
+    <text x="450" y="210" text-anchor="middle" font-size="15" font-weight="bold">LLaMA3-style Backbone</text>
+    <text x="450" y="232" text-anchor="middle" font-size="12">causal Transformer, 8 layers, 4 heads</text>
+
+    <!-- 8 layers indicator -->
+    <g font-size="11" text-anchor="middle">
+      <rect x="340" y="248" width="220" height="22" fill="#FFFFFF" stroke="#333"/><text x="450" y="263">LLaMA3Block × 8</text>
+
+      <rect x="340" y="278" width="60" height="24" fill="#FFFFFF" stroke="#333"/><text x="370" y="294">RMSNorm</text>
+      <rect x="404" y="278" width="60" height="24" fill="#FFFFFF" stroke="#333"/><text x="434" y="294">GQA</text>
+      <rect x="468" y="278" width="92" height="24" fill="#FFFFFF" stroke="#333"/><text x="514" y="294">SwiGLU FFN</text>
+
+      <text x="450" y="324">+ RoPE on Q, K   ·   max_seq_len = 4 096</text>
+      <text x="450" y="344" fill="#555">d_model = 256 · head_dim = 64</text>
+    </g>
+  </g>
+
+  <line x1="580" y1="270" x2="620" y2="270" stroke="#555" stroke-width="2" marker-end="url(#a41)"/>
+
+  <!-- Stage 3: CompoundPointDecoder -->
+  <g>
+    <rect x="620" y="180" width="220" height="180" fill="#DFF5DF" stroke="#1a8a3a" stroke-width="2" rx="6"/>
+    <text x="730" y="210" text-anchor="middle" font-size="15" font-weight="bold">CompoundPointDecoder</text>
+    <text x="730" y="232" text-anchor="middle" font-size="12">8 layers × 4 heads (symmetric)</text>
+
+    <g font-size="11" text-anchor="middle">
+      <rect x="650" y="248" width="160" height="22" fill="#FFFFFF" stroke="#333"/><text x="730" y="263">LocalBlock × 8</text>
+
+      <text x="730" y="290">p(t₀ | h) → t̂₀</text>
+      <text x="730" y="310">p(t₁ | h, t₀) → t̂₁</text>
+      <text x="730" y="330">p(t₂ | h, t₀, t₁) → t̂₂</text>
+      <text x="730" y="354" fill="#555">(causal chain over 3 positions)</text>
+    </g>
+  </g>
+
+  <!-- Data flow labels -->
+  <g font-size="12" fill="#555">
+    <text x="170" y="170" text-anchor="middle">3 token IDs / step</text>
+    <text x="450" y="170" text-anchor="middle">point vector sequence</text>
+    <text x="730" y="170" text-anchor="middle">next triplet</text>
+  </g>
+
+  <!-- bottom flow: input/output -->
+  <g font-size="13" text-anchor="middle">
+    <rect x="60" y="420" width="220" height="50" fill="#FFFFFF" stroke="#333"/>
+    <text x="170" y="450">Input sequence (token IDs):  …(t₀ᵏ, t₁ᵏ, t₂ᵏ)…</text>
+
+    <rect x="620" y="420" width="220" height="50" fill="#FFFFFF" stroke="#333"/>
+    <text x="730" y="450">Output: sampled (t₀ᵏ⁺¹, t₁ᵏ⁺¹, t₂ᵏ⁺¹)</text>
+
+    <line x1="170" y1="420" x2="170" y2="360" stroke="#aaa" stroke-width="1" stroke-dasharray="3,3"/>
+    <line x1="730" y1="420" x2="730" y2="360" stroke="#aaa" stroke-width="1" stroke-dasharray="3,3"/>
+  </g>
+
+  <!-- Code paths -->
+  <text x="450" y="510" text-anchor="middle" font-size="12" fill="#555">04-code/nurbs-code/model.py · CompoundPointEmbedding (L349) · LLaMA3ARModel (L544) · CompoundPointDecoder (L384)</text>
+
+  <text x="450" y="560" text-anchor="middle" font-size="13" fill="#999">LaTeX label: fig:model-architecture · 章节建议: §4.1 模型总体架构</text>
+  <text x="450" y="578" text-anchor="middle" font-size="11" fill="#aaa">[PLACEHOLDER · 正式示意图草案]</text>
+
+  <defs>
+    <marker id="a41" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/>
+    </marker>
+  </defs>
+</svg>

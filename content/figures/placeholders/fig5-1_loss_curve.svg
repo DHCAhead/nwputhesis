@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 550" font-family="sans-serif">
+  <rect width="900" height="550" fill="#EFEFEF"/>
+  <text x="450" y="35" text-anchor="middle" font-size="20" font-weight="bold" fill="#222">Fig 5-1 · Training Loss / Validation CE Curve (PLACEHOLDER)</text>
+  <text x="450" y="58" text-anchor="middle" font-size="13" fill="#a00" font-weight="bold">⚠ 占位图，待真实 CSV 替换</text>
+
+  <!-- 大灰底块强调占位 -->
+  <rect x="60" y="90" width="780" height="380" fill="#D8D8D8" stroke="#999" stroke-width="2" stroke-dasharray="6,4"/>
+
+  <!-- 坐标轴框架（仅示意，不画真实数据点）-->
+  <g stroke="#666" stroke-width="1.5" fill="none">
+    <!-- y-axis -->
+    <line x1="130" y1="120" x2="130" y2="430"/>
+    <!-- x-axis -->
+    <line x1="130" y1="430" x2="800" y2="430"/>
+
+    <!-- y-ticks -->
+    <line x1="125" y1="120" x2="135" y2="120"/>
+    <line x1="125" y1="190" x2="135" y2="190"/>
+    <line x1="125" y1="260" x2="135" y2="260"/>
+    <line x1="125" y1="330" x2="135" y2="330"/>
+    <line x1="125" y1="400" x2="135" y2="400"/>
+
+    <!-- x-ticks -->
+    <line x1="200" y1="425" x2="200" y2="435"/>
+    <line x1="320" y1="425" x2="320" y2="435"/>
+    <line x1="440" y1="425" x2="440" y2="435"/>
+    <line x1="560" y1="425" x2="560" y2="435"/>
+    <line x1="680" y1="425" x2="680" y2="435"/>
+    <line x1="800" y1="425" x2="800" y2="435"/>
+  </g>
+
+  <!-- 坐标轴标签 -->
+  <g font-size="11" fill="#555">
+    <text x="120" y="124" text-anchor="end">2.0</text>
+    <text x="120" y="194" text-anchor="end">1.5</text>
+    <text x="120" y="264" text-anchor="end">1.0</text>
+    <text x="120" y="334" text-anchor="end">0.5</text>
+    <text x="120" y="404" text-anchor="end">0.1</text>
+
+    <text x="200" y="448" text-anchor="middle">0</text>
+    <text x="320" y="448" text-anchor="middle">20k</text>
+    <text x="440" y="448" text-anchor="middle">40k</text>
+    <text x="560" y="448" text-anchor="middle">60k</text>
+    <text x="680" y="448" text-anchor="middle">80k</text>
+    <text x="800" y="448" text-anchor="middle">100k</text>
+  </g>
+
+  <text x="465" y="468" text-anchor="middle" font-size="12" fill="#444">step</text>
+  <text x="80" y="275" text-anchor="middle" font-size="12" fill="#444" transform="rotate(-90 80 275)">loss / val CE</text>
+
+  <!-- 大字提示 -->
+  <g font-size="22" font-weight="bold" fill="#a00" text-anchor="middle">
+    <text x="465" y="220">PLACEHOLDER</text>
+    <text x="465" y="255">占位待真实曲线渲染</text>
+  </g>
+
+  <g font-size="13" fill="#444" text-anchor="middle">
+    <text x="465" y="295">数据源：03-experiments/runs/hr2_patch1/train_log.csv</text>
+    <text x="465" y="315">绘图脚本（待写）：scripts/plot_loss_curve.py</text>
+    <text x="465" y="345">将绘制 train_loss、val_CE 双曲线</text>
+    <text x="465" y="362">最佳点：val_CE = 0.10486 @ step ≈ 96k（local_verified）</text>
+    <text x="465" y="395" font-size="11" fill="#888">CSV 到位后替换为 PDF/PNG · LaTeX 路径不变</text>
+  </g>
+
+  <text x="450" y="505" text-anchor="middle" font-size="13" fill="#999">LaTeX label: fig:loss-curve · 章节建议: §5.2.1 训练过程</text>
+  <text x="450" y="524" text-anchor="middle" font-size="11" fill="#a00" font-weight="bold">[PLACEHOLDER · 待真实数据/渲染替换]</text>
+</svg>

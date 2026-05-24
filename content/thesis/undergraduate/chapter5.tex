@@ -1,5 +1,145 @@
 %% 第五章
 
-\chapter{第五章标题}
-\chaptermark{第五章标题}
+\chapter{实验结果与总结展望}
+\chaptermark{实验结果与总结展望}
 
+本章在 DeepCAD 子集上验证第~3、4 章给出的点级序列化与标准 next-token 自回归生成框架。§5.1 描述实验环境与数据；§5.2 给出训练收敛性证据；§5.3 给出生成有效率主表并与毕业设计任务书 60\% 目标对比；§5.4 给出三态分布并讨论失败案例；§5.5 总结局限；§5.6 给出结论与后续工作。
+
+\section{实验环境与数据集}
+
+\subsection{硬件与软件}
+
+训练在校内 GPU 服务器上完成，单机配置 8 $\times$ NVIDIA H20 GPU（每张物理显存约 95\,GB，节点系统内存 1.0\,TiB）。本论文实际训练使用其中 4 张 H20，启动命令通过 \texttt{CUDA\_VISIBLE\_DEVICES=3,4,5,6} 显式锁定。软件栈在 Linux 节点上以 Python 3.10 为基础，深度学习框架使用 PyTorch 2.x 与 PyTorch Lightning 2.x（DDP 多卡并行），几何处理依托 OpenCASCADE Python 绑定，数据 I/O 使用 NumPy 与 h5py。
+
+\subsection{数据集（DeepCAD 子集）}
+
+本论文采用 DeepCAD 数据集\cite{wu_2021_deepcad} 的去重子集作为训练与评测数据来源。子集经第~3 章描述的预处理流程（STEP $\to$ 拓扑分解 $\to$ 面 / 边采样 $\to$ 量化 $\to$ 拓扑感知排序）转换为点级 token 序列，最终落到 \texttt{data/nurbs\_sequences\_v1\_patch.pkl}：训练样本 64\,325 条、验证样本 6\,095 条（按 \texttt{max\_seq\_len = 4\,096} 过滤后分别滤除 26 条 / 1 条），总样本数 70\,420，训练 : 验证 比例约为 91.4 : 8.6。数据词表规模 4\,053（50 面索引 + 4\,000 量化坐标 + 3 个结构 token），模型 \texttt{vocab\_size = 4054}（额外引入 PAD 用于批内对齐）。本论文未单独划分独立测试集，模型选择与最终汇报均基于上述验证集，由此带来的泛化偏差风险将在 §5.5 局限性中说明。
+
+\subsection{训练超参数}
+
+模型与训练超参数取自 \texttt{04-code/nurbs-code/train\_ar.py} 的 argparse 真实默认值，与 \texttt{model.py} 中 \texttt{LLaMA3Config} 的字段一致。\autoref{tab:model-config} 给出完整列表。
+
+\begin{table}[!h]
+    \caption{模型与训练超参数}
+    \label{tab:model-config}
+    \begin{tabular}{p{1.5cm}p{5.5cm}p{6.5cm}}
+        \toprule
+        维度 & 字段 & 取值 \\
+        \midrule
+        数据 & \texttt{--data\_list} / \texttt{--dataset\_type} & \texttt{data/nurbs\_sequences\_v1\_patch.pkl} / \texttt{deepcad} \\
+        序列 & \texttt{max\_seq\_len} / 数据词表 / 模型 vocab & 4\,096 / 4\,053 / 4\,054 \\
+        窗口 & \texttt{local\_window\_size} / 输出头 & 1 / \texttt{ar\_lm\_head}（标准 next-token） \\
+        主干 & \texttt{n\_layers} / \texttt{n\_heads} / \texttt{n\_kv\_heads} / \texttt{d\_model} / \texttt{dim\_ffn} & 8 / 8 / 4 / 256 / 1024 \\
+        训练 & batch / epoch / lr / wd / dropout / AMP & $32 \times 4 = 128$ / 200 / 5e-4 / 0.01 / 0.1 / True \\
+        硬件 & GPU / 系统 RAM & 4 $\times$ NVIDIA H20 / 1.0\,TiB \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{训练收敛性分析}
+
+\subsection{验证集交叉熵曲线}
+
+最终模型 hr2\_patch1 按\autoref{tab:model-config} 配置训练 200 个 epoch，验证集交叉熵损失从 Epoch~5 的 0.2357 单调下降到 Epoch~200 的 0.10486。同期训练的 hr2\_patch\_hreg2 作为引入分层正则化项的对照运行，在相同 200 个 epoch 内验证集交叉熵损失从 0.7332 下降到 0.40401。两条曲线在整个训练窗口内均保持单调下降，未出现验证损失反弹或显著平台期，关键 Epoch 节点如\autoref{tab:val-ce-compare} 所示，原始数据来自 \texttt{03-experiments/toloacl/hr2\_patch1\_\_Val\_CE\_Loss.csv} 与同目录 \texttt{hr2\_patch\_hreg2\_\_Val\_CE\_Loss.csv}（各 41 行，覆盖 Epoch~5 至 200 每 5 个 epoch 一个点）。
+
+\begin{table}[!h]
+    \caption{hr2\_patch1 与 hr2\_patch\_hreg2 验证集交叉熵损失对比}
+    \label{tab:val-ce-compare}
+    \begin{tabular}{cccc}
+        \toprule
+        Epoch & hr2\_patch1 val\_CE & hr2\_patch\_hreg2 val\_CE & 比值 \\
+        \midrule
+        5            & 0.2357           & 0.7332           & 3.11$\times$ \\
+        50           & 0.1193           & 0.4385           & 3.68$\times$ \\
+        100          & 0.1096           & 0.4178           & 3.81$\times$ \\
+        150          & 0.1058           & 0.4078           & 3.86$\times$ \\
+        200 (best)   & \textbf{0.10486} & 0.40401          & \textbf{3.85$\times$} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+按 $\text{PPL} = e^{\text{CE}}$ 换算，hr2\_patch1 最终困惑度约为 1.110，表明模型对验证序列中下一个 token 的预测分布已经接近确定性输出。两个 run 在数据序列化方式上完全一致，差异仅来自模型与正则配置，因此该对照仅用作说明「patch 化（含模型与正则调整）整体上对验证损失有显著影响」，不作为排序策略的消融证据。
+
+\subsection{学习率调度与训练时长}
+
+学习率随 step 推进的曲线由 \texttt{03-experiments/toloacl/hr2\_patch1\_\_Train\_Learning\_Rate.csv}（201 行 step-level 记录）刻画，整体呈现「warmup 上升 $\to$ 中段稳定 $\to$ 末段衰减」的三段式形态。hr2\_patch1 单次完整训练的端到端时长为 17 小时 28 分钟，按 200 epoch 均摊得平均每 epoch 约 5 分 14 秒。4 张 H20 通过 \texttt{torchrun --nproc\_per\_node=4} 启动 DDP 并行，启动命令与 epoch 级 best-loss 序列均记录于 \texttt{experiment-local/logs/hr2\_patch1.log}。训练全程启用 AMP 混合精度与梯度检查点，单卡 95\,GB 显存给 $d_{\text{model}} = 256$、$\text{max\_seq\_len} = 4\,096$、per-GPU batch = 32 的训练负载留出充足容量，未观察到显存压力。
+
+\section{生成与重建有效性分析}
+
+\subsection{采样配置与样本数}
+
+本节用两个独立的生成 run 评估反向重建有效性：
+
+\begin{itemize}
+    \item \textbf{hr2\_patch1（Epoch~200 best checkpoint）}：按 top-k = 1、top-p = 0.9 采样 1\,005 条 token 序列，每条经 \texttt{04-code/nurbs-code/sequence2nurbs.py} 调度的反向重建管线得到一个候选 Solid。本次评测 1\,005 个采样全部成功写出 STEP 文件（重建错误数为 0）。
+    \item \textbf{早期 hr2 基线（无 patch 后缀）}：在相同 top-k = 1、top-p = 0.9 配置下采样 3\,332 次，其中 3\,000 次成功写出 STEP 文件（332 次在重建阶段失败）。
+\end{itemize}
+
+两个 run 使用同一份评测脚本 \texttt{04-code/nurbs-code/eval\_generated\_brep.py} 的五标量输出（序列总数 / 重建成功 / 重建失败 / 有效 BREP / 无效 BREP），保证口径一致。
+
+\subsection{有效率主表}
+
+按第~2 章\autoref{tab:three-state-def} 的口径，本节核心指标——「有效率（of saved）$= \mathrm{S3} / (\mathrm{S2} + \mathrm{S3})$」——结果如\autoref{tab:valid-rate-summary} 所示。
+
+\begin{table}[!h]
+    \caption{生成有效率主表（of saved 口径）}
+    \label{tab:valid-rate-summary}
+    \begin{tabular}{p{3.8cm}cccccp{2.0cm}}
+        \toprule
+        模型 & 采样配置 & 采样次数 & 已写出 STEP & BRepCheck Valid & 有效率 & 备注 \\
+        \midrule
+        早期 hr2 基线 & top-k = 1, top-p = 0.9 & 3\,332 & 3\,000 & 2\,711 & \textbf{90.40\%} & 332 次重建失败 \\
+        \textbf{hr2\_patch1（本文）} & top-k = 1, top-p = 0.9 & 1\,005 & 1\,005 & 980 & \textbf{97.51\%} & 0 次重建失败 \\
+        毕业设计任务书目标 & --- & --- & --- & --- & \textbf{$\ge 60\%$} & 红线指标 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+hr2\_patch1 在 1\,005 个保存样本上的有效率为 980 / 1\,005 = 97.51\%；早期 hr2 基线在 3\,000 个保存样本上的有效率为 2\,711 / 3\,000 = 90.40\%。两者在「of saved」口径下的差值为 7.11 个百分点。该差值来自两个 run 在模型与训练配置上的整体差异，本文不将该差值单独归因于第~3 章的拓扑感知排序、第~4 章的具体网络结构调整或某一个具体组件。
+
+\subsection{与任务书目标的对比}
+
+毕业设计任务书在评测维度上对生成模型给出「有效率不低于 60\%」的红线指标。早期 hr2 基线的 90.40\% 与 hr2\_patch1 的 97.51\% 均显著超过该指标，分别高出 30.40 与 37.51 个百分点。这一结果表明，在当前实验设定下，本文提出的点级序列化方案与标准 next-token 自回归生成路线在 BRepCheck 通过率这一维度上是工程可行的，可以为后续在更大规模数据集上的研究提供一个可用的工程起点。
+
+需要强调的是，上述结论只在当前实验设定（DeepCAD 子集、给定的采样配置与单次评测）下成立；该结果不能解读为本文方法在所有 CAD 数据集上的通用泛化能力，相关边界在 §5.5 局限性讨论中明确。
+
+\section{失败案例与三态分布}
+
+按第~2 章\autoref{tab:three-state-def} 定义的三态口径，将两个生成 run 的样本逐条归类，得到\autoref{tab:three-state-distribution}。
+
+\begin{table}[!h]
+    \caption{生成样本的三态分布}
+    \label{tab:three-state-distribution}
+    \begin{tabular}{p{3.8cm}cccccc}
+        \toprule
+        模型 & 采样次数 & S1（未产出） & S2（产出但无效） & S3（产出且有效） & S2 占比 & S3 占比 \\
+        \midrule
+        早期 hr2 基线 & 3\,332 & 332 & 289 & 2\,711 & 8.67\% & 81.37\% \\
+        \textbf{hr2\_patch1} & 1\,005 & 0 & 25 & 980 & 2.49\% & 97.51\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+S1 直接由「采样次数 $-$ 已写出 STEP 数」得到，S2 由「已写出 STEP 数 $-$ BRepCheck Valid 数」得到，S3 即 BRepCheck Valid 数；三项之和等于采样次数，数字一致性已逐行核对。从基线到 hr2\_patch1，S3（of attempts 口径）从 81.37\% 上升到 97.51\%；S1 + S2 两项失败合计从 18.63\% 下降到 2.49\%，主要降幅来自 S1（未产出）从 9.96\% 直接清零，表明 hr2\_patch1 在「序列能否顺利写出 STEP 文件」这一最前端环节即已显著改善，与验证损失全程下降趋势一致。
+
+S2 类型的 25 个无效样本主要由 OCC 的 BRepCheck 报告标记为 invalid，常见原因包括 Shell 含游离边、面参数域与边曲线不匹配、面取向不一致等几何—拓扑细节问题。本论文未对 S2 样本作进一步的关键字级失败原因细分，相关后处理与修复管线作为后续工作（见 §5.6）。
+
+\section{局限性}
+
+本论文在以下五个维度存在明确局限。
+
+第一，训练与评测均限定在 DeepCAD 子集上，未在 ABC 数据集或 Fusion 360 子集上验证跨数据集泛化能力。第二，训练 / 验证集按 91.4 : 8.6 划分但未单独保留独立测试集，最优 checkpoint 与最终有效率均基于验证集评估，模型选择偏差风险在小数据集上尤为明显。第三，本论文未复现 VQ-VAE 两阶段路线（DeepCAD、SkexGen、BrepGen 等）的实测基线，仅以文献报告值进行口径对照，因此与上述路线的精确量化比较留作后续工作。第四，本论文未对第~3 章的拓扑感知排序策略以及第~4 章的 CompoundPointDecoder 等可选组件做受控对照消融，因此对其各自的独立贡献不作定量声明。第五，本论文主要以 BRepCheck 通过率为评估指标，未引入 Chamfer Distance、Coverage、Minimum Matching Distance 等几何相似度指标，几何细节质量的评估手段相对单一。
+
+\section{总结与后续工作}
+
+\subsection{工作总结}
+
+本论文围绕「不依赖显式 VQ-VAE 码本、端到端可重建为合法 STEP 文件」这一总体目标，开展了三方面工作：(1) 设计了面向 B-rep / NURBS 的点级量化与窗口化序列表示方法，给出了 face\_block = 49 与 edge\_block = 14 的序列骨架、4000 级标量均匀量化、4053 维统一词表与拓扑感知排序的具体方案；(2) 实现并训练了 LLaMA3 风格的标准 next-token 自回归生成模型，主干由 RoPE、SwiGLU、RMSNorm 与 GQA 组成，输出头为「主干 norm $\to$ \texttt{ar\_lm\_head}」；(3) 实现了基于 OpenCASCADE 的逆向重建与 BRepCheck 评估闭环，构成一条可独立运行的工程流水线。
+
+\subsection{初步结论}
+
+在 DeepCAD 子集上，hr2\_patch1 经 200 个 epoch 训练后验证集交叉熵损失收敛至 0.10486，在 1\,005 个独立生成样本上 BRepCheck 通过率达到 97.51\%（of saved 口径，0 次重建错误），早期 hr2 基线在相同采样配置下达到 90.40\%（3\,000 saved 样本）。两个数字均显著超过毕业设计任务书 60\% 的红线指标。这一结果在当前实验设定下初步表明：本文提出的「点级序列化 + 标准 next-token 自回归 + OCC 逆向重建」工程路线是可行的，可作为后续在更大规模、更多样化 CAD 数据上开展研究的工程起点；该结论不直接外推到跨数据集泛化或与 VQ-VAE 路线的量化对比，也不单独归因于本文任何一个具体组件。
+
+\subsection{后续工作}
+
+针对 §5.5 列出的局限，本文后续可在如下方向继续展开：(a) 启动「DFS + 最大索引排序」与随机排序的受控对照消融，定量考察拓扑感知排序的独立贡献；(b) 启用 $W > 1$ 的窗口化分支并实测 CompoundPointDecoder 对生成质量的影响，与本文 $W = 1$ 的主分支做配对对比；(c) 在全量 DeepCAD 与 ABC 等更大规模数据集上重训，观察大规模数据下的收敛与泛化；(d) 复现一组 VQ-VAE 两阶段基线，与本文方法在同样的 OCC BRepCheck 口径下做量化比较；(e) 引入 Chamfer Distance、Coverage、Minimum Matching Distance 等几何相似度指标，丰富生成质量评估；(f) 对 S2（产出但无效）样本接入 OCC ShapeFix 等后处理修复管线，量化失败样本的可回收比例。
