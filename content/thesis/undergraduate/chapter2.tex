@@ -31,8 +31,8 @@ NURBS 曲面 $S(u, v)$ 由两组方向上的基函数与控制网格 $\mathbf{P}
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.82\textwidth]{placeholders/fig2-1_nurbs_sampling.png}
-    \caption{NURBS 曲面与曲线采样示意图（占位）}
+    \includegraphics[width=0.82\textwidth]{插图/fig2-1_nurbs_sampling.pdf}
+    \caption{NURBS 曲面与曲线采样示意图。左侧以 $7 \times 7$ 的 UV 网格展示曲面 $S(u,v)$ 上的规则采样点及 $u$、$v$ 方向展开顺序；右侧以沿弧长分布的 14 个点展示曲线 $C(u)$ 的边采样过程，并通过端点坐标统一边方向。采样得到的三维坐标随后被标量量化为 4000 个等级，并映射到大小为 4053 的统一词表中。}
     \label{fig:nurbs-sampling}
 \end{figure}
 
@@ -70,8 +70,8 @@ Transformer\cite{vaswani_2017_attention} 提出多头注意力机制，通过查
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.82\textwidth]{placeholders/fig2-2_transformer_decoder.png}
-    \caption{Decoder-only Transformer 结构示意图（占位）}
+    \includegraphics[width=0.82\textwidth]{插图/fig2-2_transformer_decoder.pdf}
+    \caption{Decoder-only Transformer 结构示意图。输入 token 经嵌入与位置编码后进入多层因果 Transformer block，每层由带因果掩码的自注意力、前馈网络、归一化与残差连接组成；最终隐藏状态通过语言模型头预测下一个 token 的概率分布。}
     \label{fig:transformer-decoder}
 \end{figure}
 

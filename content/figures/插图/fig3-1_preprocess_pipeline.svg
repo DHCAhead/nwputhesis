@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 260" width="100%" height="100%" style="background-color: #ffffff; font-family: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 1 L 9 5 L 0 9 Z" fill="#94A3B8" />
+    </marker>
+    
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000000" flood-opacity="0.04"/>
+    </filter>
+  </defs>
+
+  <rect width="100%" height="100%" fill="#ffffff" />
+
+  <rect x="192.5" y="32" width="520" height="136" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="6,4" />
+  <text x="208" y="52" font-size="12" font-weight="700" letter-spacing="1" fill="#64748B">几何解析与采样</text>
+
+  <rect x="717.5" y="32" width="520" height="136" rx="12" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="6,4" />
+  <text x="733" y="52" font-size="12" font-weight="700" letter-spacing="1" fill="#64748B">序列量化与 TOKEN 化</text>
+
+  <path d="M 180 110 L 199 110" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)" />
+  <path d="M 355 110 L 374 110" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)" />
+  <path d="M 530 110 L 549 110" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)" />
+  <path d="M 705 110 L 724 110" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)" />
+  <path d="M 880 110 L 899 110" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)" />
+  <path d="M 1055 110 L 1074 110" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)" />
+  <path d="M 1230 110 L 1249 110" stroke="#94A3B8" stroke-width="2" marker-end="url(#arrow)" />
+
+  <g transform="translate(30, 70)" filter="url(#shadow)">
+    <rect width="150" height="80" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="2" />
+    <text x="75" y="32" font-size="14" font-weight="bold" fill="#1E293B" text-anchor="middle">STEP 文件</text>
+    <path d="M 20 48 L 130 48" stroke="#BFDBFE" stroke-width="1" />
+    <text x="75" y="65" font-size="12" fill="#475569" font-style="italic" text-anchor="middle">B-rep 输入</text>
+  </g>
+
+  <g transform="translate(205, 70)" filter="url(#shadow)">
+    <rect width="150" height="80" rx="8" fill="#F0FDFA" stroke="#0D9488" stroke-width="2" />
+    <text x="75" y="23" font-size="13" font-weight="bold" fill="#1E293B" text-anchor="middle">OpenCASCADE</text>
+    <text x="75" y="40" font-size="14" font-weight="bold" fill="#1E293B" text-anchor="middle">解析</text>
+    <path d="M 20 48 L 130 48" stroke="#99F6E4" stroke-width="1" />
+    <text x="75" y="65" font-size="12" fill="#475569" text-anchor="middle">读取几何形状</text>
+  </g>
+
+  <g transform="translate(380, 70)" filter="url(#shadow)">
+    <rect width="150" height="80" rx="8" fill="#F0FDFA" stroke="#0D9488" stroke-width="2" />
+    <text x="75" y="32" font-size="14" font-weight="bold" fill="#1E293B" text-anchor="middle">拓扑分解</text>
+    <path d="M 20 48 L 130 48" stroke="#99F6E4" stroke-width="1" />
+    <text x="75" y="65" font-size="12" fill="#475569" text-anchor="middle">面 / 边</text>
+  </g>
+
+  <g transform="translate(555, 70)" filter="url(#shadow)">
+    <rect width="150" height="80" rx="8" fill="#F0FDFA" stroke="#0D9488" stroke-width="2" />
+    <text x="75" y="32" font-size="14" font-weight="bold" fill="#1E293B" text-anchor="middle">面/边 NURBS 采样</text>
+    <path d="M 20 48 L 130 48" stroke="#99F6E4" stroke-width="1" />
+    <text x="75" y="65" font-size="12" fill="#475569" text-anchor="middle">采样点</text>
+  </g>
+
+  <g transform="translate(730, 70)" filter="url(#shadow)">
+    <rect width="150" height="80" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2" />
+    <text x="75" y="32" font-size="14" font-weight="bold" fill="#1E293B" text-anchor="middle">坐标归一化</text>
+    <path d="M 20 48 L 130 48" stroke="#DDD6FE" stroke-width="1" />
+    <text x="75" y="65" font-size="12" fill="#475569" text-anchor="middle">映射至 [-1,1]</text>
+  </g>
+
+  <g transform="translate(905, 70)" filter="url(#shadow)">
+    <rect width="150" height="80" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2" />
+    <text x="75" y="32" font-size="14" font-weight="bold" fill="#1E293B" text-anchor="middle">标量量化</text>
+    <path d="M 20 48 L 130 48" stroke="#DDD6FE" stroke-width="1" />
+    <text x="75" y="65" font-size="12" fill="#475569" text-anchor="middle">4000 个离散区间</text>
+  </g>
+
+  <g transform="translate(1080, 70)" filter="url(#shadow)">
+    <rect width="150" height="80" rx="8" fill="#F5F3FF" stroke="#7C3AED" stroke-width="2" />
+    <text x="75" y="32" font-size="14" font-weight="bold" fill="#1E293B" text-anchor="middle">拓扑感知排序</text>
+    <path d="M 20 48 L 130 48" stroke="#DDD6FE" stroke-width="1" />
+    <text x="75" y="65" font-size="12" fill="#475569" font-family="sans-serif" text-anchor="middle">DFS + 边顺序</text>
+  </g>
+
+  <g transform="translate(1255, 70)" filter="url(#shadow)">
+    <rect width="150" height="80" rx="8" fill="#EFF6FF" stroke="#2563EB" stroke-width="2" />
+    <text x="75" y="23" font-size="14" font-weight="bold" fill="#1E293B" text-anchor="middle">Token 序列</text>
+    <text x="75" y="40" font-size="14" font-weight="bold" fill="#1E293B" text-anchor="middle">数据集</text>
+    <path d="M 20 48 L 130 48" stroke="#BFDBFE" stroke-width="1" />
+    <text x="75" y="65" font-size="12" fill="#475569" font-style="italic" text-anchor="middle">START / SEP / END</text>
+  </g>
+
+  <g transform="translate(420, 205)">
+    <rect width="600" height="36" rx="18" fill="#F1F5F9" stroke="#E2E8F0" stroke-width="1.5" />
+    <text x="300" y="23" font-size="13" font-family="monospace, Courier, 'PingFang SC', 'Microsoft YaHei', sans-serif" fill="#475569" text-anchor="middle">DeepCAD 子集  |  训练集: 64,325  |  验证集: 6,095  |  词表: 4,053</text>
+  </g>
+
+</svg>

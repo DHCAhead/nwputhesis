@@ -13,8 +13,8 @@
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.82\textwidth]{placeholders/fig3-1_preprocess_pipeline.png}
-    \caption{数据预处理流程示意图（占位）}
+    \includegraphics[width=0.82\textwidth]{插图/fig3-1_preprocess_pipeline.pdf}
+    \caption{数据预处理流程示意图。流程以 STEP 文件中的 B-rep 输入为起点，依次经过 OpenCASCADE 解析、拓扑分解、面 / 边 NURBS 采样、坐标归一化、4000 级标量量化和拓扑感知排序，最终拼装为包含 START、SEP、END 等结构 token 的训练序列数据集。}
     \label{fig:preprocess-pipeline}
 \end{figure}
 
@@ -79,8 +79,8 @@ SEP    [edge_1 block] [edge_2 block] ... [edge_E block]  END
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.82\textwidth]{placeholders/fig3-3_seq_format.png}
-    \caption{点级 token 序列结构示意图（占位）}
+    \includegraphics[width=0.82\textwidth]{插图/fig3-3_seq_format.pdf}
+    \caption{点级 token 序列结构示意图。完整序列由 START 开始，先顺序排列若干 face\_block，再由 SEP 切换到 edge\_block 段，最后以 END 终止；每个 face\_block 含 16 个三维采样点对应的 48 个坐标 token 和 1 个面索引 token，每个 edge\_block 含 2 个邻接面索引 token 和 4 个三维采样点对应的 12 个坐标 token。}
     \label{fig:sequence-format}
 \end{figure}
 
@@ -114,8 +114,8 @@ PAD（id $= 4053$）是模型侧引入的填充 token，用于两类用途：(a)
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.82\textwidth]{placeholders/fig3-2_topology_sort.png}
-    \caption{拓扑感知排序策略示意图（占位）}
+    \includegraphics[width=0.82\textwidth]{插图/fig3-2_topology_sort.pdf}
+    \caption{拓扑感知排序策略示意图。面排序以面—边邻接图为基础，通过深度优先遍历使拓扑相邻的面在序列中尽量靠近；边排序再结合已得到的面访问顺序，对每个面关联的边进行确定性排列，从而降低同一 B-rep 在不同预处理轮次中的序列差异。}
     \label{fig:topology-sort}
 \end{figure}
 

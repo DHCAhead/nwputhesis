@@ -61,8 +61,8 @@ CompoundPointEmbedding 包含一张大小为 $\text{vocab\_size} \times d_{\text
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.82\textwidth]{placeholders/fig4-2_gqa_vs_mha.png}
-    \caption{Grouped Query Attention 与多头注意力对比示意图（占位）}
+    \includegraphics[width=0.82\textwidth]{插图/fig4-2_gqa_vs_mha.pdf}
+    \caption{多头注意力（MHA）与 Grouped Query Attention（GQA）的结构对比。MHA 为每个 Query 头配置独立的 Key / Value 头；GQA 将多个 Query 头划分为一组并共享同一组 Key / Value，从而在保持多查询表达能力的同时减少 KV cache 的存储与读取开销。}
     \label{fig:gqa-vs-mha}
 \end{figure}
 
@@ -165,8 +165,8 @@ CompoundPointDecoder 内部由 \texttt{decoder\_n\_layers} 个 LocalBlock 串联
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.82\textwidth]{placeholders/fig4-4_reconstruction_pipeline.png}
-    \caption{逆向重建管线示意图（占位）}
+    \includegraphics[width=0.82\textwidth]{插图/fig4-4_reconstruction_pipeline.pdf}
+    \caption{逆向重建管线示意图。生成序列首先被解析为面段与边段，并通过反量化恢复为三维采样点；随后分别拟合 NURBS 曲面和曲线，依据面索引关系完成拓扑缝合与实体构建，最后导出 STEP / STL 文件并调用 OpenCASCADE 的 BRepCheck 进行有效性检查。}
     \label{fig:reconstruction-pipeline}
 \end{figure}
 
