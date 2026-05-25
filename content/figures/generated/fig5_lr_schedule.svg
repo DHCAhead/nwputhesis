@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="540" viewBox="0 0 900 540">
+<defs>
+<style>
+.axis { stroke: #8EA0AD; stroke-width: 1; }
+.grid { stroke: #D9E1E8; stroke-width: 1; }
+.dash { stroke-dasharray: 6 5; }
+</style>
+</defs>
+<rect width="900" height="540" fill="#FFFFFF"/>
+<text x="86.0" y="36.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="22" fill="#263743" text-anchor="start" font-weight="700" >学习率调度曲线</text>
+<text x="86.0" y="59.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="13" fill="#607486" text-anchor="start" font-weight="400" >hr2_patch1 训练过程记录</text>
+<line class="grid" x1="86" y1="462.0" x2="864" y2="462.0"/>
+<text x="74.0" y="467.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#607486" text-anchor="end" font-weight="400" >0</text>
+<line class="grid" x1="86" y1="319.0" x2="864" y2="319.0"/>
+<text x="74.0" y="324.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#607486" text-anchor="end" font-weight="400" >2.0e-04</text>
+<line class="grid" x1="86" y1="176.1" x2="864" y2="176.1"/>
+<text x="74.0" y="181.1" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#607486" text-anchor="end" font-weight="400" >4.0e-04</text>
+<line class="grid" x1="86" y1="33.1" x2="864" y2="33.1"/>
+<text x="74.0" y="38.1" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#607486" text-anchor="end" font-weight="400" >6.0e-04</text>
+<line class="grid" x1="82.1" y1="76" x2="82.1" y2="462"/>
+<text x="82.1" y="487.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#607486" text-anchor="middle" font-weight="400" >0</text>
+<line class="grid" x1="277.6" y1="76" x2="277.6" y2="462"/>
+<text x="277.6" y="487.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#607486" text-anchor="middle" font-weight="400" >50</text>
+<line class="grid" x1="473.0" y1="76" x2="473.0" y2="462"/>
+<text x="473.0" y="487.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#607486" text-anchor="middle" font-weight="400" >100</text>
+<line class="grid" x1="668.5" y1="76" x2="668.5" y2="462"/>
+<text x="668.5" y="487.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#607486" text-anchor="middle" font-weight="400" >150</text>
+<line class="grid" x1="864.0" y1="76" x2="864.0" y2="462"/>
+<text x="864.0" y="487.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#607486" text-anchor="middle" font-weight="400" >200</text>
+<line class="axis" x1="86" y1="462" x2="864" y2="462"/>
+<line class="axis" x1="86" y1="76" x2="86" y2="462"/>
+<text x="475.0" y="514.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="13" fill="#607486" text-anchor="middle" font-weight="400" >Step / Epoch</text>
+<text x="22.0" y="269.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="13" fill="#607486" text-anchor="middle" font-weight="400" transform="rotate(-90 22 269.0)">Learning Rate</text>
+<polyline fill="none" stroke="#486A83" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round" points="86.00,104.59 89.91,104.65 93.82,104.75 97.73,104.89 101.64,105.07 105.55,105.29 109.46,105.54 113.37,105.84 117.28,106.18 121.19,106.55 125.10,106.97 129.01,107.42 132.91,107.91 136.82,108.45 140.73,109.02 144.64,109.63 148.55,110.27 152.46,110.96 156.37,111.68 160.28,112.44 164.19,113.24 168.10,114.08 172.01,114.96 175.92,115.87 179.83,116.82 183.74,117.80 187.65,118.82 191.56,119.88 195.47,120.97 199.38,122.10 203.29,123.27 207.20,124.47 211.11,125.70 215.02,126.97 218.92,128.27 222.83,129.61 226.74,130.98 230.65,132.39 234.56,133.82 238.47,135.29 242.38,136.79 246.29,138.32 250.20,139.89 254.11,141.48 258.02,143.11 261.93,144.77 265.84,146.45 269.75,148.17 273.66,149.91 277.57,151.68 281.48,153.48 285.39,155.31 289.30,157.17 293.21,159.05 297.12,160.96 301.03,162.89 304.93,164.85 308.84,166.83 312.75,168.84 316.66,170.87 320.57,172.93 324.48,175.01 328.39,177.11 332.30,179.23 336.21,181.38 340.12,183.54 344.03,185.72 347.94,187.93 351.85,190.15 355.76,192.39 359.67,194.65 363.58,196.93 367.49,199.23 371.40,201.54 375.31,203.86 379.22,206.21 383.13,208.56 387.04,210.93 390.94,213.32 394.85,215.71 398.76,218.12 402.67,220.54 406.58,222.97 410.49,225.42 414.40,227.87 418.31,230.33 422.22,232.80 426.13,235.28 430.04,237.76 433.95,240.25 437.86,242.75 441.77,245.26 445.68,247.77 449.59,250.28 453.50,252.80 457.41,255.32 461.32,257.84 465.23,260.36 469.14,262.89 473.05,265.42 476.95,267.94 480.86,270.47 484.77,272.99 488.68,275.51 492.59,278.03 496.50,280.55 500.41,283.06 504.32,285.57 508.23,288.08 512.14,290.58 516.05,293.07 519.96,295.55 523.87,298.03 527.78,300.50 531.69,302.96 535.60,305.41 539.51,307.86 543.42,310.29 547.33,312.71 551.24,315.12 555.15,317.51 559.06,319.90 562.96,322.27 566.87,324.62 570.78,326.97 574.69,329.29 578.60,331.60 582.51,333.90 586.42,336.18 590.33,338.44 594.24,340.68 598.15,342.90 602.06,345.11 605.97,347.29 609.88,349.45 613.79,351.60 617.70,353.72 621.61,355.82 625.52,357.90 629.43,359.96 633.34,361.99 637.25,364.00 641.16,365.98 645.07,367.94 648.97,369.87 652.88,371.78 656.79,373.66 660.70,375.52 664.61,377.35 668.52,379.15 672.43,380.92 676.34,382.66 680.25,384.38 684.16,386.06 688.07,387.72 691.98,389.35 695.89,390.94 699.80,392.51 703.71,394.04 707.62,395.54 711.53,397.01 715.44,398.44 719.35,399.85 723.26,401.22 727.17,402.56 731.08,403.86 734.98,405.13 738.89,406.36 742.80,407.56 746.71,408.73 750.62,409.86 754.53,410.95 758.44,412.01 762.35,413.03 766.26,414.01 770.17,414.96 774.08,415.87 777.99,416.75 781.90,417.59 785.81,418.39 789.72,419.15 793.63,419.87 797.54,420.56 801.45,421.20 805.36,421.81 809.27,422.38 813.18,422.92 817.09,423.41 820.99,423.86 824.90,424.28 828.81,424.65 832.72,424.99 836.63,425.29 840.54,425.54 844.45,425.76 848.36,425.94 852.27,426.08 856.18,426.18 860.09,426.24 864.00,426.26"/>
+<circle cx="864.0" cy="426.3" r="4.3" fill="#486A83"/>
+<text x="856.0" y="416.3" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#486A83" text-anchor="end" font-weight="700" >5.0e-05</text>
+<line x1="682" y1="84.0" x2="710" y2="84.0" stroke="#486A83" stroke-width="3"/>
+<text x="718.0" y="89.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#263743" text-anchor="start" font-weight="400" >hr2_patch1</text>
+<text x="86.0" y="532.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="11" fill="#607486" text-anchor="start" font-weight="400" >数据源：03-experiments/toloacl/hr2_patch1__Train_Learning_Rate.csv</text>
+</svg>
