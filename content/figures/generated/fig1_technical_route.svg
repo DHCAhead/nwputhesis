@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <defs>
+    <linearGradient id="bgGradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="100%" stop-color="#EEF4F8"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#1F5E82"/>
+    </marker>
+    <style>
+      .title { font: 700 24px "Microsoft YaHei", "SimHei", "Noto Sans CJK SC", Arial, sans-serif; fill: #164B67; }
+      .subtitle { font: 12px "Microsoft YaHei", "SimHei", "Noto Sans CJK SC", Arial, sans-serif; fill: #5A6975; }
+      .phase { font: 700 13px "Microsoft YaHei", "SimHei", "Noto Sans CJK SC", Arial, sans-serif; fill: #1F5E82; letter-spacing: 0; }
+      .label { font: 700 15px "Microsoft YaHei", "SimHei", "Noto Sans CJK SC", Arial, sans-serif; fill: #17212B; }
+      .small { font: 12px "Microsoft YaHei", "SimHei", "Noto Sans CJK SC", Arial, sans-serif; fill: #5A6975; }
+      .tiny { font: 11px "Microsoft YaHei", "SimHei", "Noto Sans CJK SC", Arial, sans-serif; fill: #5A6975; }
+      .panel { fill: #FFFFFF; stroke: #D9E3EA; stroke-width: 1.2; }
+      .box { fill: #FFFFFF; stroke: #B7C8D6; stroke-width: 1.4; }
+      .blue { fill: #EAF1F6; stroke: #1F5E82; stroke-width: 1.6; }
+      .teal { fill: #EEF7F6; stroke: #4A9B94; stroke-width: 1.5; }
+      .amber { fill: #FFF8EA; stroke: #C58B2B; stroke-width: 1.5; }
+      .arrow { stroke: #1F5E82; stroke-width: 2.4; fill: none; marker-end: url(#arrow); }
+      .dash { stroke: #94A0AA; stroke-width: 1.4; stroke-dasharray: 5 5; fill: none; }
+    </style>
+  </defs>
+  <rect width="960" height="540" fill="url(#bgGradient)"/>
+  <text class="title" x="62" y="42">本文技术路线总览</text>
+  <text class="subtitle" x="62" y="65">从 STEP 数据预处理到自回归生成，再到 OpenCASCADE 重建与有效性评估的端到端闭环</text>
+
+  <rect class="panel" x="48" y="94" width="864" height="362" rx="6"/>
+
+  <rect class="box blue" x="74" y="155" width="122" height="72" rx="6"/>
+  <text class="phase" x="135" y="130" text-anchor="middle">数据输入</text>
+  <text class="label" x="135" y="181" text-anchor="middle">STEP / B-rep</text>
+  <text class="tiny" x="135" y="202" text-anchor="middle">DeepCAD 子集</text>
+
+  <path class="arrow" d="M199 191 H246"/>
+  <rect class="box" x="253" y="155" width="122" height="72" rx="6"/>
+  <text class="phase" x="314" y="130" text-anchor="middle">预处理</text>
+  <text class="label" x="314" y="177" text-anchor="middle">拓扑分解</text>
+  <text class="tiny" x="314" y="198" text-anchor="middle">Face / Edge / Vertex</text>
+  <text class="tiny" x="314" y="215" text-anchor="middle">邻接表构建</text>
+
+  <path class="arrow" d="M378 191 H425"/>
+  <rect class="box" x="432" y="155" width="122" height="72" rx="6"/>
+  <text class="phase" x="493" y="130" text-anchor="middle">序列化</text>
+  <text class="label" x="493" y="177" text-anchor="middle">点级 token</text>
+  <text class="tiny" x="493" y="198" text-anchor="middle">采样 / 量化</text>
+  <text class="tiny" x="493" y="215" text-anchor="middle">拓扑感知排序</text>
+
+  <path class="arrow" d="M557 191 H604"/>
+  <rect class="box teal" x="611" y="155" width="122" height="72" rx="6"/>
+  <text class="phase" x="672" y="130" text-anchor="middle">模型训练</text>
+  <text class="label" x="672" y="177" text-anchor="middle">AR Transformer</text>
+  <text class="tiny" x="672" y="198" text-anchor="middle">CE loss / Teacher forcing</text>
+  <text class="tiny" x="672" y="215" text-anchor="middle">LLaMA3-style block</text>
+
+  <path class="arrow" d="M733 191 H780"/>
+  <rect class="box teal" x="787" y="155" width="96" height="72" rx="6"/>
+  <text class="phase" x="835" y="130" text-anchor="middle">推理</text>
+  <text class="label" x="835" y="177" text-anchor="middle">采样</text>
+  <text class="tiny" x="835" y="198" text-anchor="middle">top-k=1</text>
+  <text class="tiny" x="835" y="215" text-anchor="middle">top-p=0.9</text>
+
+  <path class="arrow" d="M835 231 V286"/>
+  <rect class="box" x="774" y="293" width="122" height="72" rx="6"/>
+  <text class="phase" x="835" y="394" text-anchor="middle">序列解析</text>
+  <text class="label" x="835" y="315" text-anchor="middle">Token → 点</text>
+  <text class="tiny" x="835" y="336" text-anchor="middle">反量化</text>
+  <text class="tiny" x="835" y="353" text-anchor="middle">面段 / 边段切分</text>
+
+  <path class="arrow" d="M771 329 H724"/>
+  <rect class="box" x="595" y="293" width="122" height="72" rx="6"/>
+  <text class="phase" x="656" y="394" text-anchor="middle">几何重建</text>
+  <text class="label" x="656" y="315" text-anchor="middle">NURBS 拟合</text>
+  <text class="tiny" x="656" y="336" text-anchor="middle">曲面 / 曲线</text>
+  <text class="tiny" x="656" y="353" text-anchor="middle">BSpline API</text>
+
+  <path class="arrow" d="M592 329 H545"/>
+  <rect class="box" x="416" y="293" width="122" height="72" rx="6"/>
+  <text class="phase" x="477" y="394" text-anchor="middle">拓扑构造</text>
+  <text class="label" x="477" y="315" text-anchor="middle">Sewing / Solid</text>
+  <text class="tiny" x="477" y="336" text-anchor="middle">ShapeFix</text>
+  <text class="tiny" x="477" y="353" text-anchor="middle">STEP / STL 输出</text>
+
+  <path class="arrow" d="M413 329 H366"/>
+  <rect class="box amber" x="237" y="293" width="122" height="72" rx="6"/>
+  <text class="phase" x="298" y="394" text-anchor="middle">有效性评估</text>
+  <text class="label" x="298" y="315" text-anchor="middle">BRepCheck</text>
+  <text class="tiny" x="298" y="336" text-anchor="middle">S1 / S2 / S3</text>
+  <text class="tiny" x="298" y="353" text-anchor="middle">valid rate</text>
+
+  <path class="dash" d="M298 289 C298 254 410 244 493 233"/>
+  <text class="tiny" x="346" y="260">评估结果反向指导预处理与模型迭代</text>
+  <rect x="74" y="472" width="812" height="34" rx="5" fill="#FFFFFF" stroke="#D9E3EA"/>
+  <text class="small" x="92" y="494">主线目标：让生成 token 序列最终落回可写出、可校验的 STEP / B-rep 实体，而不仅是可视化三维形状。</text>
+</svg>

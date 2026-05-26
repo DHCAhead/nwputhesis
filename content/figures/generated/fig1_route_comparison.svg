@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+  <defs>
+    <linearGradient id="bgGradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="100%" stop-color="#EEF4F8"/>
+    </linearGradient>
+    <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#1F5E82"/>
+    </marker>
+    <marker id="arrowMuted" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#7FA0B3"/>
+    </marker>
+    <style>
+      .title { font: 700 24px "Microsoft YaHei", "SimHei", "Noto Sans CJK SC", Arial, sans-serif; fill: #164B67; }
+      .subtitle { font: 12px "Microsoft YaHei", "SimHei", "Noto Sans CJK SC", Arial, sans-serif; fill: #5A6975; }
+      .head { font: 700 17px "Microsoft YaHei", "SimHei", "Noto Sans CJK SC", Arial, sans-serif; fill: #17212B; }
+      .label { font: 600 14px "Microsoft YaHei", "SimHei", "Noto Sans CJK SC", Arial, sans-serif; fill: #17212B; }
+      .small { font: 12px "Microsoft YaHei", "SimHei", "Noto Sans CJK SC", Arial, sans-serif; fill: #5A6975; }
+      .tiny { font: 11px "Microsoft YaHei", "SimHei", "Noto Sans CJK SC", Arial, sans-serif; fill: #5A6975; }
+      .panel { fill: #FFFFFF; stroke: #D9E3EA; stroke-width: 1.2; }
+      .box { fill: #FFFFFF; stroke: #B7C8D6; stroke-width: 1.4; }
+      .boxBlue { fill: #EAF1F6; stroke: #1F5E82; stroke-width: 1.6; }
+      .boxTeal { fill: #EEF7F6; stroke: #4A9B94; stroke-width: 1.5; }
+      .boxAmber { fill: #FFF8EA; stroke: #C58B2B; stroke-width: 1.5; }
+      .arrowBlue { stroke: #1F5E82; stroke-width: 2.4; fill: none; marker-end: url(#arrowBlue); }
+      .arrowMuted { stroke: #7FA0B3; stroke-width: 2; fill: none; marker-end: url(#arrowMuted); }
+      .dash { stroke-dasharray: 6 5; }
+    </style>
+  </defs>
+  <rect width="960" height="540" fill="url(#bgGradient)"/>
+  <text class="title" x="62" y="42">B-rep 生成路线对比</text>
+  <text class="subtitle" x="62" y="65">对比常见“编码压缩—潜空间生成—解码重建”路线与本文点级自回归路线的表征差异</text>
+
+  <rect class="panel" x="50" y="92" width="860" height="175" rx="6"/>
+  <text class="head" x="74" y="125">两阶段 / 潜空间路线</text>
+  <text class="small" x="74" y="148">先学习中间表征，再在码本或潜空间中生成，最后解码为 CAD / B-rep</text>
+  <rect class="box" x="78" y="178" width="126" height="54" rx="5"/>
+  <text class="label" x="141" y="201" text-anchor="middle">原始 CAD</text>
+  <text class="tiny" x="141" y="220" text-anchor="middle">B-rep / 操作序列</text>
+  <path class="arrowMuted" d="M208 205 H257"/>
+  <rect class="boxAmber" x="264" y="178" width="126" height="54" rx="5"/>
+  <text class="label" x="327" y="201" text-anchor="middle">编码器</text>
+  <text class="tiny" x="327" y="220" text-anchor="middle">VQ-VAE / latent</text>
+  <path class="arrowMuted" d="M394 205 H443"/>
+  <rect class="boxAmber" x="450" y="178" width="126" height="54" rx="5"/>
+  <text class="label" x="513" y="201" text-anchor="middle">中间表征</text>
+  <text class="tiny" x="513" y="220" text-anchor="middle">码本索引 / 潜变量</text>
+  <path class="arrowMuted" d="M580 205 H629"/>
+  <rect class="box" x="636" y="178" width="126" height="54" rx="5"/>
+  <text class="label" x="699" y="201" text-anchor="middle">生成器</text>
+  <text class="tiny" x="699" y="220" text-anchor="middle">AR / Diffusion</text>
+  <path class="arrowMuted" d="M766 205 H815"/>
+  <rect class="box" x="822" y="178" width="58" height="54" rx="5"/>
+  <text class="label" x="851" y="201" text-anchor="middle">解码</text>
+  <text class="tiny" x="851" y="220" text-anchor="middle">重建</text>
+  <text class="small" x="264" y="251">关键限制：几何细节受编码器、码本规模或潜变量重建误差影响</text>
+
+  <rect class="panel" x="50" y="296" width="860" height="190" rx="6"/>
+  <text class="head" x="74" y="329">本文点级自回归路线</text>
+  <text class="small" x="74" y="352">不训练显式码本，直接将 NURBS 采样点、面索引和结构 token 组织为统一序列</text>
+  <rect class="box" x="78" y="382" width="126" height="54" rx="5"/>
+  <text class="label" x="141" y="405" text-anchor="middle">STEP / B-rep</text>
+  <text class="tiny" x="141" y="424" text-anchor="middle">面、边、邻接关系</text>
+  <path class="arrowBlue" d="M208 409 H257"/>
+  <rect class="boxBlue" x="264" y="382" width="142" height="54" rx="5"/>
+  <text class="label" x="335" y="405" text-anchor="middle">点级序列化</text>
+  <text class="tiny" x="335" y="424" text-anchor="middle">face / edge block</text>
+  <path class="arrowBlue" d="M410 409 H459"/>
+  <rect class="boxBlue" x="466" y="382" width="142" height="54" rx="5"/>
+  <text class="label" x="537" y="405" text-anchor="middle">统一词表</text>
+  <text class="tiny" x="537" y="424" text-anchor="middle">4053 data tokens</text>
+  <path class="arrowBlue" d="M612 409 H661"/>
+  <rect class="boxTeal" x="668" y="382" width="126" height="54" rx="5"/>
+  <text class="label" x="731" y="405" text-anchor="middle">next-token</text>
+  <text class="tiny" x="731" y="424" text-anchor="middle">LLaMA3-style AR</text>
+  <path class="arrowBlue" d="M798 409 H835"/>
+  <rect class="boxTeal" x="842" y="382" width="48" height="54" rx="5"/>
+  <text class="label" x="866" y="405" text-anchor="middle">OCC</text>
+  <text class="tiny" x="866" y="424" text-anchor="middle">校验</text>
+  <text class="small" x="264" y="457">核心取舍：序列更长，但几何误差由坐标量化粒度直接控制，评测落到 BRepCheck</text>
+
+  <path class="arrowMuted dash" d="M512 246 C512 267 512 281 512 303"/>
+  <text class="tiny" x="526" y="278">本文绕过显式码本压缩</text>
+</svg>
