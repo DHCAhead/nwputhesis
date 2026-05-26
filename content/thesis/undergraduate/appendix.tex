@@ -7,7 +7,7 @@
 \begin{table}[!h]
     \caption{论文中常用术语与缩写}
     \label{tab:abbreviations}
-    \begin{tabular}{p{2.5cm}p{12cm}}
+    \begin{tabularx}{\textwidth}{p{2.5cm}L}
         \toprule
         缩写 / 术语 & 含义 \\
         \midrule
@@ -30,7 +30,7 @@
         DFS          & Depth-First Search，深度优先搜索 \\
         BRepCheck    & OpenCASCADE 中的 B-rep 有效性校验器 \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
 \end{table}
 
 \section{代码与数据资源索引}
@@ -55,7 +55,8 @@
 \begin{table}[!h]
     \caption{hr2\_patch1 关键超参数（复现用）}
     \label{tab:repro-config}
-    \begin{tabular}{p{4.5cm}p{9cm}}
+    \small
+    \begin{tabularx}{\textwidth}{p{4.1cm}L}
         \toprule
         字段 & 取值 \\
         \midrule
@@ -67,7 +68,7 @@
         \texttt{local\_window\_size} & 1（标准 next-token） \\
         face\_block / edge\_block & 49 / 14 \\
         \texttt{max\_seq\_len} & 4\,096 \\
-        $n_{\text{layers}}$ / $n_{\text{heads}}$ / $n_{\text{kv\_heads}}$ & 8 / 8 / 4 \\
+        \makecell[l]{$n_{\text{layers}}$ / $n_{\text{heads}}$ /\\ $n_{\text{kv\_heads}}$} & 8 / 8 / 4 \\
         $d_{\text{model}}$ / dim\_ffn & 256 / 1\,024 \\
         RoPE $\theta$ & 500\,000 \\
         RMSNorm $\epsilon$ & $10^{-5}$ \\
@@ -78,7 +79,7 @@
         GPU & 4 $\times$ NVIDIA H20 \\
         采样配置 & top-k = 1, top-p = 0.9 \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
 \end{table}
 
 \end{thesisappendix}

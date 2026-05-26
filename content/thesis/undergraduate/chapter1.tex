@@ -50,15 +50,15 @@ B-rep 实体的拓扑层级可由如下偏序集刻画：Solid $\to$ Shell $\to$
 \begin{table}[!h]
     \caption{生成样本的三态记录口径}
     \label{tab:three-state-def}
-    \begin{tabular}{p{2.5cm}p{5cm}p{4.5cm}}
+    \begin{tabularx}{\textwidth}{p{2.5cm}LL}
         \toprule
         状态 & 触发条件 & 统计槽位 \\
         \midrule
         S1：未产出 STEP/STL & 解析或重建管线抛异常 / 返回 None，没有任何文件写出 & 计入“重建失败” \\
-        S2：产出但 BRepCheck 无效 & 写出 STEP/STL，但 \texttt{BRepCheck\_Analyzer.IsValid()=False} & 计入“无效 BREP” \\
-        S3：产出且有效 & 写出 STEP/STL 且 \texttt{BRepCheck\_Analyzer.IsValid()=True} & 计入“有效 BREP” \\
+        S2：产出但 BRepCheck 无效 & \makecell[l]{写出 STEP/STL，但\\ \texttt{BRepCheck\_Analyzer}\\ \texttt{.IsValid()=False}} & 计入“无效 BREP” \\
+        S3：产出且有效 & \makecell[l]{写出 STEP/STL 且\\ \texttt{BRepCheck\_Analyzer}\\ \texttt{.IsValid()=True}} & 计入“有效 BREP” \\
         \bottomrule
-    \end{tabular}
+    \end{tabularx}
 \end{table}
 
 记 S1、S2、S3 三类样本数之和为序列总数，本文主表口径采用“有效率（of saved）$= \mathrm{S3} / (\mathrm{S2} + \mathrm{S3})$”，即在所有成功写出 STEP 文件的样本中 BRepCheck 通过的比例。

@@ -1,47 +1,50 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="900" height="540" viewBox="0 0 900 540">
 <defs>
+<linearGradient id="bgGradient" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0%" stop-color="#F8FAFC"/>
+<stop offset="100%" stop-color="#EEF4F8"/>
+</linearGradient>
 <style>
-.axis { stroke: #8EA0AD; stroke-width: 1; }
-.grid { stroke: #D9E1E8; stroke-width: 1; }
+.axis { stroke: #94A0AA; stroke-width: 1; }
+.grid { stroke: #E4EAF0; stroke-width: 1; }
 .dash { stroke-dasharray: 6 5; }
 </style>
 </defs>
-<rect width="900" height="540" fill="#FFFFFF"/>
-<text x="86.0" y="36.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="22" fill="#263743" text-anchor="start" font-weight="700" >验证集交叉熵损失曲线</text>
-<text x="86.0" y="59.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="13" fill="#607486" text-anchor="start" font-weight="400" >TensorBoard CSV 导出；每 5 epoch 一个验证点</text>
-<line class="grid" x1="86" y1="462.0" x2="864" y2="462.0"/>
-<text x="74.0" y="467.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#607486" text-anchor="end" font-weight="400" >0</text>
-<line class="grid" x1="86" y1="364.5" x2="864" y2="364.5"/>
-<text x="74.0" y="369.5" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#607486" text-anchor="end" font-weight="400" >0.2</text>
-<line class="grid" x1="86" y1="267.0" x2="864" y2="267.0"/>
-<text x="74.0" y="272.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#607486" text-anchor="end" font-weight="400" >0.4</text>
-<line class="grid" x1="86" y1="169.5" x2="864" y2="169.5"/>
-<text x="74.0" y="174.5" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#607486" text-anchor="end" font-weight="400" >0.6</text>
-<line class="grid" x1="86" y1="72.0" x2="864" y2="72.0"/>
-<text x="74.0" y="77.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#607486" text-anchor="end" font-weight="400" >0.8</text>
-<line class="grid" x1="66.1" y1="76" x2="66.1" y2="462"/>
-<text x="66.1" y="487.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#607486" text-anchor="middle" font-weight="400" >0</text>
-<line class="grid" x1="265.5" y1="76" x2="265.5" y2="462"/>
-<text x="265.5" y="487.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#607486" text-anchor="middle" font-weight="400" >50</text>
-<line class="grid" x1="465.0" y1="76" x2="465.0" y2="462"/>
-<text x="465.0" y="487.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#607486" text-anchor="middle" font-weight="400" >100</text>
-<line class="grid" x1="664.5" y1="76" x2="664.5" y2="462"/>
-<text x="664.5" y="487.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#607486" text-anchor="middle" font-weight="400" >150</text>
-<line class="grid" x1="864.0" y1="76" x2="864.0" y2="462"/>
-<text x="864.0" y="487.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#607486" text-anchor="middle" font-weight="400" >200</text>
+<rect width="900" height="540" fill="url(#bgGradient)"/>
+<text x="86.0" y="34.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="23" fill="#164B67" text-anchor="start" font-weight="700" >验证集交叉熵损失曲线</text>
+<text x="86.0" y="57.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#5A6975" text-anchor="start" font-weight="400" >TensorBoard CSV 导出；每 5 epoch 一个验证点</text>
+<line class="grid" x1="86" y1="462.0" x2="864" y2="462.0" opacity="0.95"/>
+<text x="74.0" y="467.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#5A6975" text-anchor="end" font-weight="400" >0</text>
+<line class="grid" x1="86" y1="364.5" x2="864" y2="364.5" opacity="0.95"/>
+<text x="74.0" y="369.5" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#5A6975" text-anchor="end" font-weight="400" >0.2</text>
+<line class="grid" x1="86" y1="267.0" x2="864" y2="267.0" opacity="0.95"/>
+<text x="74.0" y="272.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#5A6975" text-anchor="end" font-weight="400" >0.4</text>
+<line class="grid" x1="86" y1="169.5" x2="864" y2="169.5" opacity="0.95"/>
+<text x="74.0" y="174.5" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#5A6975" text-anchor="end" font-weight="400" >0.6</text>
+<line class="grid" x1="86" y1="72.0" x2="864" y2="72.0" opacity="0.95"/>
+<text x="74.0" y="77.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#5A6975" text-anchor="end" font-weight="400" >0.8</text>
+<line class="grid" x1="66.1" y1="76" x2="66.1" y2="462" opacity="0.95"/>
+<text x="66.1" y="487.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#5A6975" text-anchor="middle" font-weight="400" >0</text>
+<line class="grid" x1="265.5" y1="76" x2="265.5" y2="462" opacity="0.95"/>
+<text x="265.5" y="487.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#5A6975" text-anchor="middle" font-weight="400" >50</text>
+<line class="grid" x1="465.0" y1="76" x2="465.0" y2="462" opacity="0.95"/>
+<text x="465.0" y="487.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#5A6975" text-anchor="middle" font-weight="400" >100</text>
+<line class="grid" x1="664.5" y1="76" x2="664.5" y2="462" opacity="0.95"/>
+<text x="664.5" y="487.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#5A6975" text-anchor="middle" font-weight="400" >150</text>
+<line class="grid" x1="864.0" y1="76" x2="864.0" y2="462" opacity="0.95"/>
+<text x="864.0" y="487.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#5A6975" text-anchor="middle" font-weight="400" >200</text>
 <line class="axis" x1="86" y1="462" x2="864" y2="462"/>
 <line class="axis" x1="86" y1="76" x2="86" y2="462"/>
-<text x="475.0" y="514.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="13" fill="#607486" text-anchor="middle" font-weight="400" >Epoch</text>
-<text x="22.0" y="269.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="13" fill="#607486" text-anchor="middle" font-weight="400" transform="rotate(-90 22 269.0)">Val CE Loss</text>
-<polyline fill="none" stroke="#486A83" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round" points="86.00,347.10 105.95,378.02 125.90,386.97 145.85,392.52 165.79,396.38 185.74,398.37 205.69,400.21 225.64,401.72 245.59,402.28 265.54,403.83 285.49,404.44 305.44,405.18 325.38,405.80 345.33,406.32 365.28,407.01 385.23,407.22 405.18,407.62 425.13,407.99 445.08,407.92 465.03,408.58 484.97,408.72 504.92,408.87 524.87,409.37 544.82,409.18 564.77,409.49 584.72,409.68 604.67,410.05 624.62,410.01 644.56,410.19 664.51,410.44 684.46,410.41 704.41,410.53 724.36,410.42 744.31,410.70 764.26,410.79 784.21,410.63 804.15,410.50 824.10,410.88 844.05,410.82 864.00,410.88"/>
-<circle cx="864.0" cy="410.9" r="4.3" fill="#486A83"/>
-<text x="856.0" y="400.9" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#486A83" text-anchor="end" font-weight="700" >0.1</text>
-<polyline fill="none" stroke="#9AA8B4" stroke-width="2.8" stroke-linejoin="round" stroke-linecap="round" points="86.00,104.59 105.95,188.85 125.90,213.24 145.85,226.10 165.79,233.49 185.74,237.95 205.69,241.55 225.64,244.19 245.59,246.91 265.54,248.24 285.49,250.26 305.44,251.45 325.38,252.69 345.33,253.44 365.28,254.87 385.23,255.49 405.18,256.39 425.13,257.00 445.08,257.83 465.03,258.32 484.97,259.18 504.92,259.80 524.87,260.30 544.82,260.83 564.77,261.30 584.72,261.80 604.67,262.03 624.62,262.48 644.56,262.88 664.51,263.18 684.46,263.42 704.41,263.78 724.36,263.98 744.31,264.31 764.26,264.33 784.21,264.54 804.15,264.72 824.10,264.80 844.05,264.89 864.00,265.05"/>
-<circle cx="864.0" cy="265.0" r="4.3" fill="#9AA8B4"/>
-<text x="856.0" y="255.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#9AA8B4" text-anchor="end" font-weight="700" >0.4</text>
-<line x1="682" y1="84.0" x2="710" y2="84.0" stroke="#486A83" stroke-width="3"/>
-<text x="718.0" y="89.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#263743" text-anchor="start" font-weight="400" >hr2_patch1</text>
-<line x1="682" y1="107.0" x2="710" y2="107.0" stroke="#9AA8B4" stroke-width="3"/>
-<text x="718.0" y="112.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#263743" text-anchor="start" font-weight="400" >hr2_patch_hreg2</text>
-<text x="86.0" y="532.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="11" fill="#607486" text-anchor="start" font-weight="400" >数据源：03-experiments/toloacl/*__Val_CE_Loss.csv</text>
+<text x="475.0" y="512.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#5A6975" text-anchor="middle" font-weight="400" >Epoch</text>
+<text x="22.0" y="269.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#5A6975" text-anchor="middle" font-weight="400" transform="rotate(-90 22 269.0)">Val CE Loss</text>
+<polyline fill="none" stroke="#1F5E82" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round" points="86.00,347.10 105.95,378.02 125.90,386.97 145.85,392.52 165.79,396.38 185.74,398.37 205.69,400.21 225.64,401.72 245.59,402.28 265.54,403.83 285.49,404.44 305.44,405.18 325.38,405.80 345.33,406.32 365.28,407.01 385.23,407.22 405.18,407.62 425.13,407.99 445.08,407.92 465.03,408.58 484.97,408.72 504.92,408.87 524.87,409.37 544.82,409.18 564.77,409.49 584.72,409.68 604.67,410.05 624.62,410.01 644.56,410.19 664.51,410.44 684.46,410.41 704.41,410.53 724.36,410.42 744.31,410.70 764.26,410.79 784.21,410.63 804.15,410.50 824.10,410.88 844.05,410.82 864.00,410.88"/>
+<circle cx="864.0" cy="410.9" r="4.6" fill="#1F5E82" stroke="#FFFFFF" stroke-width="1.2"/>
+<text x="856.0" y="400.9" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#1F5E82" text-anchor="end" font-weight="700" >0.1</text>
+<polyline fill="none" stroke="#7FA0B3" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round" points="86.00,104.59 105.95,188.85 125.90,213.24 145.85,226.10 165.79,233.49 185.74,237.95 205.69,241.55 225.64,244.19 245.59,246.91 265.54,248.24 285.49,250.26 305.44,251.45 325.38,252.69 345.33,253.44 365.28,254.87 385.23,255.49 405.18,256.39 425.13,257.00 445.08,257.83 465.03,258.32 484.97,259.18 504.92,259.80 524.87,260.30 544.82,260.83 564.77,261.30 584.72,261.80 604.67,262.03 624.62,262.48 644.56,262.88 664.51,263.18 684.46,263.42 704.41,263.78 724.36,263.98 744.31,264.31 764.26,264.33 784.21,264.54 804.15,264.72 824.10,264.80 844.05,264.89 864.00,265.05"/>
+<circle cx="864.0" cy="265.0" r="4.6" fill="#7FA0B3" stroke="#FFFFFF" stroke-width="1.2"/>
+<text x="856.0" y="255.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#7FA0B3" text-anchor="end" font-weight="700" >0.4</text>
+<line x1="676" y1="84.0" x2="704" y2="84.0" stroke="#1F5E82" stroke-width="3.4" stroke-linecap="round"/>
+<text x="712.0" y="89.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#17212B" text-anchor="start" font-weight="400" >hr2_patch1</text>
+<line x1="676" y1="107.0" x2="704" y2="107.0" stroke="#7FA0B3" stroke-width="3.4" stroke-linecap="round"/>
+<text x="712.0" y="112.0" font-family="Microsoft YaHei, SimHei, Noto Sans CJK SC, Arial, sans-serif" font-size="12" fill="#17212B" text-anchor="start" font-weight="400" >hr2_patch_hreg2</text>
 </svg>
