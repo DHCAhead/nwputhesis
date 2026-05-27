@@ -3,7 +3,7 @@
 \chapter{自回归生成模型与逆向重建}
 \chaptermark{自回归生成模型与逆向重建}
 
-本章描述生成模型的总体架构、训练策略、推理流程，以及从 token 序列到 STEP / STL 文件的逆向重建管线。主实验相关工程实现主要包含 \texttt{CompoundPointEmbedding}、\texttt{LLaMA3Block} 与 \texttt{LLaMA3ARModel} 等模块；代码中另保留 \texttt{LocalBlock} 与 \texttt{CompoundPointDecoder} 作为未启用的窗口化扩展，具体文件索引统一列入附录。
+本章描述生成模型的总体架构、训练策略、推理流程，以及从 token 序列到 STEP / STL 文件的逆向重建管线。主实验相关工程实现主要包含 \texttt{CompoundPointEmbedding}、\texttt{LLaMA3Block} 与 \texttt{LLaMA3ARModel} 等模块；代码中另保留 \texttt{LocalBlock} 与 \texttt{CompoundPointDecoder} 作为未启用的窗口化扩展，下文重点说明其结构和训练、推理流程。
 
 \begin{figure}[!htbp]
     \centering

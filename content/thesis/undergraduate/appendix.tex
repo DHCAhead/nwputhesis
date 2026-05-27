@@ -33,21 +33,6 @@
     \end{tabularx}
 \end{table}
 
-\section{代码与数据资源索引}
-
-\begingroup
-\small
-\begin{sloppypar}
-\begin{itemize}
-    \item 代码主目录：\path{04-code/nurbs-code/}（核心文件包括 \path{model.py}、\path{trainer.py}、\path{train_ar.py}、\path{generate.py}、\path{sequence2nurbs.py}、\path{utils.py}、\path{eval_generated_brep.py}、\path{dataset.py} 等）。
-    \item 数据预处理脚本：\path{04-code/nurbs-code/2brep_nurbs_wcs.py}、\path{04-code/nurbs-code/2brep_nurbs_quan_wcs.py}；服务器侧镜像位于 \path{experiment-local/2sequence_nurbs.py} 与 \path{experiment-local/2brep.py}。
-    \item 训练数据：\path{data/nurbs_sequences_v1_patch.pkl}，DeepCAD 子集，训练 64\,351 / 验证 6\,096，数据词表 4\,053。
-    \item 实验配置与日志：\path{03-experiments/configs/}、\path{03-experiments/runs/}、\path{03-experiments/metrics/}、\path{03-experiments/toloacl/}（含 \path{hr2_patch1__Val_CE_Loss.csv} 等关键曲线数据）。
-    \item 训练日志：\path{experiment-local/logs/hr2_patch1.log}（含模型初始化打印、每 5 epoch 验证最优 checkpoint 记录）。
-\end{itemize}
-\end{sloppypar}
-\endgroup
-
 \section{关键超参数复现表}
 
 下表汇总了主实验 hr2\_patch1 的关键超参数，与正文第~5 章\autoref{tab:model-config} 一致，便于复现。
