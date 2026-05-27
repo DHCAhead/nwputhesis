@@ -114,7 +114,7 @@ BrepGen\cite{xu_2024_brepgen} 不再以 CAD 操作序列为目标，而是直接
 
 \subsection{研究路线对比与本文切入点}
 
-综上，现有方法在表征层面大致分为“CAD 操作序列”“离散码本上的 sketch-extrude 解耦”“结构化潜空间 + 扩散”三条路线。它们各自的中间表征（操作字典、码本索引、潜变量）都不是 B-rep 几何点本身。本文工作与上述方法的差异在于：\textbf{不依赖显式 VQ-VAE 码本\cite{van_den_oord_2017_vqvae}与潜空间扩散，而是直接将 B-rep 的面 / 边 NURBS 采样点与拓扑面索引序列化为统一词表的 token 序列，并以标准 next-token 自回归方式建模}。这种点级序列化方案可以将几何精度的下界直接由标量量化粒度决定，避免码本规模对几何细节表达的硬约束。
+综上，现有方法在表征层面大致分为“CAD 操作序列”“离散码本上的 sketch-extrude 解耦”“结构化潜空间 + 扩散”三条路线。它们各自的中间表征（操作字典、码本索引、潜变量）都不是 B-rep 几何点本身。本文工作与上述方法的差异在于：不依赖显式 VQ-VAE 码本\cite{van_den_oord_2017_vqvae}与潜空间扩散，而是直接将 B-rep 的面 / 边 NURBS 采样点与拓扑面索引序列化为统一词表的 token 序列，并以标准 next-token 自回归方式建模。这种点级序列化方案可以将几何精度的下界直接由标量量化粒度决定，避免码本规模对几何细节表达的硬约束。
 
 
 \section{本文研究内容与主要工作}
@@ -122,9 +122,9 @@ BrepGen\cite{xu_2024_brepgen} 不再以 CAD 操作序列为目标，而是直接
 本文围绕“不依赖显式 VQ-VAE 码本、端到端可重建为合法 STEP 文件”这一总体目标，开展了以下三方面工作：
 
 \begin{enumerate}
-    \item \textbf{面向 B-rep / NURBS 的点级量化与窗口化序列表示方法}。给出了面 / 边几何采样规则（每个面采样 16 个三维点 + 1 个面索引，对应 face\_block = 49；每条边采样 4 个三维点 + 2 个面索引，对应 edge\_block = 14）、4000 级标量均匀量化方案与 4053 维统一词表（50 面索引 + 4000 量化坐标 + 3 个结构 token），并设计了拓扑感知的面 / 边排序作为序列化时的确定性顺序约定。
-    \item \textbf{基于 LLaMA3 风格 Transformer 的标准 next-token 自回归生成模型}。主干由 RoPE、SwiGLU 与 RMSNorm 组成 8 层因果 Transformer，序列以“主干 norm $\to$ \texttt{ar\_lm\_head}”的标准 next-token 形式生成；代码中同时实现了 CompoundPointDecoder 作为可选的窗口化分解扩展，但本文主实验未启用，相关讨论作为扩展设计与未来工作给出。
-    \item \textbf{基于 OpenCASCADE 的逆向重建与 BRepCheck 评估闭环}。给出了从 token 序列经反量化、NURBS 曲面 / 曲线拟合、拓扑缝合到 STEP 导出与 BRepCheck 校验的端到端管线；并据此在 DeepCAD 子集上完成训练与有效性评测，将“有效率（of saved）”作为可量化的工程指标。
+    \item 面向 B-rep / NURBS 的点级量化与窗口化序列表示方法。给出了面 / 边几何采样规则（每个面采样 16 个三维点 + 1 个面索引，对应 face\_block = 49；每条边采样 4 个三维点 + 2 个面索引，对应 edge\_block = 14）、4000 级标量均匀量化方案与 4053 维统一词表（50 面索引 + 4000 量化坐标 + 3 个结构 token），并设计了拓扑感知的面 / 边排序作为序列化时的确定性顺序约定。
+    \item 基于 LLaMA3 风格 Transformer 的标准 next-token 自回归生成模型。主干由 RoPE、SwiGLU 与 RMSNorm 组成 8 层因果 Transformer，序列以“主干 norm $\to$ \texttt{ar\_lm\_head}”的标准 next-token 形式生成；代码中同时实现了 CompoundPointDecoder 作为可选的窗口化分解扩展，但本文主实验未启用，相关讨论作为扩展设计与未来工作给出。
+    \item 基于 OpenCASCADE 的逆向重建与 BRepCheck 评估闭环。给出了从 token 序列经反量化、NURBS 曲面 / 曲线拟合、拓扑缝合到 STEP 导出与 BRepCheck 校验的端到端管线；并据此在 DeepCAD 子集上完成训练与有效性评测，将“有效率（of saved）”作为可量化的工程指标。
 \end{enumerate}
 
 上述三方面工作之间存在明确的依赖关系：第一个工作解决“B-rep 如何变成可学习序列”的问题，是后续模型训练的输入基础；第二个工作解决“模型如何在该序列上学习生成规律”的问题，是生成能力的来源；第三个工作解决“生成序列如何重新变成 CAD 文件并被量化评价”的问题，是工程可用性的最终检验。本文的创新点也围绕这条链路展开，即从数据表示层减少码本压缩，在模型层采用成熟的自回归结构，在评测层坚持使用 OCC BRepCheck 而不是只做可视化展示。

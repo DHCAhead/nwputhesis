@@ -104,8 +104,8 @@
 本节用两个独立的生成 run 评估反向重建有效性：
 
 \begin{itemize}
-    \item \textbf{hr2\_patch1（Epoch~200 best checkpoint）}：按 top-k = 1、top-p = 0.9 采样 1\,005 条 token 序列，每条经反向重建管线得到一个候选 Solid。本次评测 1\,005 个采样全部成功写出 STEP 文件（重建错误数为 0）。
-    \item \textbf{早期 hr2 基线（无 patch 后缀）}：在相同 top-k = 1、top-p = 0.9 配置下采样 3\,332 次，其中 3\,000 次成功写出 STEP 文件（332 次在重建阶段失败）。
+    \item hr2\_patch1（Epoch~200 best checkpoint）：按 top-k = 1、top-p = 0.9 采样 1\,005 条 token 序列，每条经反向重建管线得到一个候选 Solid。本次评测 1\,005 个采样全部成功写出 STEP 文件（重建错误数为 0）。
+    \item 早期 hr2 基线（无 patch 后缀）：在相同 top-k = 1、top-p = 0.9 配置下采样 3\,332 次，其中 3\,000 次成功写出 STEP 文件（332 次在重建阶段失败）。
 \end{itemize}
 
 两个 run 使用同一份评测脚本的五标量输出（序列总数 / 重建成功 / 重建失败 / 有效 BREP / 无效 BREP），保证口径一致。

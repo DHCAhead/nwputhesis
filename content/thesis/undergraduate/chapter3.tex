@@ -41,14 +41,14 @@
 
 \subsection{NURBS 曲面的 UV 采样}
 
-对每个面 $f_k$，在其参数域 $[u_{\min}, u_{\max}] \times [v_{\min}, v_{\max}]$ 上做均匀网格采样，得到 \textbf{16 个三维点}，作为该面在序列中的几何样本：
+对每个面 $f_k$，在其参数域 $[u_{\min}, u_{\max}] \times [v_{\min}, v_{\max}]$ 上做均匀网格采样，得到 16 个三维点，作为该面在序列中的几何样本：
 
 \begin{equation}
     \mathcal{P}_k = \{ S_k(u_a, v_b) \mid a, b = 0, 1, 2, 3 \}.
     \label{eq:face-uv-sampling}
 \end{equation}
 
-为减小参数化任意性带来的分布偏差，预处理阶段对每个面 UV 方向做 canonical sorting：按面包围盒主轴对 $u$、$v$ 方向重新排序。该 16 个三维点共贡献 48 个标量坐标 token，与 1 个面索引 token 一起构成 \textbf{face\_block = 49} 的面段（详见 §3.4）。
+为减小参数化任意性带来的分布偏差，预处理阶段对每个面 UV 方向做 canonical sorting：按面包围盒主轴对 $u$、$v$ 方向重新排序。该 16 个三维点共贡献 48 个标量坐标 token，与 1 个面索引 token 一起构成 face\_block = 49 的面段（详见 §3.4）。
 
 选择 $4 \times 4$ 的 UV 采样网格，是在表达能力与序列长度之间的折中。若采样点过少，曲面拟合阶段很难恢复出具有足够形状约束的 NURBS 面；若采样点过多，则每个 Face 的 token 数会线性增长，导致长序列注意力开销和训练显存快速上升。对于 DeepCAD 中常见的机械零件，许多面为平面、圆柱面或简单过渡面，16 个采样点已能覆盖主要形状变化；对于高曲率或复杂自由曲面，该采样密度可能不足，相关误差会在重建阶段体现为拟合失败或 BRepCheck 无效。
 
@@ -56,7 +56,7 @@ UV 参数域自身并不总是稳定。相同的几何曲面可能因 CAD 内核
 
 \subsection{NURBS 曲线的弧长采样}
 
-对每条边 $e_j$，按弧长在 $[0, L_j]$ 上均匀取参数点并求值，得到 \textbf{4 个三维点} 作为该边在序列中的几何样本。弧长采样比参数域均匀采样更稳健——对参数化变形不敏感，对短边和长边都能给出可比较的采样密度。Edge 同样做 canonical sorting：按起止顶点的坐标顺序统一方向。该 4 个三维点共贡献 12 个标量坐标 token，与 2 个面索引 token（两端邻面）一起构成 \textbf{edge\_block = 14} 的边段（详见 §3.4）。
+对每条边 $e_j$，按弧长在 $[0, L_j]$ 上均匀取参数点并求值，得到 4 个三维点作为该边在序列中的几何样本。弧长采样比参数域均匀采样更稳健——对参数化变形不敏感，对短边和长边都能给出可比较的采样密度。Edge 同样做 canonical sorting：按起止顶点的坐标顺序统一方向。该 4 个三维点共贡献 12 个标量坐标 token，与 2 个面索引 token（两端邻面）一起构成 edge\_block = 14 的边段（详见 §3.4）。
 
 边采样在 B-rep 重建中承担“缝合约束”的作用。面采样点能够拟合出曲面片，但曲面片之间如何相交、交线在哪里、哪些面应当共享边界，需要通过边段提供的邻接关系和曲线采样点共同决定。本文没有直接生成顶点表，而是通过每条边的 4 个采样点隐式表达端点和中间形状。对直线边而言，4 个点存在冗余；对圆弧或一般样条边而言，中间点可以提供曲率线索，有助于拟合曲线。
 
@@ -93,9 +93,9 @@ UV 参数域自身并不总是稳定。相同的几何曲面可能因 CAD 内核
 数据侧的统一词表共 4\,053 个 token，按三段式布局：
 
 \begin{itemize}
-    \item \textbf{面索引段}：$[0, 49]$，共 50 个 token，用于编码每个面在当前样本中的序号；
-    \item \textbf{量化坐标段}：$[50, 4049]$，共 4\,000 个 token，对应\autoref{eq:quantization} 中 $q(x)$ 的取值范围；
-    \item \textbf{结构 token 段}：$\text{START}=4050$，$\text{SEP}=4051$，$\text{END}=4052$。
+    \item 面索引段：$[0, 49]$，共 50 个 token，用于编码每个面在当前样本中的序号；
+    \item 量化坐标段：$[50, 4049]$，共 4\,000 个 token，对应\autoref{eq:quantization} 中 $q(x)$ 的取值范围；
+    \item 结构 token 段：$\text{START}=4050$，$\text{SEP}=4051$，$\text{END}=4052$。
 \end{itemize}
 
 数据词表大小为 $50 + 4000 + 3 = 4053$。模型侧额外引入一个 PAD token（id $= 4053$）用于批内序列长度对齐，因此模型 \texttt{vocab\_size} = 4054（即数据词表大小加上 PAD，训练日志记录为 “Dataset Vocab: 4053, Model Vocab: 4054, PAD: 4053”）。
@@ -123,11 +123,11 @@ SEP    [edge_1 block] [edge_2 block] ... [edge_E block]  END
 
 \subsection{face\_block：48 个坐标 token + 1 个面索引 token}
 
-每个面段长度为 \textbf{face\_block = 49} 个 token：前 48 个 token 是当前面 16 个三维采样点按 $(x, y, z)$ 展平后的标量坐标 token，最后 1 个 token 是面索引 token。分组实现将 48 个坐标 token 按 3 个一组组织为 16 个 $[x, y, z]$ 三元组，再追加一个 $[\text{idx}, \text{PAD}, \text{PAD}]$ 的面索引三元组。
+每个面段长度为 face\_block = 49 个 token：前 48 个 token 是当前面 16 个三维采样点按 $(x, y, z)$ 展平后的标量坐标 token，最后 1 个 token 是面索引 token。分组实现将 48 个坐标 token 按 3 个一组组织为 16 个 $[x, y, z]$ 三元组，再追加一个 $[\text{idx}, \text{PAD}, \text{PAD}]$ 的面索引三元组。
 
 \subsection{edge\_block：2 个面索引 token + 12 个坐标 token}
 
-每个边段长度为 \textbf{edge\_block = 14} 个 token：前 2 个 token 是该边两端邻面的面索引 token，后 12 个 token 是当前边 4 个三维采样点按 $(x, y, z)$ 展平后的标量坐标 token。\texttt{\_group\_tokens} 把 2 个面索引各组装为 $[\text{idx}, \text{PAD}, \text{PAD}]$ 三元组，再把 12 个坐标 token 分为 4 个 $[x, y, z]$ 三元组追加在后。
+每个边段长度为 edge\_block = 14 个 token：前 2 个 token 是该边两端邻面的面索引 token，后 12 个 token 是当前边 4 个三维采样点按 $(x, y, z)$ 展平后的标量坐标 token。\texttt{\_group\_tokens} 把 2 个面索引各组装为 $[\text{idx}, \text{PAD}, \text{PAD}]$ 三元组，再把 12 个坐标 token 分为 4 个 $[x, y, z]$ 三元组追加在后。
 
 \subsection{三元组化分组的语义}
 
@@ -158,7 +158,7 @@ PAD（id $= 4053$）是模型侧引入的填充 token，用于两类用途：(a)
 
 \subsection{设计目标}
 
-在固定词表与序列骨架之外，面 / 边的排列顺序也是序列化设计的一部分。如果按任意顺序排列，序列中“面 $f$ 与其邻接边 $e$”之间的相对位置完全由随机置换决定，期望距离可达数百 token；在长序列上，自回归注意力对远距离信号的聚合相对困难，模型对局部一致性的建模也会更难。本文为面与边各设计了一种确定性排序方案，目的是\textbf{提高序列中拓扑相邻元素的位置邻近性、降低相同 B-rep 在不同次预处理下的样本差异}。
+在固定词表与序列骨架之外，面 / 边的排列顺序也是序列化设计的一部分。如果按任意顺序排列，序列中“面 $f$ 与其邻接边 $e$”之间的相对位置完全由随机置换决定，期望距离可达数百 token；在长序列上，自回归注意力对远距离信号的聚合相对困难，模型对局部一致性的建模也会更难。本文为面与边各设计了一种确定性排序方案，目的是提高序列中拓扑相邻元素的位置邻近性、降低相同 B-rep 在不同次预处理下的样本差异。
 
 \begin{figure}[!htbp]
     \centering
