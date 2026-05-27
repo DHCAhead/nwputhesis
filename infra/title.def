@@ -148,20 +148,27 @@
 \cs_new_protected:Npn \__nwpu_prepare_cover_title:
   {
     \nwpuCoverTitleFont
-    \hbox_set:Nn \l__nwpu_title_measure_box { \nwpu@chs@title }
-    \dim_compare:nNnTF { \box_wd:N \l__nwpu_title_measure_box } >
-      { \nwpuCoverTitleValueWidth }
+    \exp_args:No \tl_if_empty:nTF { \nwpu@chs@title@lineA }
       {
-        \dim_set:Nn \l__nwpu_title_split_target_dim
-          { .5 \box_wd:N \l__nwpu_title_measure_box }
-        \__nwpu_title_split:NnNN \nwpu@chs@title
-          { \l__nwpu_title_split_target_dim }
-          \l__nwpu_cover_title_line_a_tl
-          \l__nwpu_cover_title_line_b_tl
+        \hbox_set:Nn \l__nwpu_title_measure_box { \nwpu@chs@title }
+        \dim_compare:nNnTF { \box_wd:N \l__nwpu_title_measure_box } >
+          { \nwpuCoverTitleValueWidth }
+          {
+            \dim_set:Nn \l__nwpu_title_split_target_dim
+              { .5 \box_wd:N \l__nwpu_title_measure_box }
+            \__nwpu_title_split:NnNN \nwpu@chs@title
+              { \l__nwpu_title_split_target_dim }
+              \l__nwpu_cover_title_line_a_tl
+              \l__nwpu_cover_title_line_b_tl
+          }
+          {
+            \tl_set:No \l__nwpu_cover_title_line_a_tl { \nwpu@chs@title }
+            \tl_clear:N \l__nwpu_cover_title_line_b_tl
+          }
       }
       {
-        \tl_set:No \l__nwpu_cover_title_line_a_tl { \nwpu@chs@title }
-        \tl_clear:N \l__nwpu_cover_title_line_b_tl
+        \tl_set:No \l__nwpu_cover_title_line_a_tl { \nwpu@chs@title@lineA }
+        \tl_set:No \l__nwpu_cover_title_line_b_tl { \nwpu@chs@title@lineB }
       }
   }
 \cs_new_protected:Npn \__nwpu_prepare_chs_inner_title:
@@ -169,10 +176,17 @@
     \dim_set:Nn \l__nwpu_chs_inner_title_value_dim
       { \nwpuChsInnerTitleValueMinWidth }
     \nwpuChsInnerTitleFont
-    \__nwpu_title_split:NnNN \nwpu@chs@title
-      { \l__nwpu_chs_inner_title_value_dim }
-      \l__nwpu_chs_inner_title_line_a_tl
-      \l__nwpu_chs_inner_title_line_b_tl
+    \exp_args:No \tl_if_empty:nTF { \nwpu@chs@title@lineA }
+      {
+        \__nwpu_title_split:NnNN \nwpu@chs@title
+          { \l__nwpu_chs_inner_title_value_dim }
+          \l__nwpu_chs_inner_title_line_a_tl
+          \l__nwpu_chs_inner_title_line_b_tl
+      }
+      {
+        \tl_set:No \l__nwpu_chs_inner_title_line_a_tl { \nwpu@chs@title@lineA }
+        \tl_set:No \l__nwpu_chs_inner_title_line_b_tl { \nwpu@chs@title@lineB }
+      }
     \hbox_set:Nn \l__nwpu_title_measure_box
       { \tl_use:N \l__nwpu_chs_inner_title_line_a_tl }
     \dim_set:Nn \l__nwpu_title_split_width_dim
