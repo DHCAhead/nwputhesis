@@ -1,13 +1,13 @@
 %% 第二章
 
-\chapter{图表示例}
-\chaptermark{图表示例}
+\chapter{图表与公式排版示例}
+\chaptermark{图表与公式排版示例}
 
-\section{表格}
+\section{表格排版示例}
 如\autoref{tab:graduate-example} 所示，该表展示了两个变量的加法与乘法结果，可作为表格排版与引用的示例。
 
 \begin{table}[!h]
-    \caption{表格标题}
+    \caption{变量运算结果示例}
     \label{tab:graduate-example}
     \begin{tabularx}{\textwidth}{CCCC}
         \toprule
@@ -18,34 +18,34 @@
     \end{tabularx}
 \end{table}
 
-\section{插图}
+\section{插图排版示例}
 测试下文章内的图片引用。如\autoref{fig:graduate-example} 和\autoref{fig:graduate-example2} 所示，
 这是两幅插图。在这其中\autoref{subfig:graduate-example2-subfig1} 是第一幅子图，
 \autoref{subfig:graduate-example2-subfig2} 是第二幅子图。
 
 \begin{figure}[htb]
     \includegraphics[scale=0.2]{placeholders/fig1-1_brep_hierarchy.png}
-    \caption{这里是个普通的标题}
+    \caption{B-rep 拓扑层级示意}
     \label{fig:graduate-example}
 \end{figure}
 
 \begin{figure}[htb]
     \begin{subfigure}[t]{0.49\textwidth}\centering
         \includegraphics[scale=0.2]{placeholders/fig2-1_nurbs_sampling.png}
-        \caption{这是第一个子图标题}
+        \caption{NURBS 曲面采样}
         \label{subfig:graduate-example2-subfig1}
     \end{subfigure}
     \hfill
     \begin{subfigure}[t]{0.49\textwidth}\centering
         \includegraphics[scale=0.2]{placeholders/fig2-2_transformer_decoder.png}
-        \caption{这是第二个子图标题}
+        \caption{Transformer 解码结构}
         \label{subfig:graduate-example2-subfig2}
     \end{subfigure}
-    \caption{这里是另一个普通的标题}
+    \caption{几何采样与序列建模示意}
     \label{fig:graduate-example2}
 \end{figure}
 
-\section{公式示例}
+\section{公式排版示例}
 这里给出正文中的公式引用示例。行内公式可写为 $E=mc^2$，独立编号公式如\autoref{eq:graduate-quadratic-formula} 所示，多行推导公式如\autoref{eq:graduate-gaussian-sum} 所示。
 
 \begin{equation}
@@ -53,7 +53,7 @@
     \label{eq:graduate-quadratic-formula}
 \end{equation}
 \begin{eqvariables}
-    式中：$x$ 为一元二次方程的根；$a$、$b$、$c$ 为方程系数，且 $a \neq 0$。
+    式中：$x$ 为一元二次方程的根，$a$、$b$、$c$ 为方程系数，且 $a \neq 0$。
 \end{eqvariables}
 
 \begin{equation}
