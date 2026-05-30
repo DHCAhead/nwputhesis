@@ -85,7 +85,7 @@ Transformer\cite{vaswani_2017_attention} 提出多头注意力机制，通过查
 \begin{figure}[!htbp]
     \centering
     \includegraphics[width=0.82\textwidth]{插图/fig2-2_transformer_decoder.pdf}
-    \caption{Decoder-only Transformer 结构示意图。输入 token 经嵌入与位置编码后进入多层因果 Transformer block，每层由带因果掩码的自注意力、前馈网络、归一化与残差连接组成，最终隐藏状态通过语言模型头预测下一个 token 的概率分布。}
+    \caption{Decoder-only Transformer 结构示意图。输入 token 经嵌入与位置编码后进入重复堆叠的 Decoder block；每个 block 在因果掩码约束下包含 masked multi-head self-attention、前馈网络、归一化与残差连接，最终隐藏状态经线性预测头和 Softmax 得到下一个 token 的概率分布。}
     \label{fig:transformer-decoder}
 \end{figure}
 

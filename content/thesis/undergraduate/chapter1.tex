@@ -127,6 +127,13 @@ SkexGen 在 DeepCAD 风格的草图—拉伸表征基础上做了更细的分解
     \item 在重建与评测方面，本文把生成结果重新送回几何内核进行检验。生成序列只有能够被解析、拟合、缝合，并最终写出可校验的 STEP 文件，才说明该生成结果具备进一步编辑和工程使用的基础。因此，本文不只关注模型损失是否下降，也关注生成结果能否通过 OpenCASCADE 的合法性检查。
 \end{enumerate}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.95\textwidth]{插图/fig1-2_overall_workflow.pdf}
+    \caption{本文端到端 B-rep 生成框架总体流程图。图中从左侧 B-rep 输入开始，依次展示面 / 边 NURBS 采样、标量量化、拓扑感知序列化和 block 序列构造，随后由自回归 Transformer 生成 token 序列，并经 OpenCASCADE 逆向重建、BRepCheck 校验与 STEP / STL 导出形成完整闭环。}
+    \label{fig:overall-workflow}
+\end{figure}
+
 上述三方面构成了一条从 CAD 数据到生成结果再到内核校验的完整链路。数据表示解决“模型看什么”的问题，生成模型解决“模型如何产生新序列”的问题，逆向重建与评测解决“生成结果是否真的可用”的问题。本文后续章节将沿着这一逻辑展开，第~3 章重点说明数据如何组织，第~4 章说明模型和重建流程如何实现，第~5 章再用实验结果检验整条路线的有效性。
 
 
