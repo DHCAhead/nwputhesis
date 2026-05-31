@@ -129,7 +129,7 @@ SkexGen 在 DeepCAD 风格的草图—拉伸表征基础上做了更细的分解
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.95\textwidth]{插图/fig1-2_overall_workflow.pdf}
+    \includegraphics[width=1\textwidth]{插图/fig1-2_overall_workflow.pdf}
     \caption{本文端到端 B-rep 生成框架总体流程图。图中从左侧 B-rep 输入开始，依次展示面 / 边 NURBS 采样、标量量化、拓扑感知序列化和 block 序列构造，随后由自回归 Transformer 生成 token 序列，并经 OpenCASCADE 逆向重建、BRepCheck 校验与 STEP / STL 导出形成完整闭环。}
     \label{fig:overall-workflow}
 \end{figure}
