@@ -58,7 +58,7 @@ B-rep 实体的拓扑层级可由如下偏序集刻画：Solid $\to$ Shell $\to$
     \label{eq:brep-ar-factorization}
 \end{equation}
 
-并在推理阶段从 START 开始逐步采样，直到生成 END 或达到最大序列长度。与图像扩散模型从噪声场逐步去噪不同，本文的生成过程按 token 顺序展开，因此序列化顺序会直接影响模型看到的上下文结构。第~3 章设计的 face\_block、edge\_block 与拓扑感知排序，正是为了让序列中相邻 token 尽可能对应 B-rep 中具有局部关联的几何要素。
+并在推理阶段从 START 开始逐步采样，直到生成 END 或达到最大序列长度。与图像扩散模型从噪声场逐步去噪不同，本文的生成过程按 token 顺序展开，因此序列化顺序会直接影响模型看到的上下文结构。第~3 章设计的固定长度面段、边段与拓扑感知排序，正是为了让序列中相邻 token 尽可能对应 B-rep 中具有局部关联的几何要素。
 
 \subsection{生成任务的关键约束}
 
@@ -70,7 +70,7 @@ B-rep 实体的拓扑层级可由如下偏序集刻画：Solid $\to$ Shell $\to$
 
 \subsection{几何拓扑有效性判据}
 
-本文以 OpenCASCADE 的 \texttt{BRepCheck\_Analyzer} 作为最终判据：当且仅当 \texttt{BRepCheck\_Analyzer.IsValid()=True} 时，生成实体被认定为“有效”。选择该判据有两个工程考虑。一是它直接来自将被本文用作几何内核的 OpenCASCADE 本身，其检查的对象与后续 Sewing、ShapeFix、STEP writer 共享同一份 TopoDS\_Shape，避免了“用另一份内核检查另一份内核生成的实体”所引入的判据不一致，二是它一次性覆盖了几何细节与拓扑约束两类问题：曲面拟合质量、曲线连续性属于几何层面，Wire 是否闭合、Shell 是否含游离边、是否能封闭为唯一 Solid 属于拓扑层面，二者在 \texttt{IsValid()} 中按统一逻辑判定。在统计层面，每一条采样得到的 token 序列在重建管线中被记录为以下三种状态之一，如\autoref{tab:three-state-def} 所示。
+本文以 OpenCASCADE 的 BRepCheck 有效性检查作为最终判据：只有当几何内核判定生成实体有效时，该样本才被计入“有效”。选择该判据有两个工程考虑。一是它直接来自将被本文用作几何内核的 OpenCASCADE 本身，其检查的对象与后续缝合、修复和 STEP 写出流程共享同一几何拓扑对象，避免了“用另一份内核检查另一份内核生成的实体”所引入的判据不一致；二是它一次性覆盖了几何细节与拓扑约束两类问题：曲面拟合质量、曲线连续性属于几何层面，Wire 是否闭合、Shell 是否含游离边、是否能封闭为唯一 Solid 属于拓扑层面，二者在同一检查流程中统一判定。在统计层面，每一条采样得到的 token 序列在重建管线中被记录为以下三种状态之一，如\autoref{tab:three-state-def} 所示。
 
 \begin{table}[!h]
     \caption{生成样本的三态记录口径}
@@ -80,8 +80,8 @@ B-rep 实体的拓扑层级可由如下偏序集刻画：Solid $\to$ Shell $\to$
         状态 & 触发条件 & 统计槽位 \\
         \midrule
         S1：未产出 STEP/STL & 解析或重建管线抛异常 / 返回 None，没有任何文件写出 & 计入“重建失败” \\
-        S2：产出但 BRepCheck 无效 & \makecell[l]{写出 STEP/STL，但\\ \texttt{BRepCheck\_Analyzer}\\ \texttt{.IsValid()=False}} & 计入“无效 BREP” \\
-        S3：产出且有效 & \makecell[l]{写出 STEP/STL 且\\ \texttt{BRepCheck\_Analyzer}\\ \texttt{.IsValid()=True}} & 计入“有效 BREP” \\
+        S2：产出但 BRepCheck 无效 & \makecell[l]{写出 STEP/STL，\\ 但内核校验未通过} & 计入“无效 BREP” \\
+        S3：产出且有效 & \makecell[l]{写出 STEP/STL，\\ 且内核校验通过} & 计入“有效 BREP” \\
         \bottomrule
     \end{tabularx}
 \end{table}
