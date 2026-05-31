@@ -35,7 +35,7 @@
 \special{pdf:minorversion 7}                                % 允许包含 PDF 1.7 页面
 \providecommand\HyperLocalCurrentHref{}
 \RequirePackage{bookmark}                                   %
-\pdfstringdefDisableCommands{%                              % 解决 "Token not allowed in a PDF string" 警告
+\pdfstringdefDisableCommands{%                              % 解决 “Token not allowed in a PDF string” 警告
 \def\!{}%
 \def\quad{ }%
 \def\qquad{  }%

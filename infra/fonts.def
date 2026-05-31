@@ -59,7 +59,7 @@
       { \npu@set@windows@fonts }
       {
         \ClassWarningNoLine { nwputhesis }
-          { Windows~fonts~not~found;~falling~back~to~Fandol~fonts }
+          { Windows~fonts~not~found,~falling~back~to~Fandol~fonts }
         \bool_set_false:N \l__nwpu_font_winfonts_bool
         \npu@set@fandol@fonts
       }

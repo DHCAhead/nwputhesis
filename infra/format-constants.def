@@ -8,7 +8,7 @@
 \ExplSyntaxOn
 
 %%=== 字号基础量 =========================================================
-%% Point 只表示字号本身；LineHeight 表示该字号在模板中的默认基线距。
+%% Point 只表示字号本身，LineHeight 表示该字号在模板中的默认基线距。
 \cs_new:Npn \nwpuFontPointChuhao { 42pt }                   % 初号字号
 \cs_new:Npn \nwpuFontPointYihao { 26pt }                    % 一号字号
 \cs_new:Npn \nwpuFontPointErhao { 22pt }                    % 二号字号
@@ -37,7 +37,7 @@
 \cs_new:Npn \nwpuLineHeightXiaowu { 9pt }                   % 小五默认基线距
 
 %%=== 纯字号宏 ===========================================================
-%% 仅切换字号，基线距取同字号；语义化版式应优先使用下一节的角色宏。
+%% 仅切换字号，基线距取同字号。语义化版式应优先使用下一节的角色宏。
 \cs_new_protected:Npn \nwpuFontSizeChuhao { \fontsize{\nwpuFontPointChuhao}{\nwpuFontPointChuhao}\selectfont } % 初号纯字号
 \cs_new_protected:Npn \nwpuFontSizeYihao { \fontsize{\nwpuFontPointYihao}{\nwpuFontPointYihao}\selectfont }    % 一号纯字号
 \cs_new_protected:Npn \nwpuFontSizeErhao { \fontsize{\nwpuFontPointErhao}{\nwpuFontPointErhao}\selectfont }    % 二号纯字号
@@ -230,8 +230,8 @@
 \cs_new:Npn \nwpuBachelorLogoWidth { 9cm }                 % 本科封面校徽宽度
 \cs_new:Npn \nwpuBachelorTitleUnderlineWidth { 12cm }        % 本科封面题目下划线宽度
 \cs_new:Npn \nwpuBachelorInfoUnderlineWidth { 7cm }       % 本科封面专业/姓名等下划线宽度
-\cs_new:Npn \nwpuBachelorTitleGap { 0cm }                 % 本科封面”题目”和下划线间距
-\cs_new:Npn \nwpuBachelorTitleLabelWidth { 3em }            % 本科封面”题目”标签列宽
+\cs_new:Npn \nwpuBachelorTitleGap { 0cm }                 % 本科封面“题目”和下划线间距
+\cs_new:Npn \nwpuBachelorTitleLabelWidth { 3em }            % 本科封面“题目”标签列宽
 \cs_new:Npn \nwpuBachelorTitleRowHeight { 1.2cm }           % 本科封面题目行高
 \cs_new:Npn \nwpuBachelorTopSkip { 2.2cm }                  % 本科封面顶部空白
 \cs_new:Npn \nwpuBachelorAfterLogoSkip { 0.5cm }            % 本科封面校徽后距

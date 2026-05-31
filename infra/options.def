@@ -154,7 +154,7 @@
         \bool_if:NT \l__nwpu_colorcover_bool
           {
             \ClassWarningNoLine { nwputhesis }
-              { Option~`colorcover'~is~not~supported~for~bachelor~theses;~ignoring~it }
+              { Option~`colorcover'~is~not~supported~for~bachelor~theses,~ignoring~it }
             \bool_set_false:N \l__nwpu_colorcover_bool
           }
       }
@@ -168,7 +168,7 @@
         \bool_if:NF \l__nwpu_type_bcl_bool
           {
             \ClassWarningNoLine { nwputhesis }
-              { Option~`printmode'~is~only~applicable~to~bachelor~theses;~ignoring~it }
+              { Option~`printmode'~is~only~applicable~to~bachelor~theses,~ignoring~it }
           }
       }
   }

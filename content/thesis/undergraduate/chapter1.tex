@@ -23,7 +23,7 @@
 
 \subsection{深度学习三维生成研究进展}
 
-近年来生成式人工智能在二维图像和自然语言任务上取得显著进展，三维生成方向也已经从早期的体素表示与 ShapeNet 等通用三维数据集出发，逐步扩展到单 / 多视图重建、点云生成、参数化曲面、隐式表面与多边形网格的自回归生成\cite{wu_2015_3dshapenets,chang_2015_shapenet,choy_2016_3dr2n2,fan_2017_pointset,qi_2017_pointnet,qi_2017_pointnetplusplus,groueix_2018_atlasnet,achlioptas_2018_learning_representations,park_2019_deepsdf,mescheder_2019_occupancy,yang_2019_pointflow,nash_2020_polygen}。面向 CAD 场景的数据驱动智能建模已成为一个活跃方向\cite{tan_2025_intelligent_cad_review}，但能够直接产出工业可用 B-rep 的方法仍然不多，且大部分集中在草图序列、参数化操作或离散码本的间接表示路线，几何精度与拓扑闭合性仍存在改进空间。
+近年来生成式人工智能在二维图像和自然语言任务上取得显著进展，三维生成方向也已经从早期的体素表示与 ShapeNet 等通用三维数据集出发，逐步扩展到单 / 多视图重建、点云生成、参数化曲面、隐式表面与多边形网格的自回归生成\cite{wu_2015_3dshapenets,chang_2015_shapenet,choy_2016_3dr2n2,fan_2017_pointset,qi_2017_pointnet,qi_2017_pointnetplusplus,groueix_2018_atlasnet,achlioptas_2018_learning_representations,park_2019_deepsdf,mescheder_2019_occupancy,yang_2019_pointflow,nash_2020_polygen}。面向 CAD 场景的数据驱动智能建模已成为一个活跃方向\cite{tan_2026_intelligent_cad_review}，但能够直接产出工业可用 B-rep 的方法仍然不多，且大部分集中在草图序列、参数化操作或离散码本的间接表示路线，几何精度与拓扑闭合性仍存在改进空间。
 
 从上述趋势可以看出，CAD 生成研究与一般三维生成存在两个关键差别。第一个差别在于建模目标：自然图像或网格生成只需把单个连续分布学好，而 B-rep 生成同时面对一组结构化几何要素（面、边、顶点）和它们之间的离散拓扑关系，要求模型既能产生几何采样点的连续坐标，又能产生面索引、特殊符号等离散结构 token。大模型式的自回归建模已经在文本、代码、蛋白质序列等结构化对象上证明，复杂分布可以被组织为离散 token 序列，由 decoder-only Transformer 通过 next-token 预测捕获其中的长期依赖，因此，只要能把 B-rep 的面、边和几何采样点稳定地拼成 token 序列，就有可能复用这套成熟的生成范式来表达“前文约束后文”的几何—拓扑生成关系。第二个差别在于表征压缩的代价：三维几何具有强结构性，一旦把整个 B-rep 压成单一全局潜变量或离散码本编号，局部拓扑细节就被压成几个数字，重建阶段必须靠解码器把它们“扩”回来，模型对几何精度的可见控制点也随之减少。本文之所以选择在数据表示阶段保留面、边和邻接面索引等局部结构、仅在坐标分量上做标量量化，正是希望让几何精度上界保持在标量量化粒度上，而不是被码本规模或潜变量分布的拟合质量隐式封顶。
 
@@ -54,7 +54,7 @@ B-rep 实体的拓扑层级可由如下偏序集刻画：Solid $\to$ Shell $\to$
 更形式化地说，设训练样本为 $x = (x_1, x_2, \ldots, x_T)$，其中每个 $x_t$ 是统一词表中的一个 token，既可能表示量化后的坐标分量，也可能表示面索引或 START、SEP、END 等结构符号。自回归模型需要学习条件分布
 
 \begin{equation}
-    p(x) = \prod_{t=1}^{T} p(x_t \mid x_{<t}; \theta),
+    p(x) = \prod_{t=1}^{T} p(x_t \mid x_{<t}, \theta),
     \label{eq:brep-ar-factorization}
 \end{equation}
 
@@ -94,7 +94,7 @@ B-rep 实体的拓扑层级可由如下偏序集刻画：Solid $\to$ Shell $\to$
 
 \subsection{离散与隐式三维表示方法}
 
-针对一般三维形状的生成研究已经形成多条路线，但其表征都和 B-rep 之间存在结构性差距。体素方法以三维网格作为载体，分辨率每提高一倍计算与显存开销就增长八倍，难以扩展到工业 CAD 常见的尺寸跨度，点云方法（如 PointNet 家族）以无序点集作为输入或输出，本身轻量、对采样数变化鲁棒，但只保留了空间分布，丢弃了面、边等拓扑结构，且常用于分类与分割而非生成。以 DeepSDF、Occupancy Networks 等为代表的隐式表面方法用神经网络隐式表示符号距离场或占据概率场，再通过 Marching Cubes 等等值面提取算法生成三角网格\cite{lorensen_1987_marching_cubes,hoppe_1992_surface_reconstruction,kazhdan_2006_poisson}。这些方法擅长拟合平滑曲面的连续生成，但都不直接输出 B-rep——要把结果落到 STEP 文件，仍需经过等值面提取、曲面重建或重新拟合等后处理步骤，每一步都可能引入额外的几何与拓扑误差：等值面提取容易在尖锐特征处产生锯齿，表面重建必须自行猜测面边界与裁剪曲线，后续拟合若失败则只能保留为网格。因此，这类方法即便在视觉指标上表现优秀，距离“可被几何内核继续使用的实体”仍有一段工程距离，与本文以 BRepCheck 为终点的目标不直接重合。
+针对一般三维形状的生成研究已经形成多条路线，但其表征都和 B-rep 之间存在结构性差距。体素方法以三维网格作为载体，分辨率每提高一倍计算与显存开销就增长八倍，难以扩展到工业 CAD 常见的尺寸跨度，点云方法（如 PointNet 家族）以无序点集作为输入或输出，本身轻量、对采样数变化鲁棒，但只保留了空间分布，丢弃了面、边等拓扑结构，且常用于分类与分割而非生成。以 DeepSDF、Occupancy Networks 等为代表的隐式表面方法用神经网络隐式表示符号距离场或占据概率场\cite{park_2019_deepsdf,mescheder_2019_occupancy}，再通过 Marching Cubes 等等值面提取算法生成三角网格\cite{lorensen_1987_marching_cubes,hoppe_1992_surface_reconstruction,kazhdan_2006_poisson}。这些方法擅长拟合平滑曲面的连续生成，但都不直接输出 B-rep——要把结果落到 STEP 文件，仍需经过等值面提取、曲面重建或重新拟合等后处理步骤，每一步都可能引入额外的几何与拓扑误差：等值面提取容易在尖锐特征处产生锯齿，表面重建必须自行猜测面边界与裁剪曲线，后续拟合若失败则只能保留为网格。因此，这类方法即便在视觉指标上表现优秀，距离“可被几何内核继续使用的实体”仍有一段工程距离，与本文以 BRepCheck 为终点的目标不直接重合。
 
 \subsection{多边形网格自回归方法}
 

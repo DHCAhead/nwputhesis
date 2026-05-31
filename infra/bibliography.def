@@ -384,8 +384,8 @@
     \newbibmacro*{nwpu:bachelorin}{%
         \setunit{\nwpudot}%
         \iffieldequalstr{userd}{chinese}
-            {\printtext{见；}}
-            {\printtext{In\addsemicolon\space}}%
+            {\printtext{见：}}
+            {\printtext{In\addcolon\space}}%
     }
     \DeclareBibliographyDriver{nwpubachelorconf}{%
         \usebibmacro{bibindex}%
