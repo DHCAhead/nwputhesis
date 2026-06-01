@@ -247,7 +247,7 @@ S2 类型的 25 个无效样本主要由 OCC 的 BRepCheck 报告标记为 inval
 
 \subsection{工作总结}
 
-本论文围绕“不依赖显式 VQ-VAE 码本、端到端可重建为合法 STEP 文件”这一总体目标，开展了三方面工作。(1) 设计了面向 B-rep / NURBS 的点级量化与窗口化序列表示方法，给出了 face\_block = 49 与 edge\_block = 14 的序列骨架、4000 级标量均匀量化、4053 维统一词表与拓扑感知排序的具体方案。(2) 实现并训练了 LLaMA3 风格的标准 next-token 自回归生成模型，主干由 RoPE、SwiGLU、RMSNorm 与 GQA 组成，输出头为“主干 norm $\to$ \texttt{ar\_lm\_head}”。(3) 实现了基于 OpenCASCADE 的逆向重建与 BRepCheck 评估闭环，构成一条可独立运行的工程流水线。
+本论文围绕“不依赖显式 VQ-VAE 码本、端到端可重建为合法 STEP 文件”这一总体目标，开展了三方面工作。(1) 设计了面向 B-rep / NURBS 的点级量化与窗口化序列表示方法，给出了 face\_block = 49 与 edge\_block = 14 的序列骨架、4000 级标量均匀量化、数据侧 4053 维统一词表、模型侧 4054 维输出词表与拓扑感知排序的具体方案。(2) 实现并训练了 LLaMA3 风格的标准 next-token 自回归生成模型，主干由 RoPE、SwiGLU、RMSNorm 与 GQA 组成，输出头为“主干 norm $\to$ \texttt{ar\_lm\_head}”。(3) 实现了基于 OpenCASCADE 的逆向重建与 BRepCheck 评估闭环，构成一条可独立运行的工程流水线。
 
 \subsection{初步结论}
 
