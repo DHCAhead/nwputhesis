@@ -7,7 +7,7 @@
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.82\textwidth]{插图/fig4-1_model_architecture.pdf}
+    \includegraphics[width=1\textwidth]{插图/fig4-1_model_architecture.pdf}
     \caption{自回归生成模型总体架构示意图。输入 token 序列首先经过 token embedding 与 RoPE 位置编码，随后进入由多层因果 Transformer block 组成的 LLaMA3 风格主干，每个 block 包含 RMSNorm、Grouped Query Attention 与 SwiGLU 前馈层。主干末端经最终 RMSNorm 和线性输出层得到下一 token 的 logits，并据此采样得到下一个 token。}
     \label{fig:model-architecture}
 \end{figure}
@@ -74,7 +74,7 @@ pre-norm 残差结构相对 post-norm 的主要优点是深层训练更稳定：
 
 \begin{figure}[!htbp]
     \centering
-    \includegraphics[width=0.82\textwidth]{插图/fig4-2_gqa_vs_mha.pdf}
+    \includegraphics[width=1\textwidth]{插图/fig4-2_gqa_vs_mha.pdf}
     \caption{多头注意力（MHA）与 Grouped Query Attention（GQA）的结构对比。MHA 为每个 Query 头配置独立的 Key / Value 头，GQA 将多个 Query 头划分为一组并共享同一组 Key / Value，从而在保持多查询表达能力的同时减少 KV cache 的存储与读取开销。}
     \label{fig:gqa-vs-mha}
 \end{figure}
